@@ -1,0 +1,7 @@
+[Tests]
+  [./ellipsoid_IC_test]
+    type = 'Exodiff'
+    input = 'ellipsoid_IC_test.i'
+    exodiff = 'ellipsoid_IC.e'
+  [../]
+[]

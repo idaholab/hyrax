@@ -1,0 +1,7 @@
+[Tests]
+  [./PF_mobility_Landau_test]
+    type = 'Exodiff'
+    input = 'PF_mobility_Landau_test.i'
+    exodiff = 'PF_mobility_Landau_out.e'
+  [../]
+[]

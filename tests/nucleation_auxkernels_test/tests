@@ -1,0 +1,44 @@
+[Tests]
+  [./AuxSupersaturation_test]
+    type = 'Exodiff'
+    input = 'AuxSupersaturation.i'
+    exodiff = 'AuxSupersaturation.e'
+  [../]
+
+  [./AuxRateSimple_test]
+    type = 'Exodiff'
+    input = 'AuxRateSimple.i'
+    exodiff = 'AuxRateSimple.e'
+  [../]
+
+  [./AuxVolumetricNucleationRate_test]
+    type = 'Exodiff'
+    input = 'AuxVolumetricNucleationRate.i'
+    exodiff = 'AuxVolumetricNucleationRate.e'
+  [../]
+
+  [./AuxAMRNucleationProbability_test]
+    type = 'Exodiff'
+    input = 'AuxAMRNucleationProbability.i'
+    exodiff = 'AuxAMRNucleationProbability.e'
+  [../]
+
+  [./AuxChemElastic_test]
+    type = 'Exodiff'
+    input = 'AuxChemElastic.i'
+    exodiff = 'AuxChemElastic.e'
+  [../]
+
+  [./AuxDeltaGStar_test]
+    type = 'Exodiff'
+    input = 'AuxDeltaGStar.i'
+    exodiff = 'AuxDeltaGStar.e'
+    skip = 'ill-posed'
+  [../]
+
+  [./AuxDeltaGStar_AuxChemElastic_test]
+    type = 'Exodiff'
+    input = 'AuxDeltaGStar_AuxChemElastic.i'
+    exodiff = 'AuxDeltaGStar_AuxChemElastic.e'
+  [../]
+[]

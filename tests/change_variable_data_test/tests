@@ -1,0 +1,8 @@
+[Tests]
+  [./test]
+    type = 'Exodiff'
+    input = 'change_variable_data_test.i'
+    exodiff = 'change_variable_data_test_out.e'
+    skip = 'Might be obsolete again :)'
+  [../]
+[]

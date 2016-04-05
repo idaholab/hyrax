@@ -1,0 +1,17 @@
+[Tests]
+  [./linear_single_xstal_precip_test]
+    type = 'Exodiff'
+    input = 'Linear_Single_Xstal_Matl_test.i'
+    exodiff = 'Linear_Single_Xstal_Precip_Matl_out.e'
+  [../]
+
+  [./ACTransformElasticDF_test]
+    type = 'Exodiff'
+    input = 'ACTransformElasticDF_test.i'
+    exodiff = 'ACTransformElasticDF_out.e'
+
+    # Note: use absolute (rather than relative) error tolerances
+    # for this test, since the displacements are very small.
+    exodiff_opts = '-absolute'
+  [../]
+[]

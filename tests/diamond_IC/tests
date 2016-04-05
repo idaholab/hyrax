@@ -1,0 +1,7 @@
+[Tests]
+  [./diamond_IC_test]
+    type = 'Exodiff'
+    input = 'DiamondIC.i'
+    exodiff = 'diamond_IC.e'
+  [../]
+[]

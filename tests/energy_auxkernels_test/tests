@@ -1,0 +1,29 @@
+[Tests]
+  [./AuxBulkEnergyCalphad_test]
+    type = 'CSVDiff'
+    input = 'AuxBulkEnergyCalphad.i'
+    csvdiff = 'AuxBulkEnergyCalphad.csv'
+    method = 'opt oprof'
+  [../]
+
+  [./AuxGradientEnergy_test]
+    type = 'CSVDiff'
+    input = 'AuxGradientEnergy.i'
+    csvdiff = 'AuxGradientEnergy.csv'
+    method = 'opt oprof'
+  [../]
+
+  [./AuxElasticEnergy_test]
+    type = 'CSVDiff'
+    input = 'AuxElasticEnergy.i'
+    csvdiff = 'AuxElasticEnergy.csv'
+    method = 'opt oprof'
+  [../]
+
+  [./AuxCalphadElasticity_test]
+    type = 'Exodiff'
+    input = 'AuxCalphadElasticity.i'
+    exodiff = 'AuxCalphadElasticity.e'
+    method = 'opt oprof'
+  [../]
+[]

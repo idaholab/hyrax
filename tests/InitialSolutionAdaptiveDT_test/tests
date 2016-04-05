@@ -1,0 +1,8 @@
+[Tests]
+  [./InitialSolutionAdaptiveDT_test]
+    type = 'Exodiff'
+    input = 'InitialSolutionAdaptiveDT.i'
+    exodiff = 'InitialSolutionAdaptiveDT.e'
+    method = 'OPT OPROF'
+  [../]
+[]
