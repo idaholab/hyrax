@@ -24,21 +24,12 @@
 #include "MiscApp.h"
 
 //Kernels
-#include "ACBulkCoupled.h"
-#include "CHBulkCoupled.h"
 #include "ACTransformElasticDF.h"
-#include "CHBulkPolyCoupled.h"
-#include "ACBulkPolyCoupled.h"
-#include "CHCoupledCalphad.h"
 #include "ACCoupledCalphad.h"
-#include "CHCoupledSplit.h"
 #include "CHCoupledCalphadSplit.h"
 #include "SplitCoupledCHWRes.h"
 #include "CHPrecipMatrixElasticity.h"
 #include "ACPrecipMatrixElasticity.h"
-//#include "CHCoupledSplitHackathon.h"
-//#include "ACBulkPolyCoupledHackathon.h"
-//#include "SplitCoupledCHWResHackathon.h"
 
 //Auxiliary Kernels
 #include "AuxSupersaturation.h"
@@ -156,21 +147,12 @@ void
 HyraxApp::registerObjects(Factory & factory)
 {
   //Kernels
-  registerKernel(CHBulkCoupled);
-  registerKernel(ACBulkCoupled);
   registerKernel(ACTransformElasticDF);
-  registerKernel(ACBulkPolyCoupled);
-  registerKernel(CHBulkPolyCoupled);
-  registerKernel(CHCoupledCalphad);
   registerKernel(ACCoupledCalphad);
-  registerKernel(CHCoupledSplit);
   registerKernel(CHCoupledCalphadSplit);
   registerKernel(SplitCoupledCHWRes);
   registerKernel(CHPrecipMatrixElasticity);
   registerKernel(ACPrecipMatrixElasticity);
-  //registerKernel(CHCoupledSplitHackathon);
-  //registerKernel(ACBulkPolyCoupledHackathon);
-  //registerKernel(SplitCoupledCHWResHackathon);
 
   //Auxiliary Kernels
   registerAux(AuxSupersaturation);
