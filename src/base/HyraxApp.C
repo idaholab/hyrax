@@ -31,8 +31,6 @@
 #include "ACBulkPolyCoupled.h"
 #include "CHCoupledCalphad.h"
 #include "ACCoupledCalphad.h"
-#include "CHLarry.h"
-#include "CHLarrySplit.h"
 #include "CHCoupledSplit.h"
 #include "CHCoupledCalphadSplit.h"
 #include "SplitCoupledCHWRes.h"
@@ -165,8 +163,6 @@ HyraxApp::registerObjects(Factory & factory)
   registerKernel(CHBulkPolyCoupled);
   registerKernel(CHCoupledCalphad);
   registerKernel(ACCoupledCalphad);
-  registerKernel(CHLarry);
-  registerKernel(CHLarrySplit);
   registerKernel(CHCoupledSplit);
   registerKernel(CHCoupledCalphadSplit);
   registerKernel(SplitCoupledCHWRes);
