@@ -28,10 +28,7 @@ protected:
   virtual Real computeQpOffDiagJacobian(unsigned int jvar);
 
   Real computeHeaviside();
-  Real computeDHeaviside(unsigned int i);
-  Real computeHeavisideDelta();
-  Real computeDHeavisideDelta(unsigned int i);
-
+  Real computeDHeaviside();
 
 private:
   const MaterialProperty<Real> & _W;                            //Well height
@@ -43,19 +40,12 @@ private:
   const MaterialProperty<Real> & _dGdelta_dc;
   const MaterialProperty<Real> & _d2Gdelta_dc2;
 
-  Real _scaling_factor;
-
-  // unsigned int _n_var;
+  unsigned int _n_var;
   unsigned int _w_var;
-  unsigned int _T_var;
 
-  //const VariableValue & _n;
+  const VariableValue & _n;
   const VariableValue & _w;
-  const VariableValue & _T;
 
-  unsigned int _n_OP_vars;
-  std::vector<unsigned int> _n_var;
-  std::vector<const VariableValue *> _OP;
 };
 
 #endif //CHCOUPLEDCALPHADSPLIT_H

@@ -27,7 +27,6 @@ public:
 protected:
   virtual void computeQpProperties();
   virtual Real computeHeaviside();
-  virtual Real computeHeavisideDelta();
 
 private:
   //Diffusion coefficient information
@@ -37,7 +36,7 @@ private:
   Real _H_ZrH2_Q0;
   Real _R;
   Real _k;
-  Real _mobility_CH_scaling;
+//  Real _mobility_CH_scaling;
 
   const MaterialProperty<Real> & _d2Galpha_dc2;
   const MaterialProperty<Real> & _d2Gdelta_dc2;
@@ -47,10 +46,12 @@ private:
 
   const VariableValue & _c;
   const VariableValue & _OP;
+  const VariableValue & _temperature;
 
-  MaterialProperty<Real> & _L1Q;
-  Real _Q_transport;
-  const MaterialProperty<Real> & _d2Galpha_dcdT;
+
+  //MaterialProperty<Real> & _L1Q;
+  //Real _Q_transport;
+  //const MaterialProperty<Real> & _d2Galpha_dcdT;
 
 };
 

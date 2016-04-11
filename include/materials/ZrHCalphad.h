@@ -27,10 +27,6 @@ public:
 protected:
   virtual void computeQpProperties();
 
-//  Real computeMobility();
-//  RealGradient computeGradMobility();
-
-  //INPUT VARIABLES
   Real _mobility_CH;
   Real _mobility_AC;
 
@@ -41,10 +37,6 @@ protected:
 
   Real _molar_volume;
 
-  Real _thermal_diffusivity;
-  Real _dThermal_diffusivity_dT;
-
-  //MATERIAL PROPERTIES
   MaterialProperty<Real> & _M;                  //Cahn-Hilliard mobility (isotropic)
   MaterialProperty<RealGradient> & _grad_M;
 
@@ -56,12 +48,6 @@ protected:
   MaterialProperty<Real> & _W;                  //well height
 
   MaterialProperty<Real> & _molar_vol;          //molar volume
-
-  MaterialProperty<Real> & _thermal_diff;       //thermal diffusivity of the material
-  MaterialProperty<Real> & _dThermDiff_dT;      //d(Thermal diffusivity)/dTemperature
-
-  //COUPLED VARIABLES
-  const VariableValue & _temperature;                 //coupled Temperature field
 
 private:
 

@@ -20,12 +20,7 @@ InputParameters validParams<ZrHCalphad>()
   params.addRequiredParam<Real>("kappa_CH", "CH gradient energy coefficient (isotropic)");
   params.addRequiredParam<Real>("kappa_AC", "AC gradient energy coefficient (isotropic)");
   params.addRequiredParam<Real>("well_height", "well height for double well g(n)");
-
   params.addRequiredParam<Real>("molar_volume", "molar volume of the material");
-
-  params.addRequiredParam<Real>("thermal_diffusivity", "Thermal diffusivity of the material");
-  params.addParam<Real>("dThermaldiffusivity_dT", 0, "derivitive of thermal diffusivity with temperature");
-  params.addRequiredCoupledVar("coupled_temperature", "temperature to be used to calculating Gibbs energies");
 
   return params;
 }
@@ -39,9 +34,6 @@ ZrHCalphad::ZrHCalphad(const InputParameters & parameters)
       _well_height(getParam<Real>("well_height")),
       _molar_volume(getParam<Real>("molar_volume")),
 
-      _thermal_diffusivity(getParam<Real>("thermal_diffusivity")),
-      _dThermal_diffusivity_dT(getParam<Real>("dThermaldiffusivity_dT")),
-
       _M(declareProperty<Real>("M")),
       _grad_M(declareProperty<RealGradient>("grad_M")),
       _L(declareProperty<Real>("L")),
@@ -49,12 +41,7 @@ ZrHCalphad::ZrHCalphad(const InputParameters & parameters)
       _kappa_c(declareProperty<Real>("kappa_c")),
       _kappa_n(declareProperty<Real>("kappa_n")),
       _W(declareProperty<Real>("well_height")),
-      _molar_vol(declareProperty<Real>("molar_volume")),
-
-      _thermal_diff(declareProperty<Real>("thermal_diffusivity")),
-      _dThermDiff_dT(declareProperty<Real>("dThermal_diffusivity_dT")),
-
-      _temperature(coupledValue("coupled_temperature"))
+      _molar_vol(declareProperty<Real>("molar_volume"))
 {
 }
 
@@ -71,8 +58,4 @@ ZrHCalphad::computeQpProperties()
 
   _W[_qp] = _well_height;
   _molar_vol[_qp] = _molar_volume;
-
-  _thermal_diff[_qp] = _thermal_diffusivity;
-  _dThermDiff_dT[_qp] = _dThermal_diffusivity_dT;
 }
-

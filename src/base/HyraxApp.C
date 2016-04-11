@@ -69,7 +69,7 @@
 #include "ZrHCalphadDiffusivity.h"
 #include "FreeEnergy.h"
 #include "MatlAuxVolNucRate.h"
-//#include "HackathonFreeEnergy.h"
+#include "TwoPhaseLinearElasticMaterial.h"
 
 //Initial Conditions
 #include "PolySpecifiedSmoothCircleIC.h"
@@ -191,7 +191,7 @@ HyraxApp::registerObjects(Factory & factory)
   registerMaterial(ZrHCalphadDiffusivity);
   registerMaterial(FreeEnergy);
   registerMaterial(MatlAuxVolNucRate);
-  //registerMaterial(HackathonFreeEnergy);
+  registerMaterial(TwoPhaseLinearElasticMaterial);
 
   //Initial Conditions
   registerInitialCondition(PolySpecifiedSmoothCircleIC);
