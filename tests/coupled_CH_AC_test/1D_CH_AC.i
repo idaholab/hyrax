@@ -1,23 +1,22 @@
-#This simulation is in 1D to find the interfacial energy, aJ/nm^2.
-#To use this, get the equilibrium omega value first by setting omega_eq = 0 and allowing the simulation to run to equilibrium.
-#The omega value at either end of the simulation should be the same, and that's omega_eq.
-#Then run the simulation again to find the interface energy in aJ/nm^2 by supplying omega_eq to the auxkernel.
-#interface energy It outputs as gamma, the postprocessor
+#This simulation is in 1D to test the coupled CH-AC system with no elasticity.
+#units are aJ, nm, microseconds, attomol, and K.
+#Except in the diffusivity for Q, R, T.  Can just do J/mol there; default values in J mol K are for R, kB, etc.
+
 
 [Mesh]
+  #dimensions in nm
   type = GeneratedMesh
   dim = 1
-  nx = 50
+  nx = 400
   ny = 1
   nz = 0
   xmin = 0
-  xmax = 20
+  xmax = 100
   ymin = 0
   ymax = 1
   zmin = 0
   zmax = 0
   elem_type = EDGE2
-  #uniform_refine = 2
 []
 
 [Variables]
@@ -31,9 +30,9 @@
       y1 = 0
       z1 = 0
       invalue = 0.6
-      outvalue = 0.01
-      radius = 6
-      int_width = 1
+      outvalue = 0.03
+      radius = 5
+      int_width = 3
     [../]
   [../]
 
@@ -55,8 +54,8 @@
       z1 = 0
       invalue = 1
       outvalue = 0
-      radius = 6
-      int_width = 1
+      radius = 5
+      int_width = 3
     [../]
   [../]
 []
@@ -66,26 +65,13 @@
     order = CONSTANT
     family = MONOMIAL
   [../]
-
-  [./omega]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
 []
 
 [AuxKernels]
   [./auxtemp]
     type = AuxTemperature
     variable = temperature
-    temp_in_K = 485
-  [../]
-
-  [./omega_calc]
-    type = AuxCanonicalEnsemble
-    variable = omega
-    OP = n
-    concentration = concentration
-    omega_eq = -1.45135 #485K
+    temp_in_K = 600
   [../]
 []
 
@@ -139,6 +125,7 @@
     variable = n
     mob_name = L
     kappa_name = kappa_n
+  [../]
 []
 
 [Materials]
@@ -158,7 +145,7 @@
     mobility_AC = 1E-1 #nm^3/(aJ microsecond)
 #    CH_mobility_scaling = 1E-23
 
-    kappa_CH = 0 #aJ/nm
+    kappa_CH = 1e0 #aJ/nm
     kappa_AC = 1e0 #aJ/nm
 
     #well height and molar volume remain unscaled.
@@ -234,37 +221,13 @@
   [../]
 []
 
-[Postprocessors]
-  [./VolumeFraction]
-    type = NodalVolumeFraction
-    bubble_volume_file = 1D_interfaceEnergy_vol.csv
-    threshold = 0.5
-    variable = n
-    mesh_volume = Volume
-  [../]
-
-  [./Volume]
-    type = VolumePostprocessor
-    execute_on = initial
-  [../]
-
-  [./dofs]
-   type = NumDOFs
-  [../]
-
-  [./Gamma]
-    type = ElementIntegralVariablePostprocessor
-    variable = omega
-  [../]
-[]
-
 [Executioner]
   type = Transient
   scheme = 'BDF2'
 
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
-    dt = 1
+    dt = 1e0
     percent_change = 0.05
   [../]
 
@@ -281,61 +244,13 @@
   nl_max_its = 20
 
   start_time = 0
-  num_steps = 10000
-  #end_time = 500
-  #dtmax = 1E0
-  #dtmin = 1E-8
-[]
-
-
-[Adaptivity]
-  marker = combo
-  initial_steps = 3
-  initial_marker = EFM_1
-  max_h_level = 3
-  [./Markers]
-    [./EFM_1]
-      type = ErrorFractionMarker
-      coarsen = 0.075
-      refine = 0.75
-      indicator = GJI_1
-    [../]
-    [./EFM_2]
-      type = ErrorFractionMarker
-      coarsen = 0.075
-      refine = 0.75
-      indicator = GJI_2
-    [../]
-     [./combo]
-       type = ComboMarker
-       markers = 'EFM_1 EFM_2'
-     [../]
-  [../]
-
-  [./Indicators]
-    [./GJI_1]
-     type = GradientJumpIndicator
-      variable = n
-    [../]
-    [./GJI_2]
-     type = GradientJumpIndicator
-      variable = concentration
-    [../]
-  [../]
+  num_steps = 10
 []
 
 [Outputs]
-  file_base = 1D_interfaceEnergy_485K_kc0kn1_eq
+  file_base = 1D_CH_AC
 
   exodus = true
-  interval = 20
-  checkpoint = 0
-  csv = true
-
-  [./console]
-    type = Console
-    interval = 20
-    max_rows = 10
-    output_linear = 0
-  [../]
+  interval = 1
+  csv = false
 []
