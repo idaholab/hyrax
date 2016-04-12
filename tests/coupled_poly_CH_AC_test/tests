@@ -1,8 +1,0 @@
-[Tests]
-  [./coupled_CH_AC_test]
-    type = 'Exodiff'
-    input = 'coupled_poly_CH_AC_test.i'
-    exodiff = 'coupled_poly_CH_AC_out.e'
-    method = 'OPT OPROF'
-  [../]
-[]
