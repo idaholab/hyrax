@@ -8,12 +8,12 @@
   type = GeneratedMesh
   dim = 1
   nx = 50
-  ny = 1
+  ny = 0
   nz = 0
   xmin = 0
-  xmax = 20
+  xmax = 50
   ymin = 0
-  ymax = 1
+  ymax = 0
   zmin = 0
   zmax = 0
   elem_type = EDGE2
@@ -32,7 +32,7 @@
       z1 = 0
       invalue = 0.6
       outvalue = 0.01
-      radius = 6
+      radius = 20
       int_width = 1
     [../]
   [../]
@@ -55,7 +55,7 @@
       z1 = 0
       invalue = 1
       outvalue = 0
-      radius = 6
+      radius = 20
       int_width = 1
     [../]
   [../]
@@ -77,7 +77,7 @@
   [./auxtemp]
     type = AuxTemperature
     variable = temperature
-    temp_in_K = 485
+    temp_in_K = 600
   [../]
 
   [./omega_calc]
@@ -85,7 +85,7 @@
     variable = omega
     OP = n
     concentration = concentration
-    omega_eq = -1.45135 #485K
+    omega_eq = -1.9093 #600K  # -1.45135 #485K
   [../]
 []
 
@@ -159,7 +159,7 @@
 #    CH_mobility_scaling = 1E-23
 
     kappa_CH = 0 #aJ/nm
-    kappa_AC = 1e0 #aJ/nm
+    kappa_AC = 5e-1 #aJ/nm
 
     #well height and molar volume remain unscaled.
     well_height = 0 #aJ/amol?
@@ -276,7 +276,7 @@
   l_max_its = 100
   l_tol = 1.0e-4
 
-  nl_rel_tol = 1.0e-6
+  nl_rel_tol = 1.0e-8
   nl_abs_tol = 5e-10
   nl_max_its = 20
 
@@ -325,7 +325,7 @@
 []
 
 [Outputs]
-  file_base = 1D_interfaceEnergy_485K_kc0kn1_eq
+  file_base = 1D_interfaceEnergy_600K_kc0kn05_eq
 
   exodus = true
   interval = 20

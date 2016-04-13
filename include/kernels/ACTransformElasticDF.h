@@ -49,6 +49,10 @@ protected:
    */
   virtual Real computeDFDOP(PFFunctionType type);
 
+  const MaterialProperty<Real> & _dfel_dOP;
+  const MaterialProperty<Real> & _d2fel_dOP2;
+
+
   //virtual Real calculateFirstTerm();
 
   //virtual Real calculateSecondTerm();
@@ -58,7 +62,8 @@ protected:
   //virtual Real calculateSecondJacobianTerm();
 
   // system elasticity tensor, varies in space
-  const MaterialProperty<ElasticityTensorR4> & _elasticity_tensor;
+
+  /*const MaterialProperty<ElasticityTensorR4> & _elasticity_tensor;
   const MaterialProperty<std::vector<RankTwoTensor > > & _eigenstrains_rotated_MP;
   const MaterialProperty<RankTwoTensor> & _local_strain;
 
@@ -75,7 +80,7 @@ protected:
   // Vector of references to the coupled order parameters
   std::vector<const VariableValue *> _coupled_vars;
 
-  Real _scaling_factor;
+  Real _scaling_factor;*/
 };
 
 #endif //ACTRANSFORMELASTICDF_H

@@ -69,8 +69,10 @@ CHCoupledCalphadSplit::computeQpOffDiagJacobian(unsigned int jvar)
  if (jvar == _w_var)
     return -_phi[_j][_qp] * _test[_i][_qp];
 
-  else
-    mooseError("Screwed up CHCoupledCalphadSplit::computeQpOffDiagJacobian()");
+ else
+   return 0;
+
+ //   mooseError("Screwed up CHCoupledCalphadSplit::computeQpOffDiagJacobian()");
 }
 
 Real
