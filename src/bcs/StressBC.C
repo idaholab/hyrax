@@ -1,10 +1,10 @@
 /*************************************************************************
 *
-*  Welcome to HYRAX!
-*  Andrea M. Jokisaari
-*  CASL/MOOSE
+*   Welcome to HYRAX!
 *
-*  3 January 2013
+*   Developer: Andrea Jokisaari
+*
+*   5 April 2016
 *
 *  StressBC is pulled from Ferret, thanks to O. Heinonen et al.
 *
