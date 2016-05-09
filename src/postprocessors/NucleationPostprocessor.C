@@ -89,7 +89,7 @@ NucleationPostprocessor::modifySolutionVector()
   // retrieve the nodes out of the mesh for use in the changeValues function
   _nucleation_locations.reserve(_nucleation_locations.size() + _local_node_ids.size());
   for (unsigned int i=0; i<_local_node_ids.size(); ++i)
-    _nucleation_locations.push_back(&_mesh.node(_local_node_ids[i]));
+    _nucleation_locations.push_back(_mesh.nodePtr(_local_node_ids[i]));
 
   changeValues();
 }
