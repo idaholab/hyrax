@@ -81,10 +81,7 @@
 #include "MeshSolutionModify.h"
 
 //Post Processors
-#include "NucleationPostprocessor.h"
-#include "OneSeed.h"
 #include "NucleiInformation.h"
-#include "ElementIntegralFreeEnergy.h"
 
 //TimeSteppers
 #include "InitialSolutionAdaptiveDT.h"
@@ -201,10 +198,7 @@ HyraxApp::registerObjects(Factory & factory)
   registerExecutioner(MeshSolutionModify);
 
   //Postprocessors
-  registerPostprocessor(NucleationPostprocessor);
-  registerPostprocessor(OneSeed);
   registerPostprocessor(NucleiInformation);
-  registerPostprocessor(ElementIntegralFreeEnergy);
 
   //TimeSteppers
   registerTimeStepper(InitialSolutionAdaptiveDT);
