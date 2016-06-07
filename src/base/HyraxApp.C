@@ -29,7 +29,6 @@
 #include "CHCoupledCalphadSplit.h"
 #include "SplitCoupledCHWRes.h"
 #include "CHPrecipMatrixElasticity.h"
-#include "ACPrecipMatrixElasticity.h"
 
 //Auxiliary Kernels
 #include "AuxSupersaturation.h"
@@ -38,9 +37,7 @@
 #include "AuxRateSimple.h"
 #include "AuxChem.h"
 #include "AuxTemperature.h"
-#include "AuxGuoEnergy.h"
 #include "AuxCalphadEnergy.h"
-//#include "AuxTestFlip.h"
 #include "ReporterAux.h"
 #include "AuxBulkEnergyCalphad.h"
 #include "AuxGradientEnergy.h"
@@ -150,9 +147,7 @@ HyraxApp::registerObjects(Factory & factory)
   registerKernel(ACTransformElasticDF);
   registerKernel(ACCoupledCalphad);
   registerKernel(CHCoupledCalphadSplit);
-  registerKernel(SplitCoupledCHWRes);
   registerKernel(CHPrecipMatrixElasticity);
-  registerKernel(ACPrecipMatrixElasticity);
 
   //Auxiliary Kernels
   registerAux(AuxSupersaturation);
