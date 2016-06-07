@@ -12,7 +12,7 @@
 #define CHPRECIPMATRIXELASTICITY_H
 
 #include "SplitCHCRes.h"
-#include "ElasticityTensorR4.h"
+#include "RankFourTensor.h"
 #include "RankTwoTensor.h"
 
 class CHPrecipMatrixElasticity;

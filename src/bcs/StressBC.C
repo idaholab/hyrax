@@ -30,7 +30,7 @@ InputParameters validParams<StressBC>()
 StressBC::StressBC(const InputParameters & parameters) :
     IntegratedBC(parameters),
     _stress_vector(getParam<std::vector<Real> >("boundary_stress")),
-    _Jacobian_mult(getMaterialProperty<ElasticityTensorR4>("Jacobian_mult")),
+    _Jacobian_mult(getMaterialProperty<RankFourTensor>("Jacobian_mult")),
     _component(getParam<int>("component")),
     _convert_to_gpa(getParam<bool>("convert_to_gpa")),
     _multiplier(1)

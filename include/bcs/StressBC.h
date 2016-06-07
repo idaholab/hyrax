@@ -16,7 +16,7 @@
 
 #include "IntegratedBC.h"
 #include "RankTwoTensor.h"
-#include "ElasticityTensorR4.h"
+#include "RankFourTensor.h"
 
 //LibMesh includes
 //#include "libmesh/vector_value.h"
@@ -46,7 +46,7 @@ protected:
   RankTwoTensor _boundary_stress;
   std::vector<const VariableValue *> _boundary_stress_vars;
 
-  const MaterialProperty<ElasticityTensorR4> & _Jacobian_mult;
+  const MaterialProperty<RankFourTensor> & _Jacobian_mult;
 
 
   const int _component;

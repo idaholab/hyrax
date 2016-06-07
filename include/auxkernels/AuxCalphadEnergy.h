@@ -13,7 +13,7 @@
 
 #include "AuxKernel.h"
 #include "RankTwoTensor.h"
-#include "ElasticityTensorR4.h"
+#include "RankFourTensor.h"
 
 #include "CalphadAB1CD1.h"
 #include "CalphadAB1CD2.h"
@@ -58,9 +58,9 @@ protected:
   const MaterialProperty<RankTwoTensor> & _elastic_strain;
   const MaterialProperty<RankTwoTensor> & _local_strain;
 
-  const MaterialProperty<ElasticityTensorR4> & _elasticity_tensor;
-  const MaterialProperty<ElasticityTensorR4> & _Cijkl_MP;  //matrix
-  const MaterialProperty<ElasticityTensorR4> & _Cijkl_precipitate_MP; //precipitate
+  const MaterialProperty<RankFourTensor> & _elasticity_tensor;
+  const MaterialProperty<RankFourTensor> & _Cijkl_MP;  //matrix
+  const MaterialProperty<RankFourTensor> & _Cijkl_precipitate_MP; //precipitate
 
 
   const MaterialProperty<std::vector<RankTwoTensor> > & _precipitate_eigenstrain;

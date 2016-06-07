@@ -13,7 +13,7 @@
 
 #include "AuxChemElastic.h"
 #include "RankTwoTensor.h"
-#include "ElasticityTensorR4.h"
+#include "RankFourTensor.h"
 
 //forward declaration
 class AuxGuoEnergy;
@@ -58,10 +58,10 @@ protected:
   unsigned int _noncons_var_num;
 
   const MaterialProperty<std::vector<RankTwoTensor> > & _eigenstrains_rotated_MP;
-  const MaterialProperty<ElasticityTensorR4> & _elasticity_tensor;
+  const MaterialProperty<RankFourTensor> & _elasticity_tensor;
 
   const MaterialProperty<std::vector<RankTwoTensor> > & _precipitate_eigenstrain_rotated;
-  const MaterialProperty<ElasticityTensorR4> & _precipitate_elasticity;
+  const MaterialProperty<RankFourTensor> & _precipitate_elasticity;
 
   const MaterialProperty<RankTwoTensor> & _local_strain;
 

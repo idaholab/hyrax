@@ -46,9 +46,9 @@ AuxCalphadEnergy::AuxCalphadEnergy(const InputParameters & parameters) :
     _elastic_strain(getMaterialProperty<RankTwoTensor>("elastic_strain")),
     _local_strain(getMaterialProperty<RankTwoTensor>("local_strain")),
 
-    _elasticity_tensor(getMaterialProperty<ElasticityTensorR4>("elasticity_tensor")),
-    _Cijkl_MP(getMaterialProperty<ElasticityTensorR4>("Cijkl_MP")),
-    _Cijkl_precipitate_MP(getMaterialProperty<ElasticityTensorR4>("Cijkl_precipitates_MP")),
+    _elasticity_tensor(getMaterialProperty<RankFourTensor>("elasticity_tensor")),
+    _Cijkl_MP(getMaterialProperty<RankFourTensor>("Cijkl_MP")),
+    _Cijkl_precipitate_MP(getMaterialProperty<RankFourTensor>("Cijkl_precipitates_MP")),
 
     _precipitate_eigenstrain(getMaterialProperty<std::vector<RankTwoTensor> >("precipitate_eigenstrain")),
     _matrix_eigenstrain(getMaterialProperty<RankTwoTensor>("matrix_eigenstrain")),
@@ -156,7 +156,7 @@ AuxCalphadEnergy::computeDifferential()
 
   // _console<<"dfel_dX = "<<dfel_dX<<std::endl;
 
-  ElasticityTensorR4 dCijkl = (_Cijkl_precipitate_MP[_qp] - _Cijkl_MP[_qp])*(-1*_dH_dOP);
+  RankFourTensor dCijkl = (_Cijkl_precipitate_MP[_qp] - _Cijkl_MP[_qp])*(-1*_dH_dOP);
   b = _Cijkl_MP[_qp]*( (_dn_misfit_strain[_qp])[_OP_number-1]) *(-1);
   RankTwoTensor c = dCijkl*_elastic_strain[_qp];
 
@@ -268,4 +268,3 @@ AuxCalphadEnergy::computeDBarrier()
    _dg_dOP = 2*n - 6*n*n + 4*n*n*n + 2*n*square_sum + 2*n*quad_sum + 4*n*n*n*square_sum
      + 2*n*square_mult;
 }
-
