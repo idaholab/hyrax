@@ -7,15 +7,15 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 1 #35
-  ny = 1 #35
-  nz = 1 #35
-  xmin = 200
-  xmax = 201 #250
-  ymin = 200
-  ymax = 201 #250
+  nx = 35
+  ny = 35
+  nz = 35
+  xmin = 0
+  xmax = 250
+  ymin = 0
+  ymax = 250
   zmin = 0
-  zmax = 0 #250
+  zmax = 250
 
 #  elem_type = QUAD4
 []
@@ -39,7 +39,7 @@
       n_seeds = 1
       int_width = 1
       invalue = 0.6
-      outvalue = 0.05
+      outvalue = 0.03
       x_positions = '125'
       y_positions = '125'
       z_positions = '0'
@@ -82,54 +82,54 @@
 
 [AuxVariables]
   [./temperature]
-    order = FIRST
+    order = CONSTANT
     family = MONOMIAL
   [../]
 
   [./elem_ChemElastic]
-    order = FIRST
+    order = CONSTANT
     family = MONOMIAL
   [../]
 
   [./elem_VolumetricRate]
-    order = FIRST
+    order = CONSTANT
     family = MONOMIAL
   [../]
 
   [./elem_AMRProbability]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+
+  [./s11_aux]
     order = FIRST
     family = MONOMIAL
   [../]
 
-#  [./s11_aux]
-#    order = FIRST
-#    family = MONOMIAL
-#  [../]
+  [./s12_aux]
+    order = FIRST
+    family = MONOMIAL
+  [../]
 
-#  [./s12_aux]
-#    order = FIRST
-#    family = MONOMIAL
-#  [../]
+  [./s22_aux]
+    order = FIRST
+    family = MONOMIAL
+  [../]
 
-#  [./s22_aux]
-#    order = FIRST
-#    family = MONOMIAL
-#  [../]
+  [./e11_aux]
+    order = FIRST
+    family = MONOMIAL
+  [../]
 
-#  [./e11_aux]
-#    order = FIRST
-#    family = MONOMIAL
-#  [../]
+  [./e12_aux]
+    order = FIRST
+    family = MONOMIAL
+  [../]
 
-#  [./e12_aux]
-#    order = FIRST
-#    family = MONOMIAL
-#  [../]
-
-#  [./e22_aux]
-#    order = FIRST
-#    family = MONOMIAL
-#  [../]
+  [./e22_aux]
+    order = FIRST
+    family = MONOMIAL
+  [../]
 []
 
 [AuxKernels]
@@ -171,54 +171,53 @@
     execute_on = timestep_end
   [../]
 
+  [./matl_s11]
+    type = RankTwoAux
+    rank_two_tensor = stress
+    index_i = 0
+    index_j = 0
+    variable = s11_aux
+  [../]
 
-#  [./matl_s11]
-#    type = RankTwoAux
-#    rank_two_tensor = stress
-#    index_i = 0
-#    index_j = 0
-#    variable = s11_aux
-#  [../]
+ [./matl_s12]
+    type = RankTwoAux
+    rank_two_tensor = stress
+    index_i = 0
+    index_j = 1
+    variable = s12_aux
+  [../]
 
-# [./matl_s12]
-#    type = RankTwoAux
-#    rank_two_tensor = stress
-#    index_i = 0
-#    index_j = 1
-#    variable = s12_aux
-#  [../]
+  [./matl_s22]
+    type = RankTwoAux
+    rank_two_tensor = stress
+    index_i = 1
+    index_j = 1
+    variable = s22_aux
+  [../]
 
-#  [./matl_s22]
-#    type = RankTwoAux
-#    rank_two_tensor = stress
-#    index_i = 1
-#    index_j = 1
-#    variable = s22_aux
-#  [../]
+  [./matl_e11]
+    type = RankTwoAux
+    rank_two_tensor = elastic_strain
+    index_i = 0
+    index_j = 0
+    variable = e11_aux
+  [../]
 
-#  [./matl_e11]
-#    type = RankTwoAux
-#    rank_two_tensor = elastic_strain
-#    index_i = 0
-#    index_j = 0
-#    variable = e11_aux
-#  [../]
+ [./matl_e12]
+    type = RankTwoAux
+    rank_two_tensor = elastic_strain
+    index_i = 0
+    index_j = 1
+    variable = e12_aux
+  [../]
 
-# [./matl_e12]
-#    type = RankTwoAux
-#    rank_two_tensor = elastic_strain
-#    index_i = 0
-#    index_j = 1
-#    variable = e12_aux
-#  [../]
-
-#  [./matl_e22]
-#    type = RankTwoAux
-#    rank_two_tensor = elastic_strain
-#    index_i = 1
-#    index_j = 1
-#    variable = e22_aux
-#  [../]
+  [./matl_e22]
+    type = RankTwoAux
+    rank_two_tensor = elastic_strain
+    index_i = 1
+    index_j = 1
+    variable = e22_aux
+  [../]
 []
 
 [Preconditioning]
@@ -249,7 +248,6 @@
     type = CHPrecipMatrixElasticity #CHCoupledCalphadSplit
     variable = concentration
     kappa_name = kappa_c
-    #n = n
     w = mu
     use_elasticity = true #false
   [../]
@@ -277,7 +275,6 @@
  [./ACTransform]
     type = ACTransformElasticDF
     variable = n
-    #OP_number = 1
   [../]
 []
 
@@ -297,14 +294,13 @@
 
    #still diffusion-controlled?
     mobility_AC = 1E-1 #nm^3/(aJ microsecond)
-#    CH_mobility_scaling = 1E-23
 
     #I have no idea what this needs to be
-    kappa_CH = 1  #5e-1 #aJ/nm
-    kappa_AC = 1  #5e-1 #aJ/nm
+    kappa_CH = 0 #aJ/nm
+    kappa_AC = 1 #aJ/nm
 
     #well height and molar volume remain unscaled.
-    well_height = 0 #aJ/amol?
+    well_height = 0 #aJ/amol
     molar_volume = 1.4e4 #nm^3/amol
 
     temperature = temperature
@@ -498,9 +494,9 @@
 
 [Adaptivity]
   marker = combo
-  initial_steps = 2
+  initial_steps = 4
   initial_marker = EFM_1
-  max_h_level = 2
+  max_h_level = 4
   [./Markers]
     [./EFM_1]
       type = ErrorFractionMarker
@@ -526,10 +522,15 @@
       refine = 0.25
       indicator = GJI_4
     [../]
+    [./NM]
+      type = NucleationMarker
+      nucleation_userobject = NLUO
+      max_h_level = 4
+    [../]
 
      [./combo]
        type = ComboMarker
-       markers = 'EFM_1 EFM_2 EFM_3 EFM_4'
+       markers = 'EFM_1 EFM_2 EFM_3 EFM_4 NM'
      [../]
   [../]
 
@@ -553,6 +554,26 @@
   [../]
 []
 
+[UserObjects]
+  [./NLUO]
+    type = NucleationLocationUserObject
+    coupled_probability = elem_AMRProbability
+    dwell_time = 10
+    execute_on = timestep_end
+    random_seed = 1000
+  [../]
+
+  [./NISM]
+    type = NucleusIntroductionSolutionModifier
+    nucleation_userobject = NLUO
+    variables = n
+    num_vars = 1
+    seed_value = 1
+    radius = 3
+    int_width = 1
+    execute_on = custom
+  [../]
+[]
 
 [Executioner]
   type = MeshSolutionModify
@@ -571,7 +592,7 @@
   adapt_nucleus = 4
   adapt_cycles = 1
 
-  use_nucleation_userobject = false
+  use_nucleation_userobject = true
   nucleation_userobject = NLUO
 
   #Preconditioned JFNK (default)
@@ -583,10 +604,11 @@
 #  petsc_options_value = ' asm      4              lu           30'
 
 
-  l_max_its = 100
+  l_max_its = 50
   l_tol = 1.0e-4
 
   nl_rel_tol = 1.0e-6
+  nl_abs_tol = 5e-10
   nl_max_its = 10
 
   start_time = 0

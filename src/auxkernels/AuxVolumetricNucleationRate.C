@@ -58,14 +58,14 @@ AuxVolumetricNucleationRate::computeValue()
   computeCriticalFrequency();
   computeNumAtoms();
 
-  _console<<"Z = "<<_Z<<std::endl;
-  _console<<"N = "<<_N<<std::endl;
-  _console<<"beta_star = "<<_beta_star<<std::endl;
-  _console<<"G_star = "<<_G_star<<std::endl;
-  _console<<"Kb = "<<_Kb<<std::endl;
-  _console<<"T = "<<_T[_qp]<<std::endl;
-  _console<<"exp(-Gstar/kT) = "<<std::exp( (-1*_G_star)/ (_Kb*_T[_qp]) )<<std::endl;
-  _console<<"Jstar unscaled = "<< _Z*_N*_beta_star*std::exp( (-1*_G_star)/ (_Kb*_T[_qp]) )<<std::endl;
+  //_console<<"Z = "<<_Z<<std::endl;
+  //_console<<"N = "<<_N<<std::endl;
+  //_console<<"beta_star = "<<_beta_star<<std::endl;
+  //_console<<"G_star = "<<_G_star<<std::endl;
+  //_console<<"Kb = "<<_Kb<<std::endl;
+  //_console<<"T = "<<_T[_qp]<<std::endl;
+  //_console<<"exp(-Gstar/kT) = "<<std::exp( (-1*_G_star)/ (_Kb*_T[_qp]) )<<std::endl;
+  //_console<<"Jstar unscaled = "<< _Z*_N*_beta_star*std::exp( (-1*_G_star)/ (_Kb*_T[_qp]) )<<std::endl;
 
   Real rate = ( _Z*_N*_beta_star*std::exp( (-1*_G_star)/ (_Kb*_T[_qp]) ));
 
