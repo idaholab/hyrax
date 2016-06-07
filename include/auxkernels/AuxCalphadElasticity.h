@@ -56,18 +56,9 @@ protected:
   const MaterialProperty<Real> & _Omega;
   const MaterialProperty<Real> & _W;
 
-//  unsigned int _OP_number;
-//  unsigned int _n_OP_vars;
   const VariableValue & _OP;
-
   const VariableValue & _X;
-//  Real _scaling_factor;
   bool _use_elastic_energy;
-
-  Real _H;
-  Real _g;
-  Real _dH_dOP;
-  Real _dg_dOP;
 
 private:
 };
