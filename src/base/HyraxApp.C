@@ -31,14 +31,10 @@
 #include "CHPrecipMatrixElasticity.h"
 
 //Auxiliary Kernels
-#include "AuxSupersaturation.h"
-#include "AuxChemElastic.h"
 #include "AuxDeltaGStar.h"
-#include "AuxRateSimple.h"
 #include "AuxChem.h"
 #include "AuxTemperature.h"
 #include "AuxCalphadEnergy.h"
-#include "ReporterAux.h"
 #include "AuxBulkEnergyCalphad.h"
 #include "AuxGradientEnergy.h"
 #include "AuxElasticEnergy.h"
@@ -147,14 +143,10 @@ HyraxApp::registerObjects(Factory & factory)
   registerKernel(CHPrecipMatrixElasticity);
 
   //Auxiliary Kernels
-  registerAux(AuxSupersaturation);
-  registerAux(AuxChemElastic);
   registerAux(AuxDeltaGStar);
-  registerAux(ReporterAux);
   registerAux(AuxRateSimple);
   registerAux(AuxChem);
   registerAux(AuxTemperature);
-  registerAux(AuxGuoEnergy);
   registerAux(AuxCalphadEnergy);
   registerAux(AuxBulkEnergyCalphad);
   registerAux(AuxGradientEnergy);

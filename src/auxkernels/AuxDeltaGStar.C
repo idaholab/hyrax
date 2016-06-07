@@ -38,17 +38,10 @@ AuxDeltaGStar::computeValue()
   Real kn2;
   Real alpha;
 
-  // handling the dimension of the problem here and making sure we get the correct
-  // (areal or volume) density
-   if (_mesh_dimension == 2)
-     alpha = libMesh::pi;
-   else if (_mesh_dimension == 3)
-     alpha = (16*libMesh::pi)/3;
-   else
-    mooseError("honky, your problem dimesion must be 2 or 3 (AuxDeltaGStar");
+  //computing this as if it is 3D
+  alpha = (16*libMesh::pi)/3;
 
-   kn2 = alpha*std::pow(_gamma, (int)_mesh_dimension);
+  kn2 = alpha*_gamma*_gamma*_gamma;
 
-  return kn2/std::pow(_coupled_energy[_qp], (int)_mesh_dimension-1);
+  return kn2/(_coupled_energy[_qp]*_coupled_energy[_qp]*_coupled_energy[_qp]);
 }
-
