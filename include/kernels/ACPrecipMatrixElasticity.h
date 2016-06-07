@@ -12,7 +12,7 @@
 #define ACPRECIPMATRIXELASTICITY_H
 
 #include "ACBulk.h"
-#include "ElasticityTensorR4.h"
+#include "RankFourTensor.h"
 #include "RankTwoTensor.h"
 
 class ACPrecipMatrixElasticity;
@@ -35,9 +35,9 @@ protected:
   virtual Real computeDFDOP(PFFunctionType type);
 
   // system elasticity tensor, varies in space
-  const MaterialProperty<ElasticityTensorR4> & _elasticity_tensor;
-  const MaterialProperty<std::vector<ElasticityTensorR4> > & _dn_elasticity_tensor;
-  const MaterialProperty<std::vector<ElasticityTensorR4> > & _dndn_elasticity_tensor;
+  const MaterialProperty<RankFourTensor> & _elasticity_tensor;
+  const MaterialProperty<std::vector<RankFourTensor> > & _dn_elasticity_tensor;
+  const MaterialProperty<std::vector<RankFourTensor> > & _dndn_elasticity_tensor;
 
   const MaterialProperty<RankTwoTensor> & _elastic_strain;
   const MaterialProperty<std::vector<RankTwoTensor> > & _dn_misfit_strain;

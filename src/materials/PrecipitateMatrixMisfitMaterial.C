@@ -45,11 +45,11 @@ PrecipitateMatrixMisfitMaterial::PrecipitateMatrixMisfitMaterial(const InputPara
     _dc_eigenstrain_matrix_MP(declareProperty<RankTwoTensor>("dc_eigenstrain_matrix_MP")),
     _matrix_eigenstrain(declareProperty<RankTwoTensor>("matrix_eigenstrain")),
 
-    _dn_elasticity_tensor(declareProperty<std::vector<ElasticityTensorR4> >("dn_elasticity_tensor")),
-    _dc_elasticity_tensor(declareProperty<ElasticityTensorR4>("dc_elasticity_tensor")),
-    _dndn_elasticity_tensor(declareProperty<std::vector<ElasticityTensorR4> >("dndn_elasticity_tensor")),
-    _dcdc_elasticity_tensor(declareProperty<ElasticityTensorR4>("dcdc_elasticity_tensor")),
-    _dcdn_elasticity_tensor(declareProperty<std::vector<ElasticityTensorR4> >("dcdn_elasticity_tensor")),
+    _dn_elasticity_tensor(declareProperty<std::vector<RankFourTensor> >("dn_elasticity_tensor")),
+    _dc_elasticity_tensor(declareProperty<RankFourTensor>("dc_elasticity_tensor")),
+    _dndn_elasticity_tensor(declareProperty<std::vector<RankFourTensor> >("dndn_elasticity_tensor")),
+    _dcdc_elasticity_tensor(declareProperty<RankFourTensor>("dcdc_elasticity_tensor")),
+    _dcdn_elasticity_tensor(declareProperty<std::vector<RankFourTensor> >("dcdn_elasticity_tensor")),
 
     _dn_misfit_strain(declareProperty<std::vector<RankTwoTensor> >("dn_misfit_strain")),
     _dc_misfit_strain(declareProperty<RankTwoTensor>("dc_misfit_strain")),
@@ -102,7 +102,7 @@ PrecipitateMatrixMisfitMaterial::computeQpElasticityTensor()
   //going to need to put temperature dependence in here
 
   Real inverse = 1/_scaling_factor;
-  ElasticityTensorR4 zeros;
+  RankFourTensor zeros;
   zeros.zero();
 
   //scale these so everything is scaled

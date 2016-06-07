@@ -12,7 +12,7 @@
 #define AUXELASTICINTERACTIONENERGY_H
 
 #include "AuxKernel.h"
-#include "ElasticityTensorR4.h"
+#include "RankFourTensor.h"
 #include "RankTwoTensor.h"
 
 class AuxElasticInteractionEnergy;

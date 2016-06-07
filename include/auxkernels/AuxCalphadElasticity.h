@@ -13,7 +13,7 @@
 
 #include "AuxKernel.h"
 #include "RankTwoTensor.h"
-#include "ElasticityTensorR4.h"
+#include "RankFourTensor.h"
 
 #include "CalphadAB1CD1.h"
 #include "CalphadAB1CD2.h"

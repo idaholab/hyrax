@@ -51,11 +51,11 @@ protected:
 
   MaterialProperty<RankTwoTensor> & _matrix_eigenstrain;  //lambda_ijkl*%factor as material property
 
-  MaterialProperty<std::vector<ElasticityTensorR4> > & _dn_elasticity_tensor;
-  MaterialProperty<ElasticityTensorR4> & _dc_elasticity_tensor;
-  MaterialProperty<std::vector<ElasticityTensorR4> > & _dndn_elasticity_tensor;
-  MaterialProperty<ElasticityTensorR4> & _dcdc_elasticity_tensor;
-  MaterialProperty<std::vector<ElasticityTensorR4> > & _dcdn_elasticity_tensor;
+  MaterialProperty<std::vector<RankFourTensor> > & _dn_elasticity_tensor;
+  MaterialProperty<RankFourTensor> & _dc_elasticity_tensor;
+  MaterialProperty<std::vector<RankFourTensor> > & _dndn_elasticity_tensor;
+  MaterialProperty<RankFourTensor> & _dcdc_elasticity_tensor;
+  MaterialProperty<std::vector<RankFourTensor> > & _dcdn_elasticity_tensor;
 
   MaterialProperty<std::vector<RankTwoTensor> > & _dn_misfit_strain;
   MaterialProperty<RankTwoTensor> & _dc_misfit_strain;
@@ -75,4 +75,3 @@ private:
 };
 
 #endif //PRECIPITATEMATRIXMISFITMATERIAL_H
-

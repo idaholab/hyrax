@@ -34,7 +34,7 @@ ACTransformElasticDF::ACTransformElasticDF(const InputParameters & parameters) :
     ACBulk<Real>(parameters),
     _dfel_dOP(getMaterialProperty<Real>("dfel_dOP")),
     _d2fel_dOP2(getMaterialProperty<Real>("d2fel_dOP2"))
-    //_elasticity_tensor(getMaterialProperty<ElasticityTensorR4>("elasticity_tensor")),
+    //_elasticity_tensor(getMaterialProperty<RankFourTensor>("elasticity_tensor")),
     //_eigenstrains_rotated_MP(getMaterialProperty<std::vector<RankTwoTensor> >("eigenstrains_MP")),
     //_local_strain(getMaterialProperty<RankTwoTensor>("local_strain")),
     //_elastic_strain(getMaterialProperty<RankTwoTensor>("elastic_strain")),

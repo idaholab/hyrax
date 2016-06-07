@@ -23,7 +23,7 @@ InputParameters validParams<AuxElasticEnergy>()
 
 AuxElasticEnergy::AuxElasticEnergy(const InputParameters & parameters) :
     AuxKernel(parameters),
-    _elasticity_tensor(getMaterialProperty<ElasticityTensorR4>("elasticity_tensor")),
+    _elasticity_tensor(getMaterialProperty<RankFourTensor>("elasticity_tensor")),
     _elastic_strain(getMaterialProperty<RankTwoTensor>("elastic_strain"))//,
     //_scaling_factor(getParam<Real>("scaling_factor"))
 {
@@ -36,6 +36,3 @@ AuxElasticEnergy::computeValue()
 
   return 0.5*stress.doubleContraction(_elastic_strain[_qp]);
 }
-
-
-

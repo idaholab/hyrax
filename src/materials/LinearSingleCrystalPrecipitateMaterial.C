@@ -59,8 +59,8 @@ LinearSingleCrystalPrecipitateMaterial::LinearSingleCrystalPrecipitateMaterial(c
     _misfit_strain(declareProperty<RankTwoTensor >("misfit_strain")),
 
     _eigenstrains_MP(declareProperty<std::vector<RankTwoTensor> >("eigenstrains_MP")),
-    _Cijkl_MP(declareProperty<ElasticityTensorR4>("Cijkl_MP")),
-    _Cijkl_precipitates_MP(declareProperty<ElasticityTensorR4>("Cijkl_precipitates_MP")),
+    _Cijkl_MP(declareProperty<RankFourTensor>("Cijkl_MP")),
+    _Cijkl_precipitates_MP(declareProperty<RankFourTensor>("Cijkl_precipitates_MP")),
     _d_eigenstrains_MP(declareProperty<std::vector<RankTwoTensor> >("d_eigenstrains_MP")),
     _precipitate_eigenstrain(declareProperty<std::vector<RankTwoTensor> >("precipitate_eigenstrain")),
     _misfit_T_coeffs_vector(getParam<std::vector<Real> >("misfit_temperature_coeffs")),

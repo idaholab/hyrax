@@ -22,9 +22,9 @@ InputParameters validParams<ACPrecipMatrixElasticity>()
 
 ACPrecipMatrixElasticity::ACPrecipMatrixElasticity(const InputParameters & parameters) :
     ACBulk<Real>(parameters),
-    _elasticity_tensor(getMaterialProperty<ElasticityTensorR4>("elasticity_tensor")),
-    _dn_elasticity_tensor(getMaterialProperty<std::vector<ElasticityTensorR4> >("dn_elasticity_tensor")),
-    _dndn_elasticity_tensor(getMaterialProperty<std::vector<ElasticityTensorR4> >("dndn_elasticity_tensor")),
+    _elasticity_tensor(getMaterialProperty<RankFourTensor>("elasticity_tensor")),
+    _dn_elasticity_tensor(getMaterialProperty<std::vector<RankFourTensor> >("dn_elasticity_tensor")),
+    _dndn_elasticity_tensor(getMaterialProperty<std::vector<RankFourTensor> >("dndn_elasticity_tensor")),
     _elastic_strain(getMaterialProperty<RankTwoTensor>("elastic_strain")),
     _dn_misfit_strain(getMaterialProperty<std::vector<RankTwoTensor> >("dn_misfit_strain")),
     _dndn_misfit_strain(getMaterialProperty<std::vector<RankTwoTensor> >("dndn_misfit_strain")),

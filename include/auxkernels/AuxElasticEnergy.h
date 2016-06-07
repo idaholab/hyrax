@@ -12,7 +12,7 @@
 #define AUXELASTICENERGY_H
 
 #include "AuxKernel.h"
-#include "ElasticityTensorR4.h"
+#include "RankFourTensor.h"
 #include "RankTwoTensor.h"
 
 class AuxElasticEnergy;
@@ -30,7 +30,7 @@ protected:
 
 private:
 
-  const MaterialProperty<ElasticityTensorR4> & _elasticity_tensor;
+  const MaterialProperty<RankFourTensor> & _elasticity_tensor;
   const MaterialProperty<RankTwoTensor> & _elastic_strain;
 
 //Real _scaling_factor;

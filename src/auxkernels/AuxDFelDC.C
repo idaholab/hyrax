@@ -23,7 +23,7 @@ InputParameters validParams<AuxDFelDC>()
 
 AuxDFelDC::AuxDFelDC(const InputParameters & parameters) :
     AuxKernel(parameters),
-    _elasticity_tensor(getMaterialProperty<ElasticityTensorR4>("elasticity_tensor")),
+    _elasticity_tensor(getMaterialProperty<RankFourTensor>("elasticity_tensor")),
     _elastic_strain(getMaterialProperty<RankTwoTensor>("elastic_strain")),
     _dc_misfit_strain(getMaterialProperty<RankTwoTensor>("dc_misfit_strain"))//,
     //_scaling_factor(getParam<Real>("scaling_factor"))
@@ -49,6 +49,3 @@ AuxDFelDC::computeValue()
   return 0.5*(first + second);
 
 }
-
-
-

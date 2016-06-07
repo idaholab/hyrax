@@ -38,9 +38,9 @@ AuxChemElastic::AuxChemElastic(const InputParameters & parameters) :
     _c2(getMaterialProperty<Real>("C2")), */
     _noncons_var_num(getParam<int>("nonconserved_var_number")),
     _eigenstrains_rotated_MP(getMaterialProperty<std::vector<RankTwoTensor> >("eigenstrains_MP")),
-    _elasticity_tensor(getMaterialProperty<ElasticityTensorR4>("elasticity_tensor")),
+    _elasticity_tensor(getMaterialProperty<RankFourTensor>("elasticity_tensor")),
     _precipitate_eigenstrain_rotated(getMaterialProperty<std::vector<RankTwoTensor> >("precipitate_eigenstrain")),
-    _precipitate_elasticity(getMaterialProperty<ElasticityTensorR4>("Cijkl_precipitates_MP")),
+    _precipitate_elasticity(getMaterialProperty<RankFourTensor>("Cijkl_precipitates_MP")),
     _local_strain(getMaterialProperty<RankTwoTensor>("local_strain")),
     _d_eigenstrains_rotated_MP(getMaterialProperty<std::vector<RankTwoTensor> >("d_eigenstrains_MP"))
 {
@@ -121,7 +121,7 @@ AuxChemElastic::computeSelfElasticEnergy(bool matrix)
 {
   RankTwoTensor eigenstrain;
   RankTwoTensor c;
-  ElasticityTensorR4 elasticity;
+  RankFourTensor elasticity;
 
   if(matrix)
   {
@@ -144,7 +144,7 @@ AuxChemElastic::computeInteractionElasticEnergy(bool matrix)
 {
   RankTwoTensor eigenstrain;
   RankTwoTensor c;
-  ElasticityTensorR4 elasticity;
+  RankFourTensor elasticity;
 
   if(matrix)
   {
@@ -194,7 +194,7 @@ AuxChemElastic::computeDselfDnoncons()
   RankTwoTensor eigenstrain;
   RankTwoTensor d_eigenstrain;
   RankTwoTensor c;
-  ElasticityTensorR4 elasticity;
+  RankFourTensor elasticity;
 
   eigenstrain = (_eigenstrains_rotated_MP[_qp])[_noncons_var_num-1];
   d_eigenstrain =( _d_eigenstrains_rotated_MP[_qp])[_noncons_var_num-1];
@@ -210,7 +210,7 @@ AuxChemElastic::computeDintDnoncons()
 {
   RankTwoTensor d_eigenstrain;
   RankTwoTensor c;
-  ElasticityTensorR4 elasticity;
+  RankFourTensor elasticity;
 
   d_eigenstrain = (_precipitate_eigenstrain_rotated[_qp])[_noncons_var_num-1];
   elasticity = _precipitate_elasticity[_qp];
@@ -219,4 +219,3 @@ AuxChemElastic::computeDintDnoncons()
 
   return -2.0*c.doubleContraction(_local_strain[_qp]);
 }
-

@@ -14,7 +14,7 @@
 
 //#include "LinearElasticMaterial.h"
 #include "TensorMechanicsMaterial.h"
-#include "ElasticityTensorR4.h"
+#include "RankFourTensor.h"
 #include "RankTwoTensor.h"
 
 /**
@@ -69,7 +69,7 @@ protected:
   Real _scaling_factor;
 
   // Individual material information.  Don't touch these once they're initialized!
-  ElasticityTensorR4 _Cijkl_precipitate;
+  RankFourTensor _Cijkl_precipitate;
   RankTwoTensor _eigenstrain;
 
   const VariableValue & _T;
@@ -84,8 +84,8 @@ protected:
   MaterialProperty<RankTwoTensor> & _local_strain; //total strain
   MaterialProperty<RankTwoTensor> & _misfit_strain; //sum of all the active eigenstrains in space
   MaterialProperty<std::vector<RankTwoTensor> > & _eigenstrains_MP; //whether each variant is active or not in space
-  MaterialProperty<ElasticityTensorR4> & _Cijkl_MP; //holds the matrix Cijkl everywhere
-  MaterialProperty<ElasticityTensorR4> & _Cijkl_precipitates_MP; //holds the precipitates Cijkl everywhere
+  MaterialProperty<RankFourTensor> & _Cijkl_MP; //holds the matrix Cijkl everywhere
+  MaterialProperty<RankFourTensor> & _Cijkl_precipitates_MP; //holds the precipitates Cijkl everywhere
 
   // derivatives of the misfit strain with respect to order parameter
   MaterialProperty<std::vector<RankTwoTensor> > & _d_eigenstrains_MP;
