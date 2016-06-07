@@ -38,10 +38,27 @@ ZrHCalphadDiffusivity::ZrHCalphadDiffusivity(const InputParameters & parameters)
       _H_ZrH2_Q0(getParam<Real>("H_ZrH2_Q0")),
       _R(getParam<Real>("R")),
       _k(getParam<Real>("k")),
+      _Galpha(getMaterialPropertyByName<Real>("G_AB1CD1")),
+      _Gdelta(getMaterialPropertyByName<Real>("G_AB1CD2")),
+      _dGalpha_dc(getMaterialPropertyByName<Real>("dGAB1CD1_dc")),
+      _dGdelta_dc(getMaterialPropertyByName<Real>("dGAB1CD2_dc")),
       _d2Galpha_dc2(getMaterialPropertyByName<Real>("d2GAB1CD1_dc2")),
       _d2Gdelta_dc2(getMaterialPropertyByName<Real>("d2GAB1CD2_dc2")),
       _D_alpha(declareProperty<Real>("D_alpha")),
       _D_delta(declareProperty<Real>("D_delta")),
+      _fbulk(declareProperty<Real>("f_bulk")),
+      _dfbulkdc(declareProperty<Real>("df_bulk_dc")),
+      _d2fbulkdc2(declareProperty<Real>("d2f_bulk_dc2")),
+      _dfbulkdOP(declareProperty<Real>("df_bulk_dOP")),
+      _d2fbulkdOP2(declareProperty<Real>("d2f_bulk_dOP2")),
+      _d2fbulkdcdOP(declareProperty<Real>("d2f_bulk_dcdOP")),
+//need off diagonal terms here
+      _h(declareProperty<Real>("interpolation_fxn")),
+      _dhdOP(declareProperty<Real>("dinterpolation_dOP")),
+      _d2hdOP2(declareProperty<Real>("d2interpolation_dOP2")),
+      _g(declareProperty<Real>("barrier_fxn")),
+      _dgdOP(declareProperty<Real>("dbarrier_dOP")),
+      _d2gdOP2(declareProperty<Real>("d2barrier_dOP2")),
       _c(coupledValue("concentration")),
       _OP(coupledValue("OP_variable")),
       _temperature(coupledValue("temperature"))
@@ -54,27 +71,26 @@ ZrHCalphadDiffusivity::computeQpProperties()
   _D_alpha[_qp] = _H_Zr_D0*std::exp(-_H_Zr_Q0/(_R*_temperature[_qp]));
   _D_delta[_qp] = _H_ZrH2_D0*std::exp(-_H_ZrH2_Q0/(_R*_temperature[_qp]));
 
+//  Real solute = _c[_qp];
+//  if (solute < 0)
+//    solute = 0;
 
-  Real solute = _c[_qp];
-  if (solute < 0)
-    solute = 0;
+  Real OP = _OP[_qp];
 
-  Real h = computeHeaviside();
+  _h[_qp] = OP*OP*OP*(6*OP*OP - 15*OP + 10);
+  _dhdOP[_qp] = 30*OP*OP*(OP*OP - 2*OP + 1);
+  _d2hdOP2[_qp] = 60*OP*(2*OP*OP - 3*OP + 1);
 
-  _M[_qp] = ((1-h)*(_D_alpha[_qp]/_d2Galpha_dc2[_qp]) + h*_D_delta[_qp]/_d2Gdelta_dc2[_qp]);
+  _g[_qp] = OP*OP*(1 - OP)*(1 - OP);
+  _dgdOP[_qp] = 2*OP - 6*OP*OP + 4*OP*OP*OP;
+  _d2gdOP2[_qp] = 2 - 12*OP + 12*OP*OP;
 
-  //nope//multiply by molar volume to get the units to actually work out
-  // _M[_qp] *= _molar_volume;
+  _M[_qp] = ((1-_h[_qp])*(_D_alpha[_qp]/_d2Galpha_dc2[_qp]) + _h[_qp]*_D_delta[_qp]/_d2Gdelta_dc2[_qp]);
 
   if (_M[_qp] < 0)
-  {
-    //   _console<<"negative mobility"<<std::endl;
        _M[_qp] = 0;
-  }
-//  if ( _c[_qp] < 0)
-//    _M[_qp] = 0;
 
-  //this should probably be computed.
+  //this should probably be computed.  I probably need to go to the non-constant mobility stuff Daniel's worked out.
   _grad_M[_qp] = 0.0;
 
   _L[_qp] = _mobility_AC;
@@ -84,6 +100,16 @@ ZrHCalphadDiffusivity::computeQpProperties()
 
   _W[_qp] = _well_height;
   _molar_vol[_qp] = _molar_volume;
+
+  _fbulk[_qp] = ( (1-_h[_qp])*_Galpha[_qp] + _h[_qp]*_Gdelta[_qp] + _W[_qp]*_g[_qp] )/_molar_vol[_qp];
+  _dfbulkdc[_qp] = ( (1-_h[_qp])*_dGalpha_dc[_qp] + _h[_qp]*_dGdelta_dc[_qp] )/_molar_vol[_qp];
+  _d2fbulkdc2[_qp] = ( (1-_h[_qp])*_d2Galpha_dc2[_qp] + _h[_qp]*_d2Gdelta_dc2[_qp] )/_molar_vol[_qp];
+  _dfbulkdOP[_qp] = ( (_Gdelta[_qp] - _Galpha[_qp])*_dhdOP[_qp] + _W[_qp]*_dgdOP[_qp])/_molar_vol[_qp];
+  _d2fbulkdOP2[_qp] = ( (_Gdelta[_qp] - _Galpha[_qp])*_d2hdOP2[_qp] + _W[_qp]*_d2gdOP2[_qp])/_molar_vol[_qp];
+
+  _d2fbulkdcdOP[_qp] = (_Gdelta[_qp] - _Galpha[_qp])*(_dhdOP[_qp])/_molar_vol[_qp];
+
+  //add off diagonal terms here
 }
 
 Real

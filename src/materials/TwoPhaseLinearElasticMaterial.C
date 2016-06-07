@@ -53,8 +53,9 @@ TwoPhaseLinearElasticMaterial::TwoPhaseLinearElasticMaterial(const InputParamete
     _total_strain(declareProperty<RankTwoTensor>("total_strain")),
     _elastic_strain(declareProperty<RankTwoTensor>("elastic_strain")),
     _misfit_strain(declareProperty<RankTwoTensor>("misfit_strain")),
-    _elasticity_tensor(declareProperty<ElasticityTensorR4>("elasticity_tensor")),
-    _Jacobian_multiplier(declareProperty<ElasticityTensorR4>("Jacobian_mult")),
+    _precipitate_misfit_tensor(declareProperty<RankTwoTensor>("precipitate_misfit_tensor")),
+    _elasticity_tensor(declareProperty<RankFourTensor>("elasticity_tensor")),
+    _Jacobian_multiplier(declareProperty<RankFourTensor>("Jacobian_mult")),
     _f_el(declareProperty<Real>("f_elastic")),
     _dfel_dOP(declareProperty<Real>("dfel_dOP")),
     _d2fel_dOP2(declareProperty<Real>("d2fel_dOP2")),
@@ -122,6 +123,7 @@ TwoPhaseLinearElasticMaterial::computeQpStrain()
   _total_strain[_qp] = 0.5*(grad_tensor + grad_tensor.transpose());
   _misfit_strain[_qp] = (1 - _h)*(_X[_qp]*_matrix_eigenstrain) + _h*(_current_precip_misfit);
   _elastic_strain[_qp] = _total_strain[_qp] - _misfit_strain[_qp];
+  _precipitate_misfit_tensor[_qp] = _current_precip_misfit;
 }
 
 void

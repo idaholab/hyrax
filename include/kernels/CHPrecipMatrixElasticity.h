@@ -29,6 +29,16 @@ public:
 protected:
 
   virtual Real computeDFDC(PFFunctionType type);
+  virtual Real computeDEDC(PFFunctionType type);
+
+//  virtual Real computeQpOffDiagJacobian(unsigned int jvar);
+
+
+  const MaterialProperty<Real> & _dfbulk_dc;
+  const MaterialProperty<Real> & _d2fbulk_dc2;
+  const MaterialProperty<Real> & _d2fbulk_dcdOP;
+
+  bool _use_elasticity;
 
   const MaterialProperty<Real> & _dfel_dX;
   const MaterialProperty<Real> & _d2fel_dX2;

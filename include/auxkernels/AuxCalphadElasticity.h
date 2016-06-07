@@ -34,12 +34,6 @@ public:
 protected:
   virtual Real computeValue();
 
-  virtual void computeHeaviside();
-  virtual void computeBarrier();
-
-  virtual void computeDHeaviside();
-  virtual void computeDBarrier();
-
   virtual Real computeChemMatrixEnergy();
   virtual Real computeChemPrecipEnergy();
   virtual Real computeDifferential();
@@ -57,17 +51,17 @@ protected:
   const MaterialProperty<Real> & _dG_delta;
 
   const MaterialProperty<RankTwoTensor> & _stress;
-  const MaterialProperty<std::vector<RankTwoTensor> > & _precipitate_eigenstrain;
+  const MaterialProperty<RankTwoTensor> & _precipitate_eigenstrain;
 
   const MaterialProperty<Real> & _Omega;
   const MaterialProperty<Real> & _W;
 
-  unsigned int _OP_number;
-  unsigned int _n_OP_vars;
-  std::vector<const VariableValue *> _OP;
+//  unsigned int _OP_number;
+//  unsigned int _n_OP_vars;
+  const VariableValue & _OP;
 
   const VariableValue & _X;
-  Real _scaling_factor;
+//  Real _scaling_factor;
   bool _use_elastic_energy;
 
   Real _H;

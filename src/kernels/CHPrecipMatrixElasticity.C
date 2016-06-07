@@ -22,13 +22,20 @@ InputParameters validParams<CHPrecipMatrixElasticity>()
   //params.addRequiredCoupledVar("w","chem poten");
   //params.addRequiredCoupledVar("T", "temperature");
 
+  params.addRequiredParam<bool>("use_elasticity", "boolean if using elasticity or not");
+
+
   return params;
 }
 
 CHPrecipMatrixElasticity::CHPrecipMatrixElasticity(const InputParameters & parameters)
     : SplitCHCRes(parameters),
-      _dfel_dX(getMaterialProperty<Real>("dfel_dX")),
-      _d2fel_dX2(getMaterialProperty<Real>("d2fel_dX2"))
+      _dfbulk_dc(getMaterialProperty<Real>("df_bulk_dc")),
+      _d2fbulk_dc2(getMaterialProperty<Real>("d2f_bulk_dc2")),
+      _d2fbulk_dcdOP(getMaterialProperty<Real>("d2f_bulk_dcdOP")),
+      _use_elasticity(getParam<bool>("use_elasticity")),
+      _dfel_dX(_use_elasticity ? getMaterialProperty<Real>("dfel_dX") : getMaterialProperty<Real>("df_bulk_dc")),
+      _d2fel_dX2(_use_elasticity ? getMaterialProperty<Real>("dfel_dX") : getMaterialProperty<Real>("df_bulk_dc"))
       // _elasticity_tensor(getMaterialProperty<ElasticityTensorR4>("elasticity_tensor")),
       //_dn_elasticity_tensor(getMaterialProperty<std::vector<ElasticityTensorR4> >("dn_elasticity_tensor")),
       //_elastic_strain(getMaterialProperty<RankTwoTensor>("elastic_strain")),
@@ -40,6 +47,8 @@ CHPrecipMatrixElasticity::CHPrecipMatrixElasticity(const InputParameters & param
       //_T_var(coupled("T")),
       //_n_var(coupled("OP_var"))
 {
+
+
 /*
   if(_n_OP_vars != coupledComponents("OP_var_names"))
     mooseError("Please match the number of orientation variants to coupled OPs (ACCoupledCalphad).");
@@ -58,6 +67,23 @@ CHPrecipMatrixElasticity::CHPrecipMatrixElasticity(const InputParameters & param
 Real
 CHPrecipMatrixElasticity::computeDFDC(PFFunctionType type)
 {
+  switch (type)
+  {
+    case Residual:
+      return _dfbulk_dc[_qp];
+
+    case Jacobian:
+      return _phi[_j][_qp]*(_d2fbulk_dc2[_qp]);
+
+  }
+
+  mooseError("invalid type passed in");
+
+}
+
+Real
+CHPrecipMatrixElasticity::computeDEDC(PFFunctionType type)
+{
   /*
   RankTwoTensor a = _elasticity_tensor[_qp]*(_elastic_strain[_qp]);
   RankTwoTensor b = _elasticity_tensor[_qp]*_dc_misfit_strain[_qp]*(-1);
@@ -66,20 +92,48 @@ CHPrecipMatrixElasticity::computeDFDC(PFFunctionType type)
   Real first  = a.doubleContraction( (_dc_misfit_strain[_qp])*(-1) );
   Real second = b.doubleContraction( _elastic_strain[_qp] );
   */
-  switch(type)
+
+  if(_use_elasticity)
   {
-  case Residual:
-    //return _scaling_factor*0.5*(first + second);
-    return _dfel_dX[_qp];
 
-  case Jacobian:
-    //return _scaling_factor*_phi[_j][_qp]*b.doubleContraction( (_dc_misfit_strain[_qp])*(-1) );
-    return _phi[_j][_qp]*_d2fel_dX2[_qp];
+    switch(type)
+    {
+      case Residual:
+        //return _scaling_factor*0.5*(first + second);
+        return _dfel_dX[_qp];
+
+      case Jacobian:
+        //return _scaling_factor*_phi[_j][_qp]*b.doubleContraction( (_dc_misfit_strain[_qp])*(-1) );
+        return _phi[_j][_qp]*_d2fel_dX2[_qp];
+    }
+
+    mooseError("invalid type passed in");
   }
+  else
+    return 0;
 
-  mooseError("invalid type passed in");
 }
 
+//need to do this
+/*
+Real
+CHPrecipMatrixElasticity::computeQpOffDiagJacobian(unsigned int jvar)
+{
+  if (jvar == _n_var)
+  {
+    return _phi[_j][_qp]*_test[_i][_qp]*( _dhdOP[_qp]*(_df)_dGdelta_dc[_qp]
+                                          - _dhdOP[_qp]*_dGalpha_dc[_qp] )/_Omega[_qp];
+  }
+
+ if (jvar == _w_var)
+    return -_phi[_j][_qp] * _test[_i][_qp];
+
+ else
+   return 0;
+
+ //   mooseError("Screwed up CHCoupledCalphadSplit::computeQpOffDiagJacobian()");
+}
+*/
 
 /*Real
 CHPrecipMatrixElasticity::computeQpOffDiagJacobian(unsigned int jvar)

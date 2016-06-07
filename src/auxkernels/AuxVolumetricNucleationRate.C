@@ -20,17 +20,17 @@ InputParameters validParams<AuxVolumetricNucleationRate>()
   params.addRequiredCoupledVar("coupled_bulk_energy_change","coupled auxiliary variable for free energy change");
 
   params.addRequiredParam<Real>("gamma", "Surface energy");
-  params.addParam<Real>("Kb", 1.3806503e-23, "Boltzmann's constant, make sure units all match");
-  params.addParam<Real>("time_scale_factor", 1, "time factor to scale (multiply) nucleation rate by");
+  params.addParam<Real>("Kb", 1.3806503e5, "Boltzmann's constant, make sure units all match");
+  //params.addParam<Real>("time_scale_factor", 1, "time factor to scale (multiply) nucleation rate by");
 
-  params.addRequiredParam<Real>("linear_density", "linear density of hopping sites matrix");
+  //params.addRequiredParam<Real>("linear_density", "linear density of hopping sites matrix");
 
   params.addRequiredCoupledVar("T", "temperature variable");
   params.addRequiredCoupledVar("X", "atomic fraction of solute variable");
 
   params.addRequiredParam<Real>("jump_distance", "atomic distance for hopping");
 
-  params.addParam<Real>("length_scale_factor", "characteristic length the simulation is scaled by");
+  //params.addParam<Real>("length_scale_factor", "characteristic length the simulation is scaled by");
 
   return params;
 }
@@ -40,18 +40,18 @@ AuxVolumetricNucleationRate::AuxVolumetricNucleationRate(const InputParameters &
       _coupled_energy(coupledValue("coupled_bulk_energy_change")),
       _Z(),
       _beta_star(),
-      _linear_density(getParam<Real>("linear_density")),
+      //_linear_density(getParam<Real>("linear_density")),
       _r_star(0),
       _G_star(0),
       _gamma(getParam<Real>("gamma")),
       _Kb(getParam<Real>("Kb")),
-      _time_scale_factor(getParam<Real>("time_scale_factor")),
+      //_time_scale_factor(getParam<Real>("time_scale_factor")),
       _T(coupledValue("T")),
       _X(coupledValue("X")),
       _D(getMaterialProperty<Real>("D_alpha")),
       _jump_distance(getParam<Real>("jump_distance")),
       _Omega(getMaterialProperty<Real>("molar_volume")),
-      _length_scale_factor(getParam<Real>("length_scale_factor")),
+      //_length_scale_factor(getParam<Real>("length_scale_factor")),
       _rate_volume(getParam<Real>("rate_volume"))
 {
 }
@@ -66,8 +66,8 @@ AuxVolumetricNucleationRate::computeValue()
   computeCriticalFrequency();
   computeNumAtoms();
 
-  /*
-  _console<<"time_scale_factor = "<<_time_scale_factor<<std::endl;
+
+  //_console<<"time_scale_factor = "<<_time_scale_factor<<std::endl;
   _console<<"Z = "<<_Z<<std::endl;
   _console<<"N = "<<_N<<std::endl;
   _console<<"beta_star = "<<_beta_star<<std::endl;
@@ -76,11 +76,11 @@ AuxVolumetricNucleationRate::computeValue()
   _console<<"T = "<<_T[_qp]<<std::endl;
   _console<<"exp(-Gstar/kT) = "<<std::exp( (-1*_G_star)/ (_Kb*_T[_qp]) )<<std::endl;
   _console<<"Jstar unscaled = "<< _Z*_N*_beta_star*std::exp( (-1*_G_star)/ (_Kb*_T[_qp]) )<<std::endl;
-  */
 
-  Real total_scale_factor = _time_scale_factor*std::pow(_length_scale_factor, 3);
 
-  Real rate = total_scale_factor*( _Z*_N*_beta_star*std::exp( (-1*_G_star)/ (_Kb*_T[_qp]) ));
+  // Real total_scale_factor = _time_scale_factor*std::pow(_length_scale_factor, 3);
+
+  Real rate = ( _Z*_N*_beta_star*std::exp( (-1*_G_star)/ (_Kb*_T[_qp]) ));
 
   if (rate < 0)
     return 0;
@@ -106,7 +106,7 @@ AuxVolumetricNucleationRate::computeCriticalEnergy()
   //this is calculated as if in 3D
   Real alpha = 16*libMesh::pi/3;
 
-  _G_star = alpha*std::pow(_gamma, 3)/std::pow(_coupled_energy[_qp], 2.0);
+  _G_star = alpha*_gamma*_gamma*_gamma/(_coupled_energy[_qp]*_coupled_energy[_qp]);
 
   //_console<<"G* in Joules = "<<_G_star<<std::endl;
 }
@@ -123,9 +123,9 @@ AuxVolumetricNucleationRate::computeZeldovichFactor()
   //_Z =std::sqrt( _G_star/( 3*libMesh::pi*Nc*Nc*_Kb*_T[_qp] ));
 
   //following Robson's 2004 formulation for Z
-  _Z = (_Omega[_qp]/6.02214E23)*std::pow(_coupled_energy[_qp], 2.0)/(8*libMesh::pi*std::sqrt(_gamma*_gamma*_gamma*_Kb*_T[_qp]));
+  _Z = (_Omega[_qp]*(1.0e22/6.02214E23)*(_coupled_energy[_qp]*_coupled_energy[_qp]))/(8*libMesh::pi*std::sqrt(_gamma*_gamma*_gamma*_Kb*_T[_qp]));
 
-  _console<<"Z = "<<_Z<<std::endl;
+//  _console<<"Z = "<<_Z<<std::endl;
 }
 
 void
@@ -142,11 +142,11 @@ AuxVolumetricNucleationRate::computeCriticalFrequency()
 
 
   //see Robson 2004 paper
-  _beta_star = (16*libMesh::pi*_X[_qp]*_D[_qp])/(std::pow(_coupled_energy[_qp], 2.0)*std::pow(_jump_distance, 4.0) );
+  _beta_star = (16*libMesh::pi*_X[_qp]*_D[_qp])/((_coupled_energy[_qp]*_coupled_energy[_qp])*(_jump_distance*_jump_distance*_jump_distance*_jump_distance) );
 
   // _beta_star = Zc*_X[_qp]*_D[_qp]/ ( std::pow(_jump_distance,2)) ;
 
-  _console<<"beta* = "<<_beta_star<<std::endl;
+//  _console<<"beta* = "<<_beta_star<<std::endl;
 }
 
 void
@@ -158,11 +158,11 @@ AuxVolumetricNucleationRate::computeNumAtoms()
  //the rate volume is the volume in real dimensions that the rate is calculated for
 // _N = _rate_volume/atomic_volume;
 
-  //N is the number of hydrogen-filled tetrahedral sites for 1 volume (probably m^3)
+  //N is the number of hydrogen-filled tetrahedral sites for 1 volume (nm^3)
   //
   //see Robson (2004) paper
-  //this is hard-coded as: H at fraction* density of Zr in g/cm^3 converted to g/m^3 * Avogadro's # * #tetrahedral sites/zr atom in hcp (2) / atomic mass of Zr
-  _N = _X[_qp]*6.52*100*100*100*6.02214E23*2/91.224;
-  _console<<"N = "<<_N<<std::endl;
+  //this is hard-coded as: H at fraction* density of Zr in g/cm^3 converted to g/nm^3 * Avogadro's # * #tetrahedral sites/zr atom in hcp (2) / atomic mass of Zr
+  _N = _X[_qp]*6.52*(1E-21)*6.02214E23*2/91.224;
+  //_console<<"N = "<<_N<<std::endl;
 
 }

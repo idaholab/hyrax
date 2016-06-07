@@ -38,11 +38,31 @@ private:
   Real _k;
 //  Real _mobility_CH_scaling;
 
+  const MaterialProperty<Real> & _Galpha;
+  const MaterialProperty<Real> & _Gdelta;
+  const MaterialProperty<Real> & _dGalpha_dc;
+  const MaterialProperty<Real> & _dGdelta_dc;
   const MaterialProperty<Real> & _d2Galpha_dc2;
   const MaterialProperty<Real> & _d2Gdelta_dc2;
 
   MaterialProperty<Real> & _D_alpha;
   MaterialProperty<Real> & _D_delta;
+
+  MaterialProperty<Real> & _fbulk;
+  MaterialProperty<Real> & _dfbulkdc;
+  MaterialProperty<Real> & _d2fbulkdc2;
+  MaterialProperty<Real> & _dfbulkdOP;
+  MaterialProperty<Real> & _d2fbulkdOP2;
+
+  MaterialProperty<Real> & _d2fbulkdcdOP;
+
+  MaterialProperty<Real> & _h;
+  MaterialProperty<Real> & _dhdOP;
+  MaterialProperty<Real> & _d2hdOP2;
+
+  MaterialProperty<Real> & _g;
+  MaterialProperty<Real> & _dgdOP;
+  MaterialProperty<Real> & _d2gdOP2;
 
   const VariableValue & _c;
   const VariableValue & _OP;

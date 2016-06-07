@@ -13,7 +13,7 @@
 
 #include "Material.h"
 #include "RankTwoTensor.h"
-#include "ElasticityTensorR4.h"
+#include "RankFourTensor.h"
 
 //forward declarations
 class TwoPhaseLinearElasticMaterial;
@@ -62,9 +62,10 @@ protected:
   MaterialProperty<RankTwoTensor> & _total_strain;
   MaterialProperty<RankTwoTensor> & _elastic_strain;
   MaterialProperty<RankTwoTensor> & _misfit_strain;
+  MaterialProperty<RankTwoTensor> & _precipitate_misfit_tensor;
 
-  MaterialProperty<ElasticityTensorR4> & _elasticity_tensor;
-  MaterialProperty<ElasticityTensorR4> & _Jacobian_multiplier;
+  MaterialProperty<RankFourTensor> & _elasticity_tensor;
+  MaterialProperty<RankFourTensor> & _Jacobian_multiplier;
 
   MaterialProperty<Real> & _f_el;
   MaterialProperty<Real> & _dfel_dOP;
@@ -72,8 +73,8 @@ protected:
   MaterialProperty<Real> & _dfel_dX;
   MaterialProperty<Real> & _d2fel_dX2;
 
-  ElasticityTensorR4 _Cijkl_matrix;
-  ElasticityTensorR4 _Cijkl_precip;
+  RankFourTensor _Cijkl_matrix;
+  RankFourTensor _Cijkl_precip;
 
   std::vector<Real> _precipitate_eigenstrain_vector;
   std::vector<Real> _matrix_eigenstrain_vector;
