@@ -17,7 +17,7 @@ InputParameters validParams<CalphadAB1CD2Material>()
 
   params.addRequiredParam<std::vector<Real> >("pure_EP1_phase1_coeffs", "coeffs of pure endpoint at low composition in the first phase");
 
-  params.addParam<Real>("low_cutoff", 0.001, "linearization cutoff, low end");
+  params.addParam<Real>("low_cutoff", 1e-6, "linearization cutoff, low end");
   params.addParam<Real>("high_cutoff", 0.655, "linearization cutoff, high end");
   params.addParam<Real>("precip_conc", 0.6, "concentration of precipitate");
 

@@ -28,12 +28,7 @@ protected:
 
 private:
 
-  const VariableValue & _X;
-  const VariableValue & _OP;
-
-  const MaterialProperty<Real> & _Omega;
-  const MaterialProperty<Real> & _dGalpha_dc;
-  const MaterialProperty<Real> & _dGdelta_dc;
+  const MaterialProperty<Real> & _dfbulk_dc;
 
 };
 

@@ -30,9 +30,7 @@ protected:
 
 private:
 
-  const MaterialProperty<RankFourTensor> & _elasticity_tensor;
-  const MaterialProperty<RankTwoTensor> & _elastic_strain;
-  const MaterialProperty<RankTwoTensor> & _dc_misfit_strain;
+  const MaterialProperty<Real> & _dfel_dc;
 
 };
 

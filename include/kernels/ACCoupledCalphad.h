@@ -27,21 +27,27 @@ public:
 protected:
   virtual Real computeDFDOP(PFFunctionType type);
 
-  Real computeDHeavisideDOP();
-  Real computeD2HeavisideDOP2();
-
-  Real computeDBarrierDOP();
-  Real computeD2BarrierDOP2();
-
   virtual Real computeQpOffDiagJacobian(unsigned int jvar);
 
 private:
   const MaterialProperty<Real> & _W;                            //Well height
   const MaterialProperty<Real> & _Omega;                        //Molar volume
-  const MaterialProperty<Real> & _G_alpha;                      //Gmix_alpha
-  const MaterialProperty<Real> & _G_delta;                      //Gmix_delta
+//  const MaterialProperty<Real> & _G_alpha;                      //Gmix_alpha
+//  const MaterialProperty<Real> & _G_delta;                      //Gmix_delta
+
+  const MaterialProperty<Real> & _dfbulk_dn;
+  const MaterialProperty<Real> & _d2fbulk_dn2;
+  const MaterialProperty<Real> & _d2fbulk_dcdn;
+
+  /*
   const MaterialProperty<Real> & _dGalpha_dc;
   const MaterialProperty<Real> & _dGdelta_dc;
+
+  const MaterialProperty<Real> & _dhdn;
+  const MaterialProperty<Real> & _d2hdn2;
+  const MaterialProperty<Real> & _dgdn;
+  const MaterialProperty<Real> & _d2gdn2;
+  */
 
   unsigned int _c_var;
   unsigned int _w_var;

@@ -28,19 +28,9 @@ public:
 protected:
   virtual Real computeValue();
 
-  Real computeHeaviside();
-  Real computeBarrier();
-
 private:
 
-  const VariableValue & _C;
-  std::vector<const VariableValue *> _OP;
-  unsigned int _n_OP_variables;
-
-  const MaterialProperty<Real> & _W;                            //Well height
-  const MaterialProperty<Real> & _Omega;                        //Molar volume
-  const MaterialProperty<Real> & _G_alpha;                      //Gmix_alpha
-  const MaterialProperty<Real> & _G_delta;                      //Gmix_delta
+  const MaterialProperty<Real> & _fbulk;
 
 };
 

@@ -13,24 +13,46 @@
 template<>
 InputParameters validParams<ZrHCalphadDiffusivity>()
 {
-  InputParameters params = validParams<ZrHCalphad>();
+  InputParameters params = validParams<Material>();
+
+//  params.addParam<Real>("mobility_CH", 1, "isotropic mobility for Cahn-Hilliard equation (isotropic)");
+  params.addRequiredParam<Real>("mobility_AC", "isotropic kinetic coefficient for Allen-Cahn equation");
+  params.addRequiredParam<Real>("kappa_CH", "CH gradient energy coefficient (isotropic)");
+  params.addRequiredParam<Real>("kappa_AC", "AC gradient energy coefficient (isotropic)");
+  params.addRequiredParam<Real>("well_height", "well height for barrier g(n)");
+  params.addRequiredParam<Real>("molar_volume", "molar volume of the material (constant)");
 
   params.addRequiredParam<Real>("H_Zr_D0", "Diffusion prefactor for H in hcp Zr (isotropic)");
   params.addRequiredParam<Real>("H_ZrH2_D0", "Diffusion prefactor for H in fcc ZrH2 (isotropic)");
   params.addRequiredParam<Real>("H_Zr_Q0", "Activation energy for H in hcp Zr");
   params.addRequiredParam<Real>("H_ZrH2_Q0", "Activaton energy for H in fcc ZrH2");
+
+  //aJ, amol, Kelvin
   params.addParam<Real>("R", 8.3144, "gas constant");
-  params.addParam<Real>("k", 1.38E-23, "Boltzmann constant");
+  params.addParam<Real>("k", 1.38E-5, "Boltzmann constant");
 
   params.addRequiredCoupledVar("OP_variable", "coupled OP variable");
   params.addRequiredCoupledVar("concentration", "coupled concentration variable");
-  params.addRequiredCoupledVar("temperature", "temperature to be used to calculating Gibbs energies");
+  params.addRequiredCoupledVar("temperature", "temperature of the system");
 
   return params;
 }
 
 ZrHCalphadDiffusivity::ZrHCalphadDiffusivity(const InputParameters & parameters)
-    : ZrHCalphad(parameters),
+    : Material(parameters),
+      _mobility_AC(getParam<Real>("mobility_AC")),
+      _kappa_CH(getParam<Real>("kappa_CH")),
+      _kappa_AC(getParam<Real>("kappa_AC")),
+      _well_height(getParam<Real>("well_height")),
+      _molar_volume(getParam<Real>("molar_volume")),
+
+      _M(declareProperty<Real>("M")),
+      _grad_M(declareProperty<RealGradient>("grad_M")),
+      _L(declareProperty<Real>("L")),
+      _kappa_c(declareProperty<Real>("kappa_c")),
+      _kappa_n(declareProperty<Real>("kappa_n")),
+      _W(declareProperty<Real>("well_height")),
+      _molar_vol(declareProperty<Real>("molar_volume")),
 
       _H_Zr_D0(getParam<Real>("H_Zr_D0")),
       _H_ZrH2_D0(getParam<Real>("H_ZrH2_D0")),
@@ -38,21 +60,25 @@ ZrHCalphadDiffusivity::ZrHCalphadDiffusivity(const InputParameters & parameters)
       _H_ZrH2_Q0(getParam<Real>("H_ZrH2_Q0")),
       _R(getParam<Real>("R")),
       _k(getParam<Real>("k")),
+
       _Galpha(getMaterialPropertyByName<Real>("G_AB1CD1")),
       _Gdelta(getMaterialPropertyByName<Real>("G_AB1CD2")),
       _dGalpha_dc(getMaterialPropertyByName<Real>("dGAB1CD1_dc")),
       _dGdelta_dc(getMaterialPropertyByName<Real>("dGAB1CD2_dc")),
       _d2Galpha_dc2(getMaterialPropertyByName<Real>("d2GAB1CD1_dc2")),
       _d2Gdelta_dc2(getMaterialPropertyByName<Real>("d2GAB1CD2_dc2")),
+
       _D_alpha(declareProperty<Real>("D_alpha")),
       _D_delta(declareProperty<Real>("D_delta")),
+
       _fbulk(declareProperty<Real>("f_bulk")),
       _dfbulkdc(declareProperty<Real>("df_bulk_dc")),
       _d2fbulkdc2(declareProperty<Real>("d2f_bulk_dc2")),
       _dfbulkdOP(declareProperty<Real>("df_bulk_dOP")),
       _d2fbulkdOP2(declareProperty<Real>("d2f_bulk_dOP2")),
+
       _d2fbulkdcdOP(declareProperty<Real>("d2f_bulk_dcdOP")),
-//need off diagonal terms here
+
       _h(declareProperty<Real>("interpolation_fxn")),
       _dhdOP(declareProperty<Real>("dinterpolation_dOP")),
       _d2hdOP2(declareProperty<Real>("d2interpolation_dOP2")),
@@ -70,10 +96,6 @@ ZrHCalphadDiffusivity::computeQpProperties()
 {
   _D_alpha[_qp] = _H_Zr_D0*std::exp(-_H_Zr_Q0/(_R*_temperature[_qp]));
   _D_delta[_qp] = _H_ZrH2_D0*std::exp(-_H_ZrH2_Q0/(_R*_temperature[_qp]));
-
-//  Real solute = _c[_qp];
-//  if (solute < 0)
-//    solute = 0;
 
   Real OP = _OP[_qp];
 
@@ -107,15 +129,7 @@ ZrHCalphadDiffusivity::computeQpProperties()
   _dfbulkdOP[_qp] = ( (_Gdelta[_qp] - _Galpha[_qp])*_dhdOP[_qp] + _W[_qp]*_dgdOP[_qp])/_molar_vol[_qp];
   _d2fbulkdOP2[_qp] = ( (_Gdelta[_qp] - _Galpha[_qp])*_d2hdOP2[_qp] + _W[_qp]*_d2gdOP2[_qp])/_molar_vol[_qp];
 
-  _d2fbulkdcdOP[_qp] = (_Gdelta[_qp] - _Galpha[_qp])*(_dhdOP[_qp])/_molar_vol[_qp];
+  _d2fbulkdcdOP[_qp] = (_dGdelta_dc[_qp] - _dGalpha_dc[_qp])*(_dhdOP[_qp])/_molar_vol[_qp];
 
   //add off diagonal terms here
-}
-
-Real
-ZrHCalphadDiffusivity::computeHeaviside()
-{
-   Real OP = _OP[_qp];
-
-   return 30*OP*OP*OP*OP - 60*OP*OP*OP + 10*OP*OP;
 }

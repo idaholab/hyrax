@@ -11,24 +11,42 @@
 #ifndef ZRHCALPHADDIFFUSIVITY_H
 #define ZRHCALPHADDIFFUSIVITY_H
 
-#include "ZrHCalphad.h"
+#include "Material.h"
 
 //forward declaration
 class ZrHCalphadDiffusivity;
 
 template<>
-InputParameters validParams<ZrHCalphad>();
+InputParameters validParams<ZrHCalphadDiffusivity>();
 
-class ZrHCalphadDiffusivity : public ZrHCalphad
+class ZrHCalphadDiffusivity : public Material
 {
 public:
   ZrHCalphadDiffusivity(const InputParameters & parameters);
 
 protected:
   virtual void computeQpProperties();
-  virtual Real computeHeaviside();
 
-private:
+  //hold values from input file
+  Real _mobility_AC;
+
+  Real _kappa_CH;
+  Real _kappa_AC;
+
+  Real _well_height;
+  Real _molar_volume;
+
+  MaterialProperty<Real> & _M;                  //Cahn-Hilliard mobility (isotropic)
+  MaterialProperty<RealGradient> & _grad_M;
+  MaterialProperty<Real> & _L;                  //Allen-Cahn kinetic coefficient (isotropic)
+
+  MaterialProperty<Real> & _kappa_c;            //CH gradient energy coefficient (isotropic)
+  MaterialProperty<Real> & _kappa_n;            //AC gradient energy coefficient (isotropic)
+
+  MaterialProperty<Real> & _W;                  //well height
+  MaterialProperty<Real> & _molar_vol;          //molar volume
+
+
   //Diffusion coefficient information
   Real _H_Zr_D0;
   Real _H_ZrH2_D0;
@@ -36,7 +54,6 @@ private:
   Real _H_ZrH2_Q0;
   Real _R;
   Real _k;
-//  Real _mobility_CH_scaling;
 
   const MaterialProperty<Real> & _Galpha;
   const MaterialProperty<Real> & _Gdelta;
@@ -68,10 +85,7 @@ private:
   const VariableValue & _OP;
   const VariableValue & _temperature;
 
-
-  //MaterialProperty<Real> & _L1Q;
-  //Real _Q_transport;
-  //const MaterialProperty<Real> & _d2Galpha_dcdT;
+private:
 
 };
 

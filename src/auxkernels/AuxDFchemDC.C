@@ -15,31 +15,19 @@ InputParameters validParams<AuxDFchemDC>()
 {
   InputParameters params = validParams<AuxKernel>();
 
-  // params.addParam<Real>("scaling_factor", 1, "elastic energy scaling factor for nondimensionalization");
-  params.addRequiredCoupledVar("concentration", "name of concentration variable");
-  params.addRequiredCoupledVar("OP", "name of order parameter variable");
-
   return params;
 }
 
 AuxDFchemDC::AuxDFchemDC(const InputParameters & parameters) :
     AuxKernel(parameters),
-    _X(coupledValue("concentration")),
-    _OP(coupledValue("OP")),
-    _Omega(getMaterialProperty<Real>("molar_volume")),
-    _dGalpha_dc(getMaterialProperty<Real>("dGAB1CD1_dc")),
-    _dGdelta_dc(getMaterialProperty<Real>("dGAB1CD2_dc"))
-    //_scaling_factor(getParam<Real>("scaling_factor"))
+    _dfbulk_dc(getMaterialProperty<Real>("df_bulk_dc"))
 {
 }
 
 Real
 AuxDFchemDC::computeValue()
 {
-  //H needs to talk to material property
-  Real H = 3*_OP[_qp]*_OP[_qp] - 2*_OP[_qp]*_OP[_qp]*_OP[_qp];
 
-  //need Omega
-  return (1 - H)*_dGalpha_dc[_qp] + H*_dGdelta_dc[_qp];
+  return _dfbulk_dc[_qp];
 
 }

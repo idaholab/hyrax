@@ -14,24 +14,23 @@ template<>
 InputParameters validParams<AuxGradientEnergy>()
 {
   InputParameters params = validParams<AuxKernel>();
-  params.addRequiredCoupledVar("field_variable", "field variable to calculate gradient energy of");
-  params.addRequiredParam<std::string>("kappa_name", "name of gradient energy coefficient");
+  params.addRequiredCoupledVar("c", "name of concentration variable");
+  params.addRequiredCoupledVar("OP", "name of order parameter variable");
 
   return params;
 }
 
 AuxGradientEnergy::AuxGradientEnergy(const InputParameters & parameters) :
     AuxKernel(parameters),
-    _grad_var(coupledGradient("field_variable")),
-    _kappa_name(getParam<std::string>("kappa_name")),
-    _kappa(getMaterialProperty<Real>(_kappa_name))
+    _grad_c(coupledGradient("c")),
+    _grad_OP(coupledGradient("OP")),
+    _kappa_c(getMaterialProperty<Real>("kappa_c")),
+    _kappa_OP(getMaterialProperty<Real>("kappa_n"))
 {
 }
 
 Real
 AuxGradientEnergy::computeValue()
 {
- return 0.5*_kappa[_qp]*_grad_var[_qp].norm_sq();
+  return 0.5*_kappa_c[_qp]*_grad_c[_qp].norm_sq() + 0.5*_kappa_OP[_qp]*_grad_OP[_qp].norm_sq();
 }
-
-

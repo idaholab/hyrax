@@ -1,20 +1,18 @@
-#This simulation is non-dimensionalized
+#This tests the chemical free energy-based work for Hyrax.  units are attojoules, nanometers, microseconds
 
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 25 #100
-  ny = 25 #100
-  nz = 0 #100
-  xmin = 0 #25
-  xmax = 25 #75
-  ymin = 0 #25
-  ymax = 25 #75
+  nx = 25
+  ny = 25
+  nz = 0
+  xmin = 0
+  xmax = 25
+  ymin = 0
+  ymax = 25
   zmin = 0
   zmax = 0
   elem_type = QUAD4
-  #elem_type = QUAD9
-  #elem_type = HEX8
 []
 
 [Variables]
@@ -36,37 +34,37 @@
 
 [AuxVariables]
   [./temperature]
-    order = CONSTANT
+    order = FIRST
     family = MONOMIAL
   [../]
   [./Galpha]
-    order = CONSTANT
+    order = FIRST
     family = MONOMIAL
   [../]
 
   [./Gdelta]
-    order = CONSTANT
+    order = FIRST
     family = MONOMIAL
   [../]
 
   [./dGalphadc]
-    order = CONSTANT
+    order = FIRST
     family = MONOMIAL
   [../]
 
   [./dGdeltadc]
-    order = CONSTANT
+    order = FIRST
     family = MONOMIAL
   [../]
 
 
   [./d2Galphadc2]
-    order = CONSTANT
+    order = FIRST
     family = MONOMIAL
   [../]
 
   [./d2Gdeltadc2]
-    order = CONSTANT
+    order = FIRST
     family = MONOMIAL
   [../]
 []
@@ -143,8 +141,7 @@
  active = 'SMP'
   [./SMP]
    type = SMP
-   off_diag_row = 'concentration concentration mu mu n n'
-   off_diag_column = 'mu n concentration n concentration mu'
+   full = true
   [../]
 []
 
@@ -156,13 +153,9 @@
   [../]
 
   [./mu_residual]
-    type = SplitCoupledCHWRes
+    type = SplitCHWRes
     variable = mu
     mob_name = M
-    c = concentration
-    T = temperature
-    n_OP_vars = 1
-    OP_var_names = 'n'
   [../]
 
   [./conc_residual]
@@ -170,11 +163,7 @@
     variable = concentration
     kappa_name = kappa_c
     w = mu
-    n_OP_vars = 1
-    OP_var_names = 'n'
-    T = temperature
-    #Well_height = 1
-    scaling_factor = 2.49410145E-9
+    n = n
   [../]
 
   [./dndt]
@@ -186,14 +175,11 @@
     type = ACCoupledCalphad
     variable = n
     mob_name = L
-    #coupled_CH_var = concentration
     n_OP_vars = 1
     OP_var_names = 'n'
     OP_number = 1
     w = mu
-    T = temperature
     c = concentration
-    scaling_factor = 2.49410145E-9
   [../]
 
   [./ACInterfacen1]

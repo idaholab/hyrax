@@ -48,7 +48,6 @@
 #include "StressBC.h"
 
 //Materials
-#include "ZrHCalphad.h"
 #include "CalphadEnergyMaterial.h"
 #include "CalphadAB1CD1Material.h"
 #include "CalphadAB1CD2Material.h"
@@ -151,7 +150,6 @@ HyraxApp::registerObjects(Factory & factory)
   registerBoundaryCondition(StressBC);
 
   //Materials
-  registerMaterial(ZrHCalphad);
   registerMaterial(CalphadEnergyMaterial);
   registerMaterial(CalphadAB1CD1Material);
   registerMaterial(CalphadAB1CD2Material);

@@ -16,8 +16,8 @@ InputParameters validParams<CalphadAB1CD1Material>()
 {
   InputParameters params = validParams<CalphadEnergyMaterial>();
 
-  params.addParam<Real>("low_cutoff", 0.001, "linearization cutoff, low end");
-  params.addParam<Real>("high_cutoff", 0.499, "linearization cutoff, high end");
+  params.addParam<Real>("low_cutoff", 1e-6, "linearization cutoff, low end");
+  params.addParam<Real>("high_cutoff", 0.49, "linearization cutoff, high end");
   params.addParam<Real>("precip_conc", 0.6, "concentration of precipitate");
 
   return params;
@@ -42,16 +42,7 @@ CalphadAB1CD1Material::CalphadAB1CD1Material(const InputParameters & parameters)
 void
 CalphadAB1CD1Material::computeQpProperties()
 {
-  //Real c;
-
-  /*
-  if (_c[_qp]  < _low_cutoff)
-    c = _low_cutoff;
-  else if (_c[_qp] > _high_cutoff)
-    c = _high_cutoff;
-  else c = _c[_qp];
-  */
-
+  //these are in J/mol (or aJ/amol)
 
   _G_AB1CD1[_qp] = _energy.computeGMix(_c[_qp], _T[_qp]);
   _dG_dc[_qp] = _energy.computeDGMixDc(_c[_qp], _T[_qp]);
