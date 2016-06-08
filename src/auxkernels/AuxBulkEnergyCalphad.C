@@ -18,7 +18,6 @@ InputParameters validParams<AuxBulkEnergyCalphad>()
   params.addRequiredCoupledVar("conserved_variable", "coupled conserved field variable");
   params.addRequiredCoupledVar("OP_variable_names", "array of coupled OP variable names");
   params.addRequiredParam<unsigned int>("n_OP_variables", "# of coupled OP variables, >=1");
-  params.addParam<Real>("scaling_factor", 1, "free energy scaling factor for nondimensionalization");
 
   return params;
 }
@@ -27,7 +26,6 @@ AuxBulkEnergyCalphad::AuxBulkEnergyCalphad(const InputParameters & parameters) :
     AuxKernel(parameters),
     _C(coupledValue("conserved_variable")),
     _n_OP_variables(getParam<unsigned int>("n_OP_variables")),
-    _scaling_factor(getParam<Real>("scaling_factor")),
     _W(getMaterialProperty<Real>("well_height")),
     _Omega(getMaterialProperty<Real>("molar_volume")),
     _G_alpha(getMaterialProperty<Real>("G_AB1CD1")),
@@ -48,7 +46,7 @@ AuxBulkEnergyCalphad::computeValue()
   Real h = computeHeaviside();
   Real g = computeBarrier();
 
-  return _scaling_factor*( (1-h)*_G_alpha[_qp] + h*_G_delta[_qp]  + _W[_qp]*g ) / _Omega[_qp];
+  return ( (1-h)*_G_alpha[_qp] + h*_G_delta[_qp]  + _W[_qp]*g ) / _Omega[_qp];
 }
 
 Real

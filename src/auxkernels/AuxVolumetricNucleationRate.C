@@ -101,7 +101,7 @@ AuxVolumetricNucleationRate::computeZeldovichFactor()
 {
   //assuming spherical nucleus shape
 
-  //following Robson's 2004 formulation for Z
+  //following Robson's 2004 formulationor Z
   _Z = (_Omega[_qp]*(1.0e18/6.02214E23)*(_coupled_energy[_qp]*_coupled_energy[_qp]))/(8*libMesh::pi*std::sqrt(_gamma*_gamma*_gamma*_Kb*_T[_qp]));
 }
 

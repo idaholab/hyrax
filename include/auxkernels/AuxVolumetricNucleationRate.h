@@ -47,7 +47,6 @@ protected:
   Real _Z;                                  // Zeldovich non-equilibrium factor
   Real _N;                                  // Number of atoms in the computational volume
   Real _beta_star;                          // frequency factor (critical -> supercritical nucleus)
-  Real _linear_density;                     // linear atomic density of material
 
   Real _r_star;                             // Critical radius (2 or 3D)
   Real _G_star;                             // critical activation energy (J)
@@ -55,7 +54,6 @@ protected:
 
   Real _gamma;
   Real _Kb;
-  Real _time_scale_factor;
 
   const VariableValue & _T;
   const VariableValue & _X;
@@ -65,7 +63,6 @@ protected:
   Real _jump_distance;
 
   const MaterialProperty<Real> & _Omega;
-  Real _length_scale_factor;
 
 private:
   Real _rate_volume;

@@ -37,8 +37,6 @@ private:
   std::vector<const VariableValue *> _OP;
   unsigned int _n_OP_variables;
 
-  Real _scaling_factor;
-
   const MaterialProperty<Real> & _W;                            //Well height
   const MaterialProperty<Real> & _Omega;                        //Molar volume
   const MaterialProperty<Real> & _G_alpha;                      //Gmix_alpha

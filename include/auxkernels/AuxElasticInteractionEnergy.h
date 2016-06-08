@@ -35,8 +35,6 @@ private:
 
   unsigned int _OP_number;
 
-  //Real _scaling_factor;
-
 };
 
 #endif //AUXELASTICINTERACTIONENERGY_H

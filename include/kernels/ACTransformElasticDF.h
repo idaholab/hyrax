@@ -80,7 +80,7 @@ protected:
   // Vector of references to the coupled order parameters
   std::vector<const VariableValue *> _coupled_vars;
 
-  Real _scaling_factor;*/
+//  Real _scaling_factor;*/
 };
 
 #endif //ACTRANSFORMELASTICDF_H

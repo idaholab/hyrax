@@ -34,8 +34,6 @@ private:
   const MaterialProperty<RankTwoTensor> & _elastic_strain;
   const MaterialProperty<RankTwoTensor> & _dc_misfit_strain;
 
-//Real _scaling_factor;
-
 };
 
 #endif //AUXDFELDC_H

@@ -35,8 +35,6 @@ private:
   const MaterialProperty<Real> & _dGalpha_dc;
   const MaterialProperty<Real> & _dGdelta_dc;
 
-//Real _scaling_factor;
-
 };
 
 #endif //AUXELASTICENERGY_H
