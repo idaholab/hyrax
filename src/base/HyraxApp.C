@@ -27,14 +27,10 @@
 #include "ACTransformElasticDF.h"
 #include "ACCoupledCalphad.h"
 #include "CHCoupledCalphadSplit.h"
-#include "SplitCoupledCHWRes.h"
 #include "CHPrecipMatrixElasticity.h"
 
 //Auxiliary Kernels
 #include "AuxDeltaGStar.h"
-#include "AuxChem.h"
-#include "AuxTemperature.h"
-#include "AuxCalphadEnergy.h"
 #include "AuxBulkEnergyCalphad.h"
 #include "AuxGradientEnergy.h"
 #include "AuxElasticEnergy.h"
@@ -44,7 +40,7 @@
 #include "AuxVolumetricNucleationRate.h"
 #include "AuxDFchemDC.h"
 #include "AuxDFelDC.h"
-#include "AuxCanonicalEnsemble.h"
+#include "AuxGrandPotential.h"
 
 //Dirac Kernels
 
@@ -80,7 +76,6 @@
 #include "NucleiInformation.h"
 
 //TimeSteppers
-#include "InitialSolutionAdaptiveDT.h"
 
 //Actions
 
@@ -144,10 +139,6 @@ HyraxApp::registerObjects(Factory & factory)
 
   //Auxiliary Kernels
   registerAux(AuxDeltaGStar);
-  registerAux(AuxRateSimple);
-  registerAux(AuxChem);
-  registerAux(AuxTemperature);
-  registerAux(AuxCalphadEnergy);
   registerAux(AuxBulkEnergyCalphad);
   registerAux(AuxGradientEnergy);
   registerAux(AuxElasticEnergy);
@@ -157,7 +148,7 @@ HyraxApp::registerObjects(Factory & factory)
   registerAux(AuxVolumetricNucleationRate);
   registerAux(AuxDFchemDC);
   registerAux(AuxDFelDC);
-  registerAux(AuxCanonicalEnsemble);
+  registerAux(AuxGrandPotential);
 
   //Dirac Kernels
 
@@ -193,7 +184,6 @@ HyraxApp::registerObjects(Factory & factory)
   registerPostprocessor(NucleiInformation);
 
   //TimeSteppers
-  registerTimeStepper(InitialSolutionAdaptiveDT);
 
   // UserObjects
   registerUserObject(NucleationLocationUserObject);

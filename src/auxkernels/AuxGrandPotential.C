@@ -8,10 +8,10 @@
 *
 *************************************************************************/
 
-#include "AuxCanonicalEnsemble.h"
+#include "AuxGrandPotential.h"
 
 template<>
-InputParameters validParams<AuxCanonicalEnsemble>()
+InputParameters validParams<AuxGrandPotential>()
 {
   InputParameters params = validParams<AuxKernel>();
 
@@ -26,7 +26,7 @@ InputParameters validParams<AuxCanonicalEnsemble>()
   return params;
 }
 
-AuxCanonicalEnsemble::AuxCanonicalEnsemble(const InputParameters & parameters) :
+AuxGrandPotential::AuxGrandPotential(const InputParameters & parameters) :
     AuxKernel(parameters),
     _X(coupledValue("concentration")),
     _OP(coupledValue("OP")),
@@ -48,7 +48,7 @@ AuxCanonicalEnsemble::AuxCanonicalEnsemble(const InputParameters & parameters) :
 }
 
 Real
-AuxCanonicalEnsemble::computeValue()
+AuxGrandPotential::computeValue()
 {
   Real OP = _OP[_qp];
 

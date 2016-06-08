@@ -8,20 +8,20 @@
 *
 *************************************************************************/
 
-#ifndef AUXCANONICALENSEMBLE_H
-#define AUXCANONICALENSEMBLE_H
+#ifndef AUXGRANDPOTENTIAL_H
+#define AUXGRANDPOTENTIAL_H
 
 #include "AuxKernel.h"
 
-class AuxCanonicalEnsemble;
+class AuxGrandPotential;
 
 template<>
-InputParameters validParams<AuxCanonicalEnsemble>();
+InputParameters validParams<AuxGrandPotential>();
 
-class AuxCanonicalEnsemble : public AuxKernel
+class AuxGrandPotential : public AuxKernel
 {
 public:
-    AuxCanonicalEnsemble(const InputParameters & parameters);
+    AuxGrandPotential(const InputParameters & parameters);
 
 protected:
   virtual Real computeValue();
@@ -56,4 +56,4 @@ private:
 
 };
 
-#endif //AUXCANONICALENSEMBLE_H
+#endif //AUXGRANDPOTENTIAL_H

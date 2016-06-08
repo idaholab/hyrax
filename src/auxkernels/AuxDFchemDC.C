@@ -36,11 +36,10 @@ AuxDFchemDC::AuxDFchemDC(const InputParameters & parameters) :
 Real
 AuxDFchemDC::computeValue()
 {
+  //H needs to talk to material property
   Real H = 3*_OP[_qp]*_OP[_qp] - 2*_OP[_qp]*_OP[_qp]*_OP[_qp];
 
+  //need Omega
   return (1 - H)*_dGalpha_dc[_qp] + H*_dGdelta_dc[_qp];
 
 }
-
-
-
