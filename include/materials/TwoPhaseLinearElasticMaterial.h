@@ -37,7 +37,7 @@ public:
 
 protected:
   virtual void computeQpProperties();
-  virtual void computeInterpolation();
+//  virtual void computeInterpolation();
 
   virtual void computeQpElasticityTensor();
   virtual void computeQpStrain();
@@ -53,9 +53,9 @@ protected:
   const VariableGradient & _grad_disp_y;
   const VariableGradient & _grad_disp_z;
 
-  Real _h;
-  Real _dhdn;
-  Real _d2hdn2;
+  const MaterialProperty<Real> & _h;
+  const MaterialProperty<Real> & _dhdn;
+  const MaterialProperty<Real> & _d2hdn2;
 
   MaterialProperty<RankTwoTensor> & _stress;
 

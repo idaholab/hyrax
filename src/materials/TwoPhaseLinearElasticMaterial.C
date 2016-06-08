@@ -46,9 +46,9 @@ TwoPhaseLinearElasticMaterial::TwoPhaseLinearElasticMaterial(const InputParamete
     _grad_disp_x(coupledGradient("disp_x")),
     _grad_disp_y(coupledGradient("disp_y")),
     _grad_disp_z(_mesh.dimension() == 3 ? coupledGradient("disp_z") : _grad_zero),
-    _h(0),
-    _dhdn(0),
-    _d2hdn2(0),
+    _h(getMaterialProperty<Real>("interpolation_function")),
+    _dhdn(getMaterialProperty<Real>("dinterpolation_dOP")),
+    _d2hdn2(getMaterialProperty<Real>("d2interpolation_dOP2")),
     _stress(declareProperty<RankTwoTensor>("stress")),
     _total_strain(declareProperty<RankTwoTensor>("total_strain")),
     _elastic_strain(declareProperty<RankTwoTensor>("elastic_strain")),
@@ -87,7 +87,7 @@ TwoPhaseLinearElasticMaterial::TwoPhaseLinearElasticMaterial(const InputParamete
 void
 TwoPhaseLinearElasticMaterial::computeQpProperties()
 {
-  computeInterpolation();
+//  computeInterpolation();
 
   computeQpElasticityTensor();
 
@@ -98,18 +98,18 @@ TwoPhaseLinearElasticMaterial::computeQpProperties()
   computeEnergy();
 }
 
-void
-TwoPhaseLinearElasticMaterial::computeInterpolation()
-{
-  _h = _OP[_qp]*_OP[_qp]*_OP[_qp]*(6*_OP[_qp]*_OP[_qp] - 15*_OP[_qp] + 10);
-  _dhdn = 30*_OP[_qp]*_OP[_qp]*( _OP[_qp] - 1)*( _OP[_qp] - 1);
-  _d2hdn2 = 60*_OP[_qp]*( _OP[_qp] - 1)*(2*_OP[_qp] - 1);
-}
+//void
+//TwoPhaseLinearElasticMaterial::computeInterpolation()
+//{
+//  _h = _OP[_qp]*_OP[_qp]*_OP[_qp]*(6*_OP[_qp]*_OP[_qp] - 15*_OP[_qp] + 10);
+//  _dhdn = 30*_OP[_qp]*_OP[_qp]*( _OP[_qp] - 1)*( _OP[_qp] - 1);
+//  _d2hdn2 = 60*_OP[_qp]*( _OP[_qp] - 1)*(2*_OP[_qp] - 1);
+//}
 
 void
 TwoPhaseLinearElasticMaterial::computeQpElasticityTensor()
 {
-  _elasticity_tensor[_qp] = _Cijkl_matrix*(1 - _h) + _Cijkl_precip*_h;
+  _elasticity_tensor[_qp] = _Cijkl_matrix*(1 - _h[_qp]) + _Cijkl_precip*_h[_qp];
   _Jacobian_multiplier[_qp] = _elasticity_tensor[_qp];
 }
 
@@ -121,7 +121,7 @@ TwoPhaseLinearElasticMaterial::computeQpStrain()
   _current_precip_misfit = (1 - _percent_precip_misfit)*(_precipitate_eigenstrain + _T[_qp]*_precip_misfit_T_coeffs);
 
   _total_strain[_qp] = 0.5*(grad_tensor + grad_tensor.transpose());
-  _misfit_strain[_qp] = (1 - _h)*(_X[_qp]*_matrix_eigenstrain) + _h*(_current_precip_misfit);
+  _misfit_strain[_qp] = (1 - _h[_qp])*(_X[_qp]*_matrix_eigenstrain) + _h[_qp]*(_current_precip_misfit);
   _elastic_strain[_qp] = _total_strain[_qp] - _misfit_strain[_qp];
   _precipitate_misfit_tensor[_qp] = _current_precip_misfit;
 }
@@ -146,19 +146,19 @@ TwoPhaseLinearElasticMaterial::computeEnergy()
 
   //there are 3 terms in each derivative part, but the 2nd and 3rd are the same
   //doing the A term
-  temp = (-1*_Cijkl_matrix*_dhdn)*_elastic_strain[_qp];
+  temp = (-1*_Cijkl_matrix*_dhdn[_qp])*_elastic_strain[_qp];
   Real first = temp.doubleContraction( _elastic_strain[_qp] );
 
-  temp = (_Cijkl_matrix*(1 - _h))*(_matrix_eigenstrain*_X[_qp]*_dhdn - _current_precip_misfit*_dhdn);
+  temp = (_Cijkl_matrix*(1 - _h[_qp]))*(_matrix_eigenstrain*_X[_qp]*_dhdn[_qp] - _current_precip_misfit*_dhdn[_qp]);
   Real second = temp.doubleContraction( _elastic_strain[_qp] );
 
   Real dfel_dOP_A = first + 2*second;
 
   //doing the B term
-  temp = (_Cijkl_precip*_dhdn)*_elastic_strain[_qp];
+  temp = (_Cijkl_precip*_dhdn[_qp])*_elastic_strain[_qp];
   first = temp.doubleContraction( _elastic_strain[_qp] );
 
-  temp = (_Cijkl_precip*(_h))*(_matrix_eigenstrain*_X[_qp]*_dhdn - _current_precip_misfit*_dhdn);
+  temp = (_Cijkl_precip*(_h[_qp]))*(_matrix_eigenstrain*_X[_qp]*_dhdn[_qp] - _current_precip_misfit*_dhdn[_qp]);
   second = temp.doubleContraction( _elastic_strain[_qp] );
 
   Real dfel_dOP_B = first +2*second;
@@ -170,43 +170,43 @@ TwoPhaseLinearElasticMaterial::computeEnergy()
   //compute the 2nd derivative of the elastic energy density
   //it again is broken into two parts A and B as above for each type of Cijkl
   //A term
-  temp = (-1*_Cijkl_matrix*_d2hdn2)*_elastic_strain[_qp];
+  temp = (-1*_Cijkl_matrix*_d2hdn2[_qp])*_elastic_strain[_qp];
   first = temp.doubleContraction( _elastic_strain[_qp] );
 
-  temp = (-1*_Cijkl_matrix*_dhdn)*(_matrix_eigenstrain*_X[_qp]*_dhdn - _current_precip_misfit*_dhdn);
+  temp = (-1*_Cijkl_matrix*_dhdn[_qp])*(_matrix_eigenstrain*_X[_qp]*_dhdn[_qp] - _current_precip_misfit*_dhdn[_qp]);
   Real temp2 = temp.doubleContraction( _elastic_strain[_qp]);
   first += 2*temp2;
 
   second = temp.doubleContraction( _elastic_strain[_qp]);
 
-  temp = (_Cijkl_matrix*(1 - _h))*(_matrix_eigenstrain*_X[_qp]*_d2hdn2 - _current_precip_misfit*_d2hdn2);
+  temp = (_Cijkl_matrix*(1 - _h[_qp]))*(_matrix_eigenstrain*_X[_qp]*_d2hdn2[_qp] - _current_precip_misfit*_d2hdn2[_qp]);
   temp2 = temp.doubleContraction( _elastic_strain[_qp] );
   second += temp2;
 
-  temp = (_Cijkl_matrix*(1 - _h))*(_matrix_eigenstrain*_X[_qp]*_dhdn - _current_precip_misfit*_dhdn);
-  temp2 = temp.doubleContraction(_matrix_eigenstrain*_X[_qp]*_dhdn - _current_precip_misfit*_dhdn);
+  temp = (_Cijkl_matrix*(1 - _h[_qp]))*(_matrix_eigenstrain*_X[_qp]*_dhdn[_qp] - _current_precip_misfit*_dhdn[_qp]);
+  temp2 = temp.doubleContraction(_matrix_eigenstrain*_X[_qp]*_dhdn[_qp] - _current_precip_misfit*_dhdn[_qp]);
 
   second += temp2;
 
   Real d2fel_dOP2_A = first + 2*second;
 
   //B term
-  temp = (_Cijkl_precip*_d2hdn2)*_elastic_strain[_qp];
+  temp = (_Cijkl_precip*_d2hdn2[_qp])*_elastic_strain[_qp];
   first = temp.doubleContraction( _elastic_strain[_qp] );
 
-  temp = (_Cijkl_precip*_dhdn)*(_matrix_eigenstrain*_X[_qp]*_dhdn - _current_precip_misfit*_dhdn);
+  temp = (_Cijkl_precip*_dhdn[_qp])*(_matrix_eigenstrain*_X[_qp]*_dhdn[_qp] - _current_precip_misfit*_dhdn[_qp]);
   temp2 = temp.doubleContraction( _elastic_strain[_qp]);
   first += 2*temp2;
 
   second = temp.doubleContraction( _elastic_strain[_qp]);
 
-  temp = (_Cijkl_precip*(_h))*(_matrix_eigenstrain*_X[_qp]*_d2hdn2 - _current_precip_misfit*_d2hdn2);
+  temp = (_Cijkl_precip*(_h[_qp]))*(_matrix_eigenstrain*_X[_qp]*_d2hdn2[_qp] - _current_precip_misfit*_d2hdn2[_qp]);
   temp2 = temp.doubleContraction(_elastic_strain[_qp]);
 
   second += temp2;
 
-  temp = (_Cijkl_precip*(_h))*(_matrix_eigenstrain*_X[_qp]*_dhdn - _current_precip_misfit*_dhdn);
-  temp2 = temp.doubleContraction(_matrix_eigenstrain*_X[_qp]*_dhdn - _current_precip_misfit*_dhdn);
+  temp = (_Cijkl_precip*(_h[_qp]))*(_matrix_eigenstrain*_X[_qp]*_dhdn[_qp] - _current_precip_misfit*_dhdn[_qp]);
+  temp2 = temp.doubleContraction(_matrix_eigenstrain*_X[_qp]*_dhdn[_qp] - _current_precip_misfit*_dhdn[_qp]);
 
   second += temp2;
 
@@ -218,10 +218,10 @@ TwoPhaseLinearElasticMaterial::computeEnergy()
 
   //compute the terms for X
 
-  temp = (_elasticity_tensor[_qp])*(-1*(1 - _h)*_matrix_eigenstrain);
+  temp = (_elasticity_tensor[_qp])*(-1*(1 - _h[_qp])*_matrix_eigenstrain);
 
   _dfel_dX[_qp] = temp.doubleContraction(_elastic_strain[_qp]);
 
-  _d2fel_dX2[_qp] = temp.doubleContraction(-1*(1 - _h)*_matrix_eigenstrain);
+  _d2fel_dX2[_qp] = temp.doubleContraction(-1*(1 - _h[_qp])*_matrix_eigenstrain);
 
 }
