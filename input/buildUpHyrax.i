@@ -84,6 +84,10 @@
   [./temperature]
     order = CONSTANT
     family = MONOMIAL
+    [./InitialCondition]
+       type = ConstantIC
+       value = 600
+    [../]
   [../]
 
   [./elem_ChemElastic]

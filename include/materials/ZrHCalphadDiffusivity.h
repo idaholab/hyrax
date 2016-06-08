@@ -12,6 +12,7 @@
 #define ZRHCALPHADDIFFUSIVITY_H
 
 #include "Material.h"
+#include "RankTwoTensor.h"
 
 //forward declaration
 class ZrHCalphadDiffusivity;
@@ -84,6 +85,8 @@ protected:
   const VariableValue & _c;
   const VariableValue & _OP;
   const VariableValue & _temperature;
+
+  MaterialProperty<RankTwoTensor> & _void_tensor;
 
 private:
 

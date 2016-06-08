@@ -1,24 +1,38 @@
-#This tests the chemical free energy-based work for Hyrax.  units are attojoules, nanometers, microseconds
+#This simulation is in aJ, nm.  I'm slowly building all the components up to be correct.
+#NB that the solid mechanics tensor for hcp Zr is ROTATED to be in the XZ plane (to see anisotropy).
+#1: Calphad free energy only, coupled CH/AC with 1 order parameter
+#2: Solid mechanics with elastic energy correctly into the coupled split formulation
+#3: nucleation with the correct units
 
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 25
-  ny = 25
-  nz = 0
+  nx = 20
+  ny = 20
   xmin = 0
-  xmax = 25
+  xmax = 100
   ymin = 0
-  ymax = 25
-  zmin = 0
-  zmax = 0
-  elem_type = QUAD4
+  ymax = 100
+
+#  elem_type = QUAD4
 []
 
 [Variables]
   [./concentration]
     order = FIRST
     family = LAGRANGE
+    [./InitialCondition]
+      type = EllipsoidIC
+      variable = concentration
+      n_seeds = 1
+      int_width = 1
+      invalue = 0.6
+      outvalue = 0.03
+      x_positions = '50'
+      y_positions = '50'
+      z_positions = '0'
+      coefficients = '10 10 10'
+    [../]
   [../]
 
   [./mu]
@@ -29,149 +43,83 @@
   [./n]
     order = FIRST
     family = LAGRANGE
+    [./InitialCondition]
+      type = EllipsoidIC
+      variable = n
+      n_seeds = 1
+      int_width = 1
+      invalue = 1
+      outvalue = 0
+      x_positions = '50'
+      y_positions = '50'
+      z_positions = '0'
+      coefficients = '10 10 10'
+    [../]
   [../]
 []
 
 [AuxVariables]
   [./temperature]
-    order = FIRST
+    order = CONSTANT
+    family = MONOMIAL
+    [./InitialCondition]
+       type = ConstantIC
+       value = 600
+    [../]
+  [../]
+
+  [./elem_ChemElastic]
+    order = CONSTANT
     family = MONOMIAL
   [../]
 
-  [./Galpha]
-    order = FIRST
+  [./elem_VolumetricRate]
+    order = CONSTANT
     family = MONOMIAL
   [../]
 
-  [./Gdelta]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./dGalphadc]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./dGdeltadc]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-
-  [./d2Galphadc2]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./d2Gdeltadc2]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./chem_energy]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./grad_energy]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./dfchemdc]
-    order = FIRST
+  [./elem_AMRProbability]
+    order = CONSTANT
     family = MONOMIAL
   [../]
 []
 
 [AuxKernels]
-  [./auxGalpha]
-    type = MaterialRealAux
-    variable = Galpha
-    property = G_AB1CD1
+  [./AuxChemElastic]
+    type = AuxCalphadElasticity
+    variable = elem_ChemElastic
+    concentration = concentration
+    OP = n
+    precip_conserved = 0.6 #this needs to be changed for each temperature
+    precip_nonconserved = 1
+    execute_on = timestep_end
+    self_energy = 0
+    use_elastic_energy = false
   [../]
 
-  [./auxGdelta]
-    type = MaterialRealAux
-    variable = Gdelta
-    property = G_AB1CD2
+  [./AuxVolumetricNucRate]
+    type = AuxVolumetricNucleationRate
+    variable = elem_VolumetricRate
+    rate_volume = 1 #nm^3...everything in aJ and nm and microseconds ..right?
+    coupled_bulk_energy_change = elem_ChemElastic
+    T = temperature
+    X = concentration
+    gamma = 0.1 #aJ/nm^2
+    jump_distance = 0.204 #nm
+    execute_on = timestep_end
   [../]
 
-  [./auxdGalphaDc]
-    type = MaterialRealAux
-    variable = dGalphadc
-    property = dGAB1CD1_dc
-  [../]
-
-  [./auxdGdeltaDc]
-    type = MaterialRealAux
-    variable = dGdeltadc
-    property = dGAB1CD2_dc
-  [../]
-
-  [./auxd2Galphadc2]
-    type = MaterialRealAux
-    variable = d2Galphadc2
-    property = d2GAB1CD1_dc2
-  [../]
-
-   [./auxd2Gdeltadc2]
-    type = MaterialRealAux
-    variable = d2Gdeltadc2
-    property = d2GAB1CD2_dc2
-   [../]
-
-  [./auxchemenergy]
-    type = AuxBulkEnergyCalphad
-    variable = chem_energy
-  [../]
-
-   [./auxgradenergy]
-     type = AuxGradientEnergy
-     variable = grad_energy
-     c = concentration
-     OP = n
-   [../]
-
-   [./auxdfchemdc]
-     type = AuxDFchemDC
-     variable = dfchemdc
-   [../]
-[]
-
-[ICs]
-  [./PSSCIC_c]
-      type = SmoothCircleIC
-      variable = concentration
-      int_width = 3
-      invalue = 0.6
-      outvalue = 0.1
-      radius = 4
-      x1 = 12.5
-      y1 = 12.5
-  [../]
-
-  [./PSSCIC_n]
-      type = SmoothCircleIC
-      variable = n
-      int_width = 3
-      invalue = 1
-      outvalue = 0
-      radius = 4
-      x1 = 12.5
-      y1 = 12.5
-  [../]
-
-  [./t_init]
-    type = ConstantIC
-    variable = temperature
-    value = 600
+  [./AuxAMRPRobability]
+    type = AuxAMRNucleationProbability
+    variable = elem_AMRProbability
+    coupled_aux_var = elem_VolumetricRate
+    coupled_variable = n
+    2D_mesh_height = 20
+    execute_on = timestep_end
   [../]
 []
 
 [Preconditioning]
- active = 'SMP'
   [./SMP]
    type = SMP
    full = true
@@ -208,9 +156,6 @@
     type = ACCoupledCalphad
     variable = n
     mob_name = L
-    n_OP_vars = 1
-    OP_var_names = 'n'
-    OP_number = 1
     w = mu
     c = concentration
   [../]
@@ -317,8 +262,71 @@
   [../]
 []
 
+[Adaptivity]
+  marker = combo
+  initial_steps = 4
+  initial_marker = EFM_1
+  max_h_level = 4
+  [./Markers]
+    [./EFM_1]
+      type = ErrorFractionMarker
+      coarsen = 0.075
+      refine = 0.75
+      indicator = GJI_1
+    [../]
+    [./EFM_2]
+      type = ErrorFractionMarker
+      coarsen = 0.05
+      refine = 0.25
+      indicator = GJI_2
+    [../]
+    [./NM]
+      type = NucleationMarker
+      nucleation_userobject = NLUO
+      max_h_level = 4
+    [../]
+
+     [./combo]
+       type = ComboMarker
+       markers = 'EFM_1 EFM_2 NM'
+     [../]
+  [../]
+
+  [./Indicators]
+    [./GJI_1]
+     type = GradientJumpIndicator
+      variable = n
+    [../]
+    [./GJI_2]
+     type = GradientJumpIndicator
+      variable = concentration
+    [../]
+  [../]
+[]
+
+[UserObjects]
+  [./NLUO]
+    type = NucleationLocationUserObject
+    coupled_probability = elem_AMRProbability
+    dwell_time = 10
+    execute_on = timestep_end
+    random_seed = 1000
+  [../]
+
+  [./NISM]
+    type = NucleusIntroductionSolutionModifier
+    nucleation_userobject = NLUO
+    variables = n
+    num_vars = 1
+    seed_value = 1
+    radius = 3
+    int_width = 1
+    execute_on = custom
+  [../]
+[]
+
 [Executioner]
-  type = Transient
+  type = MeshSolutionModify
   scheme = 'BDF2'
 
  [./TimeStepper]
@@ -330,6 +338,12 @@
     iteration_window = 1
     linear_iteration_ratio = 100
   [../]
+
+  adapt_nucleus = 4
+  adapt_cycles = 1
+
+  use_nucleation_userobject = true
+  nucleation_userobject = NLUO
 
   #Preconditioned JFNK (default)
   solve_type = 'PJFNK'
@@ -345,7 +359,7 @@
 
   start_time = 0
 
-  num_steps = 2
+  num_steps = 5
 
 #  end_time = 50
   dtmax = 1E6
@@ -353,7 +367,7 @@
 []
 
 [Outputs]
-  file_base = ZrHCalphad
+  file_base = Nuclei
 
   exodus = true
   interval = 1

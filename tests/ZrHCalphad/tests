@@ -3,14 +3,13 @@
     type = 'Exodiff'
     input = 'ZrHCalphad.i'
     exodiff = 'ZrHCalphad.e'
-    method = 'OPT OPROF'  # Too slow for debug     
+    method = 'OPT OPROF'  # Too slow for debug
   [../]
 
-  [./ZrHCalphad_3OP_test]
+  [./Elasticity_test]
     type = 'Exodiff'
-    input = 'ZrHCalphad_3OP.i'
-    exodiff = 'ZrHCalphad_3OP.e'
-    method = 'OPT OPROF'  # Too slow for debug   
-    skip = 'need to remove, not useful'
+    input = 'Elasticity.i'
+    exodiff = 'Elasticity.e'
+    method = 'OPT OPROF'  # Too slow for debug
   [../]
 []

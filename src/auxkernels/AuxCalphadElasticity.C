@@ -41,13 +41,13 @@ AuxCalphadElasticity::AuxCalphadElasticity(const InputParameters & parameters) :
   _G_delta_precip(getMaterialProperty<Real>("G_AB1CD2_precip")),
   _dG_alpha(getMaterialProperty<Real>("dGAB1CD1_dc")),
   _dG_delta(getMaterialProperty<Real>("dGAB1CD2_dc")),
-  _stress(getMaterialProperty<RankTwoTensor>("stress")),
-  _precipitate_eigenstrain(getMaterialProperty<RankTwoTensor>("precipitate_misfit_tensor")),
+  _use_elastic_energy(getParam<bool>("use_elastic_energy")),
+  _stress(_use_elastic_energy ? getMaterialProperty<RankTwoTensor>("stress") : getMaterialProperty<RankTwoTensor>("void_tensor")),
+  _precipitate_eigenstrain(_use_elastic_energy ? getMaterialProperty<RankTwoTensor>("precipitate_misfit_tensor") : getMaterialProperty<RankTwoTensor>("void_tensor")),
   _Omega(getMaterialProperty<Real>("molar_volume")),
   _W(getMaterialProperty<Real>("well_height")),
   _OP(coupledValue("OP")),
-  _X(coupledValue("concentration")),
-  _use_elastic_energy(getParam<bool>("use_elastic_energy"))
+  _X(coupledValue("concentration"))
 {
 }
 

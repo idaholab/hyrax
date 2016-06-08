@@ -50,6 +50,8 @@ protected:
   const MaterialProperty<Real> & _dG_alpha;
   const MaterialProperty<Real> & _dG_delta;
 
+  bool _use_elastic_energy;
+
   const MaterialProperty<RankTwoTensor> & _stress;
   const MaterialProperty<RankTwoTensor> & _precipitate_eigenstrain;
 
@@ -58,7 +60,6 @@ protected:
 
   const VariableValue & _OP;
   const VariableValue & _X;
-  bool _use_elastic_energy;
 
 private:
 };

@@ -9,6 +9,7 @@
 *************************************************************************/
 
 #include "ZrHCalphadDiffusivity.h"
+#include "RankTwoTensor.h"
 
 template<>
 InputParameters validParams<ZrHCalphadDiffusivity>()
@@ -87,13 +88,18 @@ ZrHCalphadDiffusivity::ZrHCalphadDiffusivity(const InputParameters & parameters)
       _d2gdOP2(declareProperty<Real>("d2barrier_dOP2")),
       _c(coupledValue("concentration")),
       _OP(coupledValue("OP_variable")),
-      _temperature(coupledValue("temperature"))
+      _temperature(coupledValue("temperature")),
+      _void_tensor(declareProperty<RankTwoTensor>("void_tensor"))
 {
 }
 
 void
 ZrHCalphadDiffusivity::computeQpProperties()
 {
+  //this is here because I need to figure out how to make a material property zero
+  RankTwoTensor empty; empty.zero();
+  _void_tensor[_qp] = empty;
+
   _D_alpha[_qp] = _H_Zr_D0*std::exp(-_H_Zr_Q0/(_R*_temperature[_qp]));
   _D_delta[_qp] = _H_ZrH2_D0*std::exp(-_H_ZrH2_Q0/(_R*_temperature[_qp]));
 

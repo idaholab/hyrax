@@ -30,6 +30,16 @@
     order = FIRST
     family = LAGRANGE
   [../]
+
+ [./disp_x]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+
+  [./disp_y]
+    order = FIRST
+    family = LAGRANGE
+  [../]
 []
 
 [AuxVariables]
@@ -38,105 +48,188 @@
     family = MONOMIAL
   [../]
 
-  [./Galpha]
+  [./elem_ChemElastic]
     order = FIRST
     family = MONOMIAL
   [../]
 
-  [./Gdelta]
+  [./s11_aux]
     order = FIRST
     family = MONOMIAL
   [../]
 
-  [./dGalphadc]
+  [./s12_aux]
     order = FIRST
     family = MONOMIAL
   [../]
 
-  [./dGdeltadc]
+  [./s22_aux]
     order = FIRST
     family = MONOMIAL
   [../]
 
-
-  [./d2Galphadc2]
+  [./s13_aux]
     order = FIRST
     family = MONOMIAL
   [../]
 
-  [./d2Gdeltadc2]
+  [./s23_aux]
     order = FIRST
     family = MONOMIAL
   [../]
 
-  [./chem_energy]
+  [./s33_aux]
     order = FIRST
     family = MONOMIAL
   [../]
 
-  [./grad_energy]
+  [./e11_aux]
     order = FIRST
     family = MONOMIAL
   [../]
 
-  [./dfchemdc]
+  [./e12_aux]
+    order = FIRST
+    family = MONOMIAL
+  [../]
+
+  [./e22_aux]
+    order = FIRST
+    family = MONOMIAL
+  [../]
+
+  [./e13_aux]
+    order = FIRST
+    family = MONOMIAL
+  [../]
+
+  [./e23_aux]
+    order = FIRST
+    family = MONOMIAL
+  [../]
+
+  [./e33_aux]
+    order = FIRST
+    family = MONOMIAL
+  [../]
+
+  [./dfeldc]
     order = FIRST
     family = MONOMIAL
   [../]
 []
 
 [AuxKernels]
-  [./auxGalpha]
-    type = MaterialRealAux
-    variable = Galpha
-    property = G_AB1CD1
+  [./AuxChemElastic]
+    type = AuxCalphadElasticity
+    variable = elem_ChemElastic
+    concentration = concentration
+    OP = n
+    precip_conserved = 0.6 #this needs to be changed for each temperature
+    precip_nonconserved = 1
+    execute_on = timestep_end
+    self_energy = 0
   [../]
 
-  [./auxGdelta]
-    type = MaterialRealAux
-    variable = Gdelta
-    property = G_AB1CD2
+  [./matl_s11]
+    type = RankTwoAux
+    rank_two_tensor = stress
+    index_i = 0
+    index_j = 0
+    variable = s11_aux
   [../]
 
-  [./auxdGalphaDc]
-    type = MaterialRealAux
-    variable = dGalphadc
-    property = dGAB1CD1_dc
+ [./matl_s12]
+    type = RankTwoAux
+    rank_two_tensor = stress
+    index_i = 0
+    index_j = 1
+    variable = s12_aux
   [../]
 
-  [./auxdGdeltaDc]
-    type = MaterialRealAux
-    variable = dGdeltadc
-    property = dGAB1CD2_dc
+  [./matl_s22]
+    type = RankTwoAux
+    rank_two_tensor = stress
+    index_i = 1
+    index_j = 1
+    variable = s22_aux
   [../]
 
-  [./auxd2Galphadc2]
-    type = MaterialRealAux
-    variable = d2Galphadc2
-    property = d2GAB1CD1_dc2
+  [./matl_s13]
+    type = RankTwoAux
+    rank_two_tensor = stress
+    index_i = 0
+    index_j = 2
+    variable = s13_aux
   [../]
 
-   [./auxd2Gdeltadc2]
-    type = MaterialRealAux
-    variable = d2Gdeltadc2
-    property = d2GAB1CD2_dc2
-   [../]
-
-  [./auxchemenergy]
-    type = AuxBulkEnergyCalphad
-    variable = chem_energy
+ [./matl_s23]
+    type = RankTwoAux
+    rank_two_tensor = stress
+    index_i = 1
+    index_j = 2
+    variable = s23_aux
   [../]
 
-   [./auxgradenergy]
-     type = AuxGradientEnergy
-     variable = grad_energy
-     c = concentration
-     OP = n
-   [../]
+  [./matl_s33]
+    type = RankTwoAux
+    rank_two_tensor = stress
+    index_i = 2
+    index_j = 2
+    variable = s33_aux
+  [../]
 
-   [./auxdfchemdc]
-     type = AuxDFchemDC
-     variable = dfchemdc
+  [./matl_e11]
+    type = RankTwoAux
+    rank_two_tensor = elastic_strain
+    index_i = 0
+    index_j = 0
+    variable = e11_aux
+  [../]
+
+ [./matl_e12]
+    type = RankTwoAux
+    rank_two_tensor = elastic_strain
+    index_i = 0
+    index_j = 1
+    variable = e12_aux
+  [../]
+
+  [./matl_e22]
+    type = RankTwoAux
+    rank_two_tensor = elastic_strain
+    index_i = 1
+    index_j = 1
+    variable = e22_aux
+  [../]
+
+  [./matl_e13]
+    type = RankTwoAux
+    rank_two_tensor = elastic_strain
+    index_i = 0
+    index_j = 2
+    variable = e13_aux
+  [../]
+
+ [./matl_e23]
+    type = RankTwoAux
+    rank_two_tensor = elastic_strain
+    index_i = 1
+    index_j = 2
+    variable = e23_aux
+  [../]
+
+  [./matl_e33]
+    type = RankTwoAux
+    rank_two_tensor = elastic_strain
+    index_i = 2
+    index_j = 2
+    variable = e33_aux
+  [../]
+
+   [./auxdfeldc]
+     type = AuxDFelDC
+     variable = dfeldc
    [../]
 []
 
@@ -179,6 +272,10 @@
 []
 
 [Kernels]
+ [./TensorMechanics]
+    displacements = 'disp_x disp_y'
+  [../]
+
   [./dcdt]
     type = CoupledTimeDerivative
     variable = mu
@@ -192,11 +289,11 @@
   [../]
 
   [./conc_residual]
-    type = CHCoupledCalphadSplit
+    type = CHPrecipMatrixElasticity
     variable = concentration
     kappa_name = kappa_c
     w = mu
-    n = n
+    use_elasticity = true #false
   [../]
 
   [./dndt]
@@ -220,6 +317,11 @@
     variable = n
     mob_name = L
     kappa_name = kappa_n
+  [../]
+
+  [./ACTransform]
+    type = ACTransformElasticDF
+    variable = n
   [../]
 []
 
@@ -315,6 +417,58 @@
                                   -0.00437791
                                34971.0' #HCP_Zr
   [../]
+
+ [./Zr_system]
+    type = TwoPhaseLinearElasticMaterial
+    block = 0
+    disp_x = disp_x
+    disp_y = disp_y
+
+    #units: aJ/nm^3
+
+    #reading         C_11  C_12  C_13  C_22  C_23  C_33  C_44  C_55  C_66
+    #this is rotated
+    #Because the simulation is in the xz plane and a 2D simulation, the tensor is rotated (aJ/nm^3)
+    Cijkl_matrix = '128.86 65.75 78.98 155.04 65.75 128.86 27.88 26.44 27.88'
+
+    #adjusted these to delta ZrHy 1.5 from Olsson
+    Cijkl_precip = '162 103 103 162 103 162 69.3 69.3 69.3'
+
+    #reading          S_11    S_22   S_33   S_23 S_13 S_12
+    #this is rotated
+    matrix_eigenstrain       = '0.0329  0.0542 0.0329 0.0  0.0  0.0'
+
+    order_parameter = 'n'
+    matrix_fill_method = symmetric9
+    precip_fill_method = symmetric9
+
+   atomic_fraction = concentration
+
+    #THIS HAS TEMPERATURE DEPENDENCE
+    temperature = temperature
+    #this is rotated
+    precipitate_eigenstrain = '0.03888 0.06646 0.03888 0 0 0'
+    #this is rotated
+    precip_misfit_T_coeffs = '2.315E-5 1.9348E-5 2.315E-5 0 0 0'
+
+    percent_precip_misfit = 0.5
+  [../]
+[]
+
+[BCs]
+[./pin_nodex]
+    type = DirichletBC
+    variable = disp_x
+    value = 0.0
+    boundary = '0'
+  [../]
+
+ [./pin_nodey]
+    type = DirichletBC
+    variable = disp_y
+    value = 0.0
+    boundary = '0'
+  [../]
 []
 
 [Executioner]
@@ -353,7 +507,7 @@
 []
 
 [Outputs]
-  file_base = ZrHCalphad
+  file_base = Elasticity
 
   exodus = true
   interval = 1

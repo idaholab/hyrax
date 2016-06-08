@@ -46,7 +46,7 @@ TwoPhaseLinearElasticMaterial::TwoPhaseLinearElasticMaterial(const InputParamete
     _grad_disp_x(coupledGradient("disp_x")),
     _grad_disp_y(coupledGradient("disp_y")),
     _grad_disp_z(_mesh.dimension() == 3 ? coupledGradient("disp_z") : _grad_zero),
-    _h(getMaterialProperty<Real>("interpolation_function")),
+    _h(getMaterialProperty<Real>("interpolation_fxn")),
     _dhdn(getMaterialProperty<Real>("dinterpolation_dOP")),
     _d2hdn2(getMaterialProperty<Real>("d2interpolation_dOP2")),
     _stress(declareProperty<RankTwoTensor>("stress")),
