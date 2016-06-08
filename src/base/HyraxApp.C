@@ -48,16 +48,11 @@
 #include "StressBC.h"
 
 //Materials
-#include "PFMobilityLandau.h"
-#include "LinearSingleCrystalPrecipitateMaterial.h"
 #include "ZrHCalphad.h"
 #include "CalphadEnergyMaterial.h"
 #include "CalphadAB1CD1Material.h"
 #include "CalphadAB1CD2Material.h"
-#include "PrecipitateMatrixMisfitMaterial.h"
 #include "ZrHCalphadDiffusivity.h"
-#include "FreeEnergy.h"
-#include "MatlAuxVolNucRate.h"
 #include "TwoPhaseLinearElasticMaterial.h"
 
 //Initial Conditions
@@ -156,16 +151,11 @@ HyraxApp::registerObjects(Factory & factory)
   registerBoundaryCondition(StressBC);
 
   //Materials
-  registerMaterial(PFMobilityLandau);
-  registerMaterial(LinearSingleCrystalPrecipitateMaterial);
   registerMaterial(ZrHCalphad);
   registerMaterial(CalphadEnergyMaterial);
   registerMaterial(CalphadAB1CD1Material);
   registerMaterial(CalphadAB1CD2Material);
-  registerMaterial(PrecipitateMatrixMisfitMaterial);
   registerMaterial(ZrHCalphadDiffusivity);
-  registerMaterial(FreeEnergy);
-  registerMaterial(MatlAuxVolNucRate);
   registerMaterial(TwoPhaseLinearElasticMaterial);
 
   //Initial Conditions

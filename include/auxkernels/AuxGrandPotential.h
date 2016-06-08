@@ -49,11 +49,6 @@ private:
 
   Real _omega_eq;
 
-  Real _length_scale_factor;
-  Real _energy_scale_factor;
-
-//Real _scaling_factor;
-
 };
 
 #endif //AUXGRANDPOTENTIAL_H
