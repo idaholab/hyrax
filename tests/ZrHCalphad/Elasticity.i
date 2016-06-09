@@ -476,13 +476,8 @@
   scheme = 'BDF2'
 
  [./TimeStepper]
-    type = IterationAdaptiveDT
+    type = ConstantDT
     dt = 1e0
-    cutback_factor = 0.25
-    growth_factor = 1.05
-    optimal_iterations = 5
-    iteration_window = 1
-    linear_iteration_ratio = 100
   [../]
 
   #Preconditioned JFNK (default)
