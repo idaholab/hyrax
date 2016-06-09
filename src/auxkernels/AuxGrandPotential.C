@@ -16,6 +16,8 @@ InputParameters validParams<AuxGrandPotential>()
   InputParameters params = validParams<AuxKernel>();
 
   params.addRequiredParam<Real>("omega_eq", "equilibrium canonical value");
+  params.addRequiredCoupledVar("concentration", "concentration variable");
+  params.addRequiredCoupledVar("OP", "order parameter variable");
 
   return params;
 }

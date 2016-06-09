@@ -7,7 +7,7 @@
 [Mesh]
   type = GeneratedMesh
   dim = 1
-  nx = 50
+  nx = 150
   ny = 0
   nz = 0
   xmin = 0
@@ -65,6 +65,10 @@
   [./temperature]
     order = CONSTANT
     family = MONOMIAL
+      [./InitialCondition]
+        type = ConstantIC
+        value = 600
+      [../]
   [../]
 
   [./omega]
@@ -74,18 +78,12 @@
 []
 
 [AuxKernels]
-  [./auxtemp]
-    type = AuxTemperature
-    variable = temperature
-    temp_in_K = 600
-  [../]
-
   [./omega_calc]
-    type = AuxCanonicalEnsemble
+    type = AuxGrandPotential
     variable = omega
-    OP = n
-    concentration = concentration
     omega_eq = -1.9093 #600K  # -1.45135 #485K
+    concentration = concentration
+    OP = n
   [../]
 []
 
@@ -104,13 +102,9 @@
   [../]
 
   [./mu_residual]
-    type = SplitCHWRes #SplitCoupledCHWRes
+    type = SplitCHWRes
     variable = mu
     mob_name = M
-    #T = temperature
-    #c = concentration
-    #n_OP_vars = 1
-    #OP_var_names = n
   [../]
 
   [./conc_residual]
@@ -158,8 +152,8 @@
     mobility_AC = 1E-1 #nm^3/(aJ microsecond)
 #    CH_mobility_scaling = 1E-23
 
-    kappa_CH = 0 #aJ/nm
-    kappa_AC = 5e-1 #aJ/nm
+    kappa_CH = 1 #aJ/nm
+    kappa_AC = 1 #aJ/nm
 
     #well height and molar volume remain unscaled.
     well_height = 0 #aJ/amol?
@@ -262,10 +256,14 @@
   type = Transient
   scheme = 'BDF2'
 
-  [./TimeStepper]
-    type = SolutionTimeAdaptiveDT
-    dt = 1
-    percent_change = 0.05
+ [./TimeStepper]
+    type = IterationAdaptiveDT
+    dt = 1e0
+    cutback_factor = 0.25
+    growth_factor = 1.05
+    optimal_iterations = 5
+    iteration_window = 1
+    linear_iteration_ratio = 100
   [../]
 
   #Preconditioned JFNK (default)
