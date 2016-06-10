@@ -7,7 +7,7 @@
 [Mesh]
   type = GeneratedMesh
   dim = 1
-  nx = 150
+  nx = 50
   ny = 0
   nz = 0
   xmin = 0
@@ -152,8 +152,8 @@
     mobility_AC = 1E-1 #nm^3/(aJ microsecond)
 #    CH_mobility_scaling = 1E-23
 
-    kappa_CH = 1 #aJ/nm
-    kappa_AC = 1 #aJ/nm
+    kappa_CH = 0.0 #aJ/nm
+    kappa_AC = 0.8 #aJ/nm
 
     #well height and molar volume remain unscaled.
     well_height = 0 #aJ/amol?
@@ -268,15 +268,17 @@
 
   #Preconditioned JFNK (default)
   solve_type = 'PJFNK'
-  petsc_options_iname = '-pc_type -pc_asm_overlap -sub_pc_type -ksp_gmres_restart'
-  petsc_options_value = ' asm      1              lu           30'
+#  petsc_options_iname = '-pc_type -pc_asm_overlap -sub_pc_type -ksp_gmres_restart'
+#  petsc_options_value = ' asm      1              lu           30'
+  petsc_options_iname = '-pc_type -sub_pc_type'
+  petsc_options_value = 'ksp lu'
 
   l_max_its = 100
   l_tol = 1.0e-4
 
   nl_rel_tol = 1.0e-8
   nl_abs_tol = 5e-10
-  nl_max_its = 20
+  nl_max_its = 10
 
   start_time = 0
   num_steps = 10000
@@ -323,7 +325,7 @@
 []
 
 [Outputs]
-  file_base = 1D_interfaceEnergy_600K_kc0kn05_eq
+  file_base = 1D_interfaceEnergy_600K_kc0kn08_eq
 
   exodus = true
   interval = 20

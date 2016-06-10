@@ -1,3 +1,13 @@
 kc = 0, kn = 1 aJ/nm, 600 K: 512 mJ/m^2 width=2.6 nm for eta = 0.05 to 0.95, 1e-6/0.49 and 0.5/0.665 for cutoffs.
 
+kc = 0, n1 = 0.8 aJ/nm, 600K: 394 mJ/m^2, width = 2.3 nm
+
+kc = 0, n1 = 0.75 aJ/nm, 600K: 365 mJ/m^2, width = 2.2 nm
+
 kc = 0, n1 = 0.5 aJ/nm, 600K: 239 mJ/m^2 width = 1.8 nm
+
+kc = 0.5, n1 = 0.5 aJ/nm, 600K: 632 mJ/m^2, width = 1.9 nm
+
+kc = 0.1, n1 = 0.75 aJ/nm, 600K: 509 mJ/m^2, width = 2.2 nm
+
+kc = 0.01, n1 = 0.75 aJ/nm, 600K: 478 mJ/m^2, width = 2.2 nm
