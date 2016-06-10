@@ -46,6 +46,7 @@
 
 //Boundary Conditions
 #include "StressBC.h"
+#include "SimpleSplitCHFluxBC.h"
 
 //Materials
 #include "CalphadEnergyMaterial.h"
@@ -148,6 +149,7 @@ HyraxApp::registerObjects(Factory & factory)
 
   //Boundary Conditions
   registerBoundaryCondition(StressBC);
+  registerBoundaryCondition(SimpleSplitCHFluxBC);
 
   //Materials
   registerMaterial(CalphadEnergyMaterial);
