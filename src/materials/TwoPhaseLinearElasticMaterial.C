@@ -118,7 +118,7 @@ TwoPhaseLinearElasticMaterial::computeQpStrain()
 {
   RankTwoTensor grad_tensor(_grad_disp_x[_qp], _grad_disp_y[_qp], _grad_disp_z[_qp]);
 
-  _current_precip_misfit = (1 - _percent_precip_misfit)*(_precipitate_eigenstrain + _T[_qp]*_precip_misfit_T_coeffs);
+  _current_precip_misfit = _percent_precip_misfit*(_precipitate_eigenstrain + _T[_qp]*_precip_misfit_T_coeffs);
 
   _total_strain[_qp] = 0.5*(grad_tensor + grad_tensor.transpose());
   _misfit_strain[_qp] = (1 - _h[_qp])*(_X[_qp]*_matrix_eigenstrain) + _h[_qp]*(_current_precip_misfit);

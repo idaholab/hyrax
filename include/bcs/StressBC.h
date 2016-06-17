@@ -44,16 +44,10 @@ protected:
   std::vector<Real> _stress_vector;
 
   RankTwoTensor _boundary_stress;
-  std::vector<const VariableValue *> _boundary_stress_vars;
 
   const MaterialProperty<RankFourTensor> & _Jacobian_mult;
 
-
   const int _component;
-
-  bool _convert_to_gpa;
-
-  Real _multiplier;
 };
 
 #endif
