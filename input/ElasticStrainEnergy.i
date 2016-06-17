@@ -1,18 +1,20 @@
-#This simulation is in aJ, nm.  I'm slowly building all the components up to be correct.
-#It calculates the elastic energy of the system for a single, isolated particle.
+#This simulation is in aJ, nm. It calculates elastic strain energy for a single
+#spherical precipitate in a matrix for a given amount of misfit.
 
 [Mesh]
   type = GeneratedMesh
-  dim = 3
-  nx = 10
-  ny = 10
-  nz = 10
+  dim = 2
+  nx = 35
+  ny = 35
+  nz = 35
   xmin = 0
   xmax = 500
   ymin = 0
   ymax = 500
   zmin = 0
   zmax = 500
+
+#  elem_type = QUAD4
 []
 
 [Variables]
@@ -23,7 +25,7 @@
       type = EllipsoidIC
       variable = concentration
       n_seeds = 1
-      int_width = 1
+      int_width = 2
       invalue = 0.6
       outvalue = 0.0
       x_positions = '0'
@@ -85,90 +87,18 @@
     order = CONSTANT
     family = MONOMIAL
   [../]
-
-  [./s11_aux]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./s12_aux]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./s22_aux]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./s13_aux]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./s23_aux]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./s33_aux]
-    order = FIRST
-    family = MONOMIAL
-  [../]
 []
 
 [AuxKernels]
-  [./aux_ElasticEnergy]
-    type = AuxElasticEnergy
-    variable = elem_ElasticEnergy
+  [./auxtemp]
+    type = AuxTemperature
+    variable = temperature
+    temp_in_K = 600
   [../]
 
-  [./matl_s11]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    index_i = 0
-    index_j = 0
-    variable = s11_aux
-  [../]
-
- [./matl_s12]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    index_i = 0
-    index_j = 1
-    variable = s12_aux
-  [../]
-
-  [./matl_s22]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    index_i = 1
-    index_j = 1
-    variable = s22_aux
-  [../]
-
-  [./matl_s13]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    index_i = 0
-    index_j = 2
-    variable = s13_aux
-  [../]
-
- [./matl_s23]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    index_i = 1
-    index_j = 2
-    variable = s23_aux
-  [../]
-
-  [./matl_s33]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    index_i = 2
-    index_j = 2
-    variable = s33_aux
+  [./AuxElasticEnergy]
+     type = AuxElasticEnergy
+     variable = elem_ElasticEnergy
   [../]
 []
 
@@ -346,10 +276,10 @@
 ##    C_ijkl = '131.112E9 65.654E9 78.232E9 156.59E9 65.654E9 131.112E9 28.476E9 26.436E9 28.476E9 '
 
     #600k
-#    C_ijkl = '128.858E9 78.978E9 65.754E9 128.858E9 65.754E9  155.036E9 27.876E9  27.876E9  26.436E9'
+    C_ijkl = '128.858E9 78.978E9 65.754E9 128.858E9 65.754E9  155.036E9 27.876E9  27.876E9  26.436E9'
     #this is rotated
     #Because the simulation is in the xz plane and a 2D simulation, the tensor is rotated (aJ/nm^3)
-    Cijkl_matrix = '128.86 65.75 78.98 155.04 65.75 128.86 27.88 26.44 27.88'
+#    Cijkl_matrix = '128.86 65.75 78.98 155.04 65.75 128.86 27.88 26.44 27.88'
 ##    Cijkl_precip = '128.86 65.75 78.98 155.04 65.75 128.86 27.88 26.44 27.88'
 
     #650k
@@ -361,7 +291,8 @@
     #reading          S_11    S_22   S_33   S_23 S_13 S_12
     # e_matrix       = '0.0329  0.0329 0.0542 0.0  0.0  0.0'
     #this is rotated
-   matrix_eigenstrain       = '0.0329  0.0542 0.0329 0.0  0.0  0.0'
+   # matrix_eigenstrain       = '0.0329  0.0542 0.0329 0.0  0.0  0.0'
+     matrix_eigenstrain       = '0.0329  0.0329 0.0542 0.0  0.0  0.0'
 
     order_parameter = 'n'
     matrix_fill_method = symmetric9
@@ -372,12 +303,13 @@
 
     #THIS HAS TEMPERATURE DEPENDENCE
     temperature = temperature
-    #precipitate_eigenstrain = '0.03888 0.03888 0.06646 0 0 0'
+    precipitate_eigenstrain = '0.03888 0.03888 0.06646 0 0 0'
     #this is rotated
-    precipitate_eigenstrain = '0.03888 0.06646 0.03888 0 0 0'
-#    misfit_temperature_coeffs = '2.315E-5 2.315E-5 1.9348E-5 0 0 0'
+    #precipitate_eigenstrain = '0.03888 0.06646 0.03888 0 0 0'
+
+    precip_misfit_Te_coeffs = '2.315E-5 2.315E-5 1.9348E-5 0 0 0'
     #this is rotated
-    precip_misfit_T_coeffs = '2.315E-5 1.9348E-5 2.315E-5 0 0 0'
+    #precip_misfit_T_coeffs = '2.315E-5 1.9348E-5 2.315E-5 0 0 0'
 
     #percent_matrix_misfit = 1
     percent_precip_misfit = 1
@@ -386,21 +318,21 @@
 
 
 [BCs]
- [./mirror_x]
+ [./pin_nodex]
     type = DirichletBC
     variable = disp_x
     value = 0.0
     boundary = 'left'
   [../]
 
- [./mirror_y]
+ [./pin_nodey]
     type = DirichletBC
     variable = disp_y
     value = 0.0
     boundary = 'bottom'
   [../]
 
- [./mirror_z]
+  [./pin_nodey]
     type = DirichletBC
     variable = disp_z
     value = 0.0
@@ -435,9 +367,9 @@
 
 [Adaptivity]
   marker = combo
-  initial_steps = 7
+  initial_steps = 5
   initial_marker = EFM_1
-  max_h_level = 7
+  max_h_level = 5
   [./Markers]
     [./EFM_1]
       type = ErrorFractionMarker
@@ -451,28 +383,10 @@
       refine = 0.25
       indicator = GJI_2
     [../]
-    [./EFM_3]
-      type = ErrorFractionMarker
-      coarsen = 0.05
-      refine = 0.25
-      indicator = GJI_3
-    [../]
-    [./EFM_4]
-      type = ErrorFractionMarker
-      coarsen = 0.05
-      refine = 0.25
-      indicator = GJI_4
-    [../]
-    [./EFM_5]
-      type = ErrorFractionMarker
-      coarsen = 0.05
-      refine = 0.25
-      indicator = GJI_5
-    [../]
 
      [./combo]
        type = ComboMarker
-       markers = 'EFM_1 EFM_2 EFM_3 EFM_4 EFM_5'
+       markers = 'EFM_1 EFM_2'
      [../]
   [../]
 
@@ -485,23 +399,11 @@
      type = GradientJumpIndicator
       variable = concentration
     [../]
-    [./GJI_3]
-     type = GradientJumpIndicator
-      variable = disp_x
-    [../]
-    [./GJI_4]
-     type = GradientJumpIndicator
-      variable = disp_y
-    [../]
-    [./GJI_5]
-     type = GradientJumpIndicator
-      variable = disp_z
-    [../]
   [../]
 []
 
 [Executioner]
-  type = MeshSolutionModify
+  type = Transient
   scheme = 'BDF2'
 
  [./TimeStepper]
@@ -532,7 +434,7 @@
 
   start_time = 0
 
-  num_steps = 5
+  num_steps = 10
 
 #  end_time = 50
   dtmax = 1E6
@@ -540,11 +442,11 @@
 []
 
 [Outputs]
-  file_base = SingleParticleElasticSelfEnergy_100p
+  file_base = ElasticEnergy600K_100pmisfit
 
   exodus = true
   interval = 1
-  checkpoint = 1
+  checkpoint = false
   csv = true
 
   [./console]

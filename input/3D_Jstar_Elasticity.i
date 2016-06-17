@@ -1,18 +1,28 @@
-#This simulation is in aJ, nm.  I'm slowly building all the components up to be correct.
-#It calculates the elastic energy of the system for a single, isolated particle.
+#This simulation is in aJ, nm. It is to determine the nucleation rate as a function of temperature, hydrogen content, elastic strain energy, interfacial energy, etc.
 
 [Mesh]
   type = GeneratedMesh
   dim = 3
-  nx = 10
-  ny = 10
-  nz = 10
+  nx = 1
+  ny = 1
+  nz = 1
   xmin = 0
-  xmax = 500
+  xmax = 5
   ymin = 0
-  ymax = 500
+  ymax = 5
   zmin = 0
-  zmax = 500
+  zmax = 5
+
+#  elem_type = QUAD4
+[]
+
+[MeshModifiers]
+  [./AddExtraNodeset]
+    #this is done to fix a node for mechanical computations
+    new_boundary = 100
+    coord = '0 0 0'
+    type = AddExtraNodeset
+  [../]
 []
 
 [Variables]
@@ -20,16 +30,9 @@
     order = FIRST
     family = LAGRANGE
     [./InitialCondition]
-      type = EllipsoidIC
+      type = ConstantIC
       variable = concentration
-      n_seeds = 1
-      int_width = 1
-      invalue = 0.6
-      outvalue = 0.0
-      x_positions = '0'
-      y_positions = '0'
-      z_positions = '0'
-      coefficients = '10 10 10'
+      value = 0.025
     [../]
   [../]
 
@@ -42,20 +45,14 @@
     order = FIRST
     family = LAGRANGE
     [./InitialCondition]
-      type = EllipsoidIC
+      type = RandomIC
       variable = n
-      n_seeds = 1
-      int_width = 1
-      invalue = 1
-      outvalue = 0
-      x_positions = '0'
-      y_positions = '0'
-      z_positions = '0'
-      coefficients = '10 10 10'
+      min = 1e-9
+      max = 0
     [../]
   [../]
 
-  [./disp_x]
+ [./disp_x]
     order = FIRST
     family = LAGRANGE
   [../]
@@ -81,94 +78,54 @@
     [../]
   [../]
 
-  [./elem_ElasticEnergy]
+  [./elem_ChemElastic]
     order = CONSTANT
     family = MONOMIAL
   [../]
 
-  [./s11_aux]
-    order = FIRST
+  [./elem_VolumetricRate]
+    order = CONSTANT
     family = MONOMIAL
   [../]
 
-  [./s12_aux]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./s22_aux]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./s13_aux]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./s23_aux]
-    order = FIRST
-    family = MONOMIAL
-  [../]
-
-  [./s33_aux]
-    order = FIRST
+  [./elem_AMRProbability]
+    order = CONSTANT
     family = MONOMIAL
   [../]
 []
 
 [AuxKernels]
-  [./aux_ElasticEnergy]
-    type = AuxElasticEnergy
-    variable = elem_ElasticEnergy
+  [./AuxChemElastic]
+    type = AuxCalphadElasticity
+    variable = elem_ChemElastic
+    concentration = concentration
+    OP = n
+    precip_conserved = 0.599 #this needs to be changed for each temperature
+    precip_nonconserved = 1
+    execute_on = timestep_end
+    self_energy = 1e-1
+    use_elastic_energy = true
   [../]
 
-  [./matl_s11]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    index_i = 0
-    index_j = 0
-    variable = s11_aux
+  [./AuxVolumetricNucRate]
+    type = AuxVolumetricNucleationRate
+    variable = elem_VolumetricRate
+    rate_volume = 1 #nm^3...everything in aJ and nm and microseconds ..right?
+    coupled_bulk_energy_change = elem_ChemElastic
+    T = temperature
+    X = concentration
+    gamma = 0.065 #aJ/nm^2
+    jump_distance = 0.204 #nm
+    execute_on = timestep_end
   [../]
 
- [./matl_s12]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    index_i = 0
-    index_j = 1
-    variable = s12_aux
-  [../]
-
-  [./matl_s22]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    index_i = 1
-    index_j = 1
-    variable = s22_aux
-  [../]
-
-  [./matl_s13]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    index_i = 0
-    index_j = 2
-    variable = s13_aux
-  [../]
-
- [./matl_s23]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    index_i = 1
-    index_j = 2
-    variable = s23_aux
-  [../]
-
-  [./matl_s33]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    index_i = 2
-    index_j = 2
-    variable = s33_aux
+  [./AuxAMRPRobability]
+    type = AuxAMRNucleationProbability
+    variable = elem_AMRProbability
+    coupled_aux_var = elem_VolumetricRate
+    coupled_variable = n
+   # 2D_mesh_height = 20
+    execute_on = timestep_end
   [../]
 []
 
@@ -183,7 +140,6 @@
   [./TensorMechanics]
     displacements = 'disp_x disp_y disp_z'
   [../]
-
   [./dcdt]
     type = CoupledTimeDerivative
     variable = mu
@@ -195,6 +151,7 @@
     variable = mu
     mob_name = M
   [../]
+
 
   [./conc_residual]
     type = CHPrecipMatrixElasticity #CHCoupledCalphadSplit
@@ -346,11 +303,10 @@
 ##    C_ijkl = '131.112E9 65.654E9 78.232E9 156.59E9 65.654E9 131.112E9 28.476E9 26.436E9 28.476E9 '
 
     #600k
-#    C_ijkl = '128.858E9 78.978E9 65.754E9 128.858E9 65.754E9  155.036E9 27.876E9  27.876E9  26.436E9'
+    Cijkl_matrix = '128.858 78.978 65.754 128.858 65.754  155.036 27.876  27.876  26.436'
     #this is rotated
     #Because the simulation is in the xz plane and a 2D simulation, the tensor is rotated (aJ/nm^3)
-    Cijkl_matrix = '128.86 65.75 78.98 155.04 65.75 128.86 27.88 26.44 27.88'
-##    Cijkl_precip = '128.86 65.75 78.98 155.04 65.75 128.86 27.88 26.44 27.88'
+#    Cijkl_matrix = '128.86 65.75 78.98 155.04 65.75 128.86 27.88 26.44 27.88'
 
     #650k
 #    #C_ijkl = '126.666E9 79.624E9 65.854E9 126.666E9 65.854E9  153.382E9 27.276E9  27.276E9  23.544E9'
@@ -361,7 +317,8 @@
     #reading          S_11    S_22   S_33   S_23 S_13 S_12
     # e_matrix       = '0.0329  0.0329 0.0542 0.0  0.0  0.0'
     #this is rotated
-   matrix_eigenstrain       = '0.0329  0.0542 0.0329 0.0  0.0  0.0'
+    #matrix_eigenstrain       = '0.0329  0.0542 0.0329 0.0  0.0  0.0'
+    matrix_eigenstrain       = '0.0329  0.0329 0.0542 0.0  0.0  0.0'
 
     order_parameter = 'n'
     matrix_fill_method = symmetric9
@@ -372,136 +329,50 @@
 
     #THIS HAS TEMPERATURE DEPENDENCE
     temperature = temperature
-    #precipitate_eigenstrain = '0.03888 0.03888 0.06646 0 0 0'
+    precipitate_eigenstrain = '0.03888 0.03888 0.06646 0 0 0'
     #this is rotated
-    precipitate_eigenstrain = '0.03888 0.06646 0.03888 0 0 0'
-#    misfit_temperature_coeffs = '2.315E-5 2.315E-5 1.9348E-5 0 0 0'
+    #precipitate_eigenstrain = '0.03888 0.06646 0.03888 0 0 0'
+    precip_misfit_T_coeffs = '2.315E-5 2.315E-5 1.9348E-5 0 0 0'
     #this is rotated
-    precip_misfit_T_coeffs = '2.315E-5 1.9348E-5 2.315E-5 0 0 0'
+    #precip_misfit_T_coeffs = '2.315E-5 1.9348E-5 2.315E-5 0 0 0'
 
     #percent_matrix_misfit = 1
     percent_precip_misfit = 1
   [../]
 []
 
-
 [BCs]
- [./mirror_x]
+ [./pin_nodex]
     type = DirichletBC
     variable = disp_x
     value = 0.0
-    boundary = 'left'
+    boundary = '100'
   [../]
 
- [./mirror_y]
+ [./pin_nodey]
     type = DirichletBC
     variable = disp_y
     value = 0.0
-    boundary = 'bottom'
+    boundary = '100'
   [../]
 
- [./mirror_z]
+ [./pin_nodez]
     type = DirichletBC
     variable = disp_z
     value = 0.0
-    boundary = 'back'
+    boundary = '100'
   [../]
 []
 
 [Postprocessors]
-  [./VolumeFraction]
-    type = NodalVolumeFraction
-#    bubble_volume_file = 2D_xz_singleParticle_vol.csv
-    threshold = 0.5
-    variable = n
-    mesh_volume = Volume
-  [../]
-
-  [./Volume]
-    type = VolumePostprocessor
-    execute_on = initial
-  [../]
-
-  [./dofs]
-   type = NumDOFs
-   system = NL
-  [../]
-
-  [./ElasticEnergy]
-    type = ElementIntegralVariablePostprocessor
-    variable = elem_ElasticEnergy
-  [../]
-[]
-
-[Adaptivity]
-  marker = combo
-  initial_steps = 7
-  initial_marker = EFM_1
-  max_h_level = 7
-  [./Markers]
-    [./EFM_1]
-      type = ErrorFractionMarker
-      coarsen = 0.075
-      refine = 0.75
-      indicator = GJI_1
-    [../]
-    [./EFM_2]
-      type = ErrorFractionMarker
-      coarsen = 0.05
-      refine = 0.25
-      indicator = GJI_2
-    [../]
-    [./EFM_3]
-      type = ErrorFractionMarker
-      coarsen = 0.05
-      refine = 0.25
-      indicator = GJI_3
-    [../]
-    [./EFM_4]
-      type = ErrorFractionMarker
-      coarsen = 0.05
-      refine = 0.25
-      indicator = GJI_4
-    [../]
-    [./EFM_5]
-      type = ErrorFractionMarker
-      coarsen = 0.05
-      refine = 0.25
-      indicator = GJI_5
-    [../]
-
-     [./combo]
-       type = ComboMarker
-       markers = 'EFM_1 EFM_2 EFM_3 EFM_4 EFM_5'
-     [../]
-  [../]
-
-  [./Indicators]
-    [./GJI_1]
-     type = GradientJumpIndicator
-      variable = n
-    [../]
-    [./GJI_2]
-     type = GradientJumpIndicator
-      variable = concentration
-    [../]
-    [./GJI_3]
-     type = GradientJumpIndicator
-      variable = disp_x
-    [../]
-    [./GJI_4]
-     type = GradientJumpIndicator
-      variable = disp_y
-    [../]
-    [./GJI_5]
-     type = GradientJumpIndicator
-      variable = disp_z
-    [../]
+  [./AverageJstar]
+   type = ElementAverageValue
+   variable =  elem_VolumetricRate
   [../]
 []
 
 [Executioner]
-  type = MeshSolutionModify
+  type = Transient
   scheme = 'BDF2'
 
  [./TimeStepper]
@@ -519,10 +390,6 @@
   petsc_options_iname = '-pc_type -sub_pc_type'
   petsc_options_value = ' ksp      lu'
 
-#  petsc_options_iname = '-pc_type -pc_asm_overlap -sub_pc_type -ksp_gmres_restart'
-#  petsc_options_value = ' asm      4              lu           30'
-
-
   l_max_its = 50
   l_tol = 1.0e-4
 
@@ -532,7 +399,7 @@
 
   start_time = 0
 
-  num_steps = 5
+  num_steps = 10
 
 #  end_time = 50
   dtmax = 1E6
@@ -540,7 +407,7 @@
 []
 
 [Outputs]
-  file_base = SingleParticleElasticSelfEnergy_100p
+  file_base = 3D_Jstar_test
 
   exodus = true
   interval = 1
