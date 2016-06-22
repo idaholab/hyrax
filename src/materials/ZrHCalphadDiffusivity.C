@@ -113,7 +113,15 @@ ZrHCalphadDiffusivity::computeQpProperties()
   _dgdOP[_qp] = 2*OP - 6*OP*OP + 4*OP*OP*OP;
   _d2gdOP2[_qp] = 2 - 12*OP + 12*OP*OP;
 
-  _M[_qp] = ((1-_h[_qp])*(_D_alpha[_qp]/_d2Galpha_dc2[_qp]) + _h[_qp]*_D_delta[_qp]/_d2Gdelta_dc2[_qp]);
+  //_M[_qp] = ((1-_h[_qp])*(_D_alpha[_qp]/_d2Galpha_dc2[_qp]) + _h[_qp]*_D_delta[_qp]/_d2Gdelta_dc2[_qp]);
+  //homogeneous mobility approximation
+  //_M[_qp] = _D_alpha[_qp]/_d2Galpha_dc2[_qp];
+  //constant mobility approximation
+  //_M[_qp] = 5e-4;
+
+  //early hyrax approximation (interstitial solution)
+  _M[_qp] = (_D_alpha[_qp]*_c[_qp])/(_R*_temperature[_qp]);
+
 
   if (_M[_qp] < 0)
        _M[_qp] = 0;

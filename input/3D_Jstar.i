@@ -23,7 +23,7 @@
     [./InitialCondition]
       type = ConstantIC
       variable = concentration
-      value = 0.025
+      value = 0.1
     [../]
   [../]
 
@@ -80,7 +80,7 @@
     precip_nonconserved = 1
     execute_on = timestep_end
     self_energy = 0
-    use_elastic_energy = true
+    use_elastic_energy = false
   [../]
 
   [./AuxVolumetricNucRate]
@@ -90,7 +90,7 @@
     coupled_bulk_energy_change = elem_ChemElastic
     T = temperature
     X = concentration
-    gamma = 0.1 #aJ/nm^2
+    gamma = 0.15 #aJ/nm^2
     jump_distance = 0.204 #nm
     execute_on = timestep_end
   [../]

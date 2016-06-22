@@ -11,3 +11,20 @@ kc = 0.5, n1 = 0.5 aJ/nm, 600K: 632 mJ/m^2, width = 1.9 nm
 kc = 0.1, n1 = 0.75 aJ/nm, 600K: 509 mJ/m^2, width = 2.2 nm
 
 kc = 0.01, n1 = 0.75 aJ/nm, 600K: 478 mJ/m^2, width = 2.2 nm
+
+*NB: interface profile of c in these can do weird, non-smooth things.
+
+-----------------------------------------------------------------
+for cutoffs: eta = 0.05 to 0.95, 1e-6/0.49, 1e-6/0.665
+
+kc=0.8, kn=0.8, 600K : 808 mJ/m^2.  Interface profile is good.
+
+kc=0.1, kn=0.8, 600K: 585 mJ/m^2.  width = 3.0 nm
+
+kc=0.1, kn=0.1, 600K: 287 mJ/m^2, width = 1.15 nm
+
+kc=0.2, kn=0.2, 600K: 408 mJ/m^2, width = 1.6 nm
+
+kc=0.18, kn=0.18, 600K: 388 mJ/m^2, width = 1.55 nm
+
+kc=0.01, kn=0.18, 600K: 204 mJ/m^2, width=1.5 nm

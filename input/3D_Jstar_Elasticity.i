@@ -103,7 +103,7 @@
     precip_conserved = 0.599 #this needs to be changed for each temperature
     precip_nonconserved = 1
     execute_on = timestep_end
-    self_energy = 1e-1
+    self_energy = 1.3e-1
     use_elastic_energy = true
   [../]
 

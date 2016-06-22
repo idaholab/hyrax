@@ -8,15 +8,15 @@
   type = GeneratedMesh
   dim = 1
   nx = 50
-  ny = 0
+  ny = 1
   nz = 0
   xmin = 0
   xmax = 50
   ymin = 0
-  ymax = 0
+  ymax = 1
   zmin = 0
   zmax = 0
-  elem_type = EDGE2
+  #elem_type = EDGE2
   #uniform_refine = 2
 []
 
@@ -31,7 +31,7 @@
       y1 = 0
       z1 = 0
       invalue = 0.6
-      outvalue = 0.01
+      outvalue = 0.03
       radius = 20
       int_width = 1
     [../]
@@ -152,8 +152,8 @@
     mobility_AC = 1E-1 #nm^3/(aJ microsecond)
 #    CH_mobility_scaling = 1E-23
 
-    kappa_CH = 0.0 #aJ/nm
-    kappa_AC = 0.8 #aJ/nm
+    kappa_CH = 0.01 #aJ/nm
+    kappa_AC = 0.18 #aJ/nm
 
     #well height and molar volume remain unscaled.
     well_height = 0 #aJ/amol?
@@ -196,7 +196,7 @@
    type = CalphadAB1CD2Material
    block = 0
 
-   low_cutoff = 0.5
+   low_cutoff = 1e-6 #0.5
    high_cutoff = 0.665
 
    #aJ/amol
@@ -242,13 +242,20 @@
     execute_on = initial
   [../]
 
-  [./dofs]
-   type = NumDOFs
-  [../]
-
   [./Gamma]
     type = ElementIntegralVariablePostprocessor
     variable = omega
+  [../]
+
+  [./dt]
+    type = TimestepSize
+  [../]
+  [./NL_iter]
+    type = NumNonlinearIterations
+  [../]
+ [./numDOFs]
+    type = NumDOFs
+    system = NL
   [../]
 []
 
@@ -284,15 +291,15 @@
   num_steps = 10000
   #end_time = 500
   #dtmax = 1E0
-  #dtmin = 1E-8
+  dtmin = 1E-6
 []
 
 
 [Adaptivity]
   marker = combo
-  initial_steps = 3
+  initial_steps = 5
   initial_marker = EFM_1
-  max_h_level = 3
+  max_h_level = 5
   [./Markers]
     [./EFM_1]
       type = ErrorFractionMarker
@@ -325,7 +332,7 @@
 []
 
 [Outputs]
-  file_base = 1D_interfaceEnergy_600K_kc0kn08_eq
+  file_base = 1D_interfaceEnergy
 
   exodus = true
   interval = 20
