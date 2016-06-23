@@ -274,12 +274,12 @@
       refine = 0.75
       indicator = GJI_1
     [../]
-    [./EFM_2]
-      type = ErrorFractionMarker
-      coarsen = 0.05
-      refine = 0.25
-      indicator = GJI_2
-    [../]
+#    [./EFM_2]
+#      type = ErrorFractionMarker
+#      coarsen = 0.05
+#      refine = 0.25
+#      indicator = GJI_2
+#    [../]
     [./NM]
       type = NucleationMarker
       nucleation_userobject = NLUO
@@ -288,7 +288,7 @@
 
      [./combo]
        type = ComboMarker
-       markers = 'EFM_1 EFM_2 NM'
+       markers = 'EFM_1 NM' # EFM_2 NM'
      [../]
   [../]
 
@@ -297,11 +297,11 @@
      type = GradientJumpIndicator
       variable = n
     [../]
-    [./GJI_2]
-     type = GradientJumpIndicator
-      variable = concentration
-    [../]
-  [../]
+#    [./GJI_2]
+#     type = GradientJumpIndicator
+#      variable = concentration
+#    [../]
+#  [../]
 []
 
 [UserObjects]

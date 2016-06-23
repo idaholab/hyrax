@@ -4,5 +4,6 @@
     input = 'Nuclei.i'
     exodiff = 'Nuclei.e Nuclei.e-s002 Nuclei.e-s003 Nuclei.e-s005'
     method = 'OPT OPROF'  # Too slow for debug
+#    abs_zero = 1e-9
   [../]
 []
