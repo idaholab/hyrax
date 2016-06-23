@@ -137,12 +137,6 @@
 []
 
 [AuxKernels]
-  [./auxtemp]
-    type = AuxTemperature
-    variable = temperature
-    temp_in_K = 600
-  [../]
-
   [./AuxChemElastic]
     type = AuxCalphadElasticity
     variable = elem_ChemElastic

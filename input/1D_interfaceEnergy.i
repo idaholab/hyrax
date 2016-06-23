@@ -31,7 +31,7 @@
       y1 = 0
       z1 = 0
       invalue = 0.6
-      outvalue = 0.03
+      outvalue = 0.01
       radius = 20
       int_width = 1
     [../]
@@ -152,7 +152,7 @@
     mobility_AC = 1E-1 #nm^3/(aJ microsecond)
 #    CH_mobility_scaling = 1E-23
 
-    kappa_CH = 0.01 #aJ/nm
+    kappa_CH = 0.18 #aJ/nm
     kappa_AC = 0.18 #aJ/nm
 
     #well height and molar volume remain unscaled.
@@ -266,7 +266,7 @@
  [./TimeStepper]
     type = IterationAdaptiveDT
     dt = 1e0
-    cutback_factor = 0.25
+    cutback_factor = 0.75
     growth_factor = 1.05
     optimal_iterations = 5
     iteration_window = 1
