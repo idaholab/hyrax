@@ -1,0 +1,22 @@
+[Tests]
+  [./stress_test]
+    type = 'Exodiff'
+    input = 'stress.i'
+    exodiff = 'stress.e'
+    method = 'OPT OPROF'  # Too slow for debug
+  [../]
+
+  [./flux_test]
+    type = 'Exodiff'
+    input = 'flux.i'
+    exodiff = 'flux.e'
+    method = 'OPT OPROF'  # Too slow for debug
+  [../]
+
+  [./fixedvalue_test]
+    type = 'Exodiff'
+    input = 'fixedvalue.i'
+    exodiff = 'fixedvalue.e'
+    method = 'OPT OPROF'  # Too slow for debug
+  [../]
+[]
