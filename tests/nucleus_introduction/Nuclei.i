@@ -27,7 +27,7 @@
       n_seeds = 1
       int_width = 1
       invalue = 0.6
-      outvalue = 0.03
+      outvalue = 0.032
       x_positions = '50'
       y_positions = '50'
       z_positions = '0'

@@ -223,13 +223,30 @@
   [../]
 []
 
+[VectorPostprocessors]
+  [./feature_volumes]
+    type = FeatureVolumeVectorPostprocessor
+    flood_counter = feature_counter
+    execute_on = 'initial timestep_end'
+    outputs = none
+  [../]
+[]
+
 [Postprocessors]
-  [./VolumeFraction]
-    type = NodalVolumeFraction
-    bubble_volume_file = 1D_interfaceEnergy_vol.csv
-    threshold = 0.5
+  [./feature_counter]
+    type = FeatureFloodCount
     variable = n
+    compute_var_to_feature_map = true #THIS MUST BE SET TO TRUE!
+    threshold = 0.5
+    execute_on = 'initial timestep_end'
+  [../]
+
+  [./VolumeFraction]
+    type = FeatureVolumeFraction
+#   output = 1D_interfaceEnergy_vol.csv
+    feature_volumes = feature_volumes
     mesh_volume = Volume
+    execute_on = 'initial timestep_end'
   [../]
 
   [./Volume]
