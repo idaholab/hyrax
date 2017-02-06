@@ -152,8 +152,8 @@
     mobility_AC = 1E-1 #nm^3/(aJ microsecond)
 #    CH_mobility_scaling = 1E-23
 
-    kappa_CH = 0.18 #aJ/nm
-    kappa_AC = 0.18 #aJ/nm
+    kappa_CH = 0.07 #0.18 #aJ/nm
+    kappa_AC = 0.2 #aJ/nm
 
     #well height and molar volume remain unscaled.
     well_height = 0 #aJ/amol?
@@ -229,19 +229,6 @@
 []
 
 [Postprocessors]
-  [./VolumeFraction]
-    type = NodalVolumeFraction
-    bubble_volume_file = 1D_interfaceEnergy_vol.csv
-    threshold = 0.5
-    variable = n
-    mesh_volume = Volume
-  [../]
-
-  [./Volume]
-    type = VolumePostprocessor
-    execute_on = initial
-  [../]
-
   [./Gamma]
     type = ElementIntegralVariablePostprocessor
     variable = omega

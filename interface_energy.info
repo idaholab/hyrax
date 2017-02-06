@@ -28,3 +28,7 @@ kc=0.2, kn=0.2, 600K: 408 mJ/m^2, width = 1.6 nm
 kc=0.18, kn=0.18, 600K: 388 mJ/m^2, width = 1.55 nm
 
 kc=0.01, kn=0.18, 600K: 204 mJ/m^2, width=1.5 nm
+
+kc=0.05, kn=0.2, 600 K: 283 mJ/m^2, width=1.6 nm
+
+kc=0.07 kn=0.2 600 K: 307 mJ/m^2, width=1.6 nm
