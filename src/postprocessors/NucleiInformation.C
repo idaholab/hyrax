@@ -20,7 +20,7 @@ InputParameters validParams<NucleiInformation>()
   params.addRequiredParam<int>("OP_number", "the order parameter variable for which to count # nuclei (starting from 1)");
 
   MultiMooseEnum execute_options(SetupInterface::getExecuteOptions());
-  execute_options = "timestep";
+  execute_options = "timestep_end";
   params.set<MultiMooseEnum>("execute_on") = execute_options;
 
  return params;
