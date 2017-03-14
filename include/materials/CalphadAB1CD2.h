@@ -20,7 +20,6 @@ public:
   virtual Real computeGMix(const Real & c, const Real & T) const;
   virtual Real computeDGMixDc(const Real & c, const Real & T) const;
   virtual Real computeD2GMixDc2(const Real & c, const Real & T) const;
-  virtual Real computeD3GMixDc3(const Real & c, const Real & T) const;
 
 protected:
   std::vector<Real> _pure_EP1_phase1_coeffs;

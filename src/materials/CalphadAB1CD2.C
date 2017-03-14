@@ -69,13 +69,15 @@ CalphadAB1CD2::calculateSecondLatticeGminusHser(const Real & /*c*/, const Real &
     + _pure_EP1_phase1_coeffs[1]*T
     + _pure_EP1_phase1_coeffs[2]*T*std::log(T)
     + _pure_EP1_phase1_coeffs[3]*T*T
-    + _pure_EP1_phase1_coeffs[4]/T;
+    + _pure_EP1_phase1_coeffs[4]*T*T*T
+    + _pure_EP1_phase1_coeffs[5]/T;
 
   Real third_term = _pure_endpoint_2_coeffs[0]
     + _pure_endpoint_2_coeffs[1]*T
     + _pure_endpoint_2_coeffs[2]*T*std::log(T)
     + _pure_endpoint_2_coeffs[3]*T*T
-    + _pure_endpoint_2_coeffs[4]/T;
+    + _pure_endpoint_2_coeffs[4]*T*T*T
+    + _pure_endpoint_2_coeffs[5]/T;
 
   return first_term + second_term + third_term;
 }
@@ -84,17 +86,14 @@ Real
 CalphadAB1CD2::computeGMix(const Real & c, const Real & T) const
 {
   Real c1;
-  Real p = 0.0;
 
   //make this piecewise in concentration space
   if( c < _low_cutoff)
   {
     c1 = _low_cutoff;
-    //Taylor expand to third ish order
     return CalphadFreeEnergy::computeGMix(c1, T)
       + computeDGMixDc(c1, T)*(c - c1)
-      + 0.5*computeD2GMixDc2(c1,T)*(c-c1)*(c-c1)
-      + (p*1.0/6.0)*computeD3GMixDc3(c1,T)*(c-c1)*(c-c1)*(c-c1);
+      + 0.5*computeD2GMixDc2(c1,T)*(c-c1)*(c-c1);
   }
   else if (c > _high_cutoff)
   {
@@ -102,8 +101,7 @@ CalphadAB1CD2::computeGMix(const Real & c, const Real & T) const
     //Taylor expand to third ish order
     return CalphadFreeEnergy::computeGMix(c1, T)
       + computeDGMixDc(c1, T)*(c - c1)
-      + 0.5*computeD2GMixDc2(c1,T)*(c-c1)*(c-c1)
-      + (p*1.0/6.0)*computeD3GMixDc3(c1,T)*(c-c1)*(c-c1)*(c-c1);
+      + 0.5*computeD2GMixDc2(c1,T)*(c-c1)*(c-c1);
   }
   else
     return CalphadFreeEnergy::computeGMix(c, T);
@@ -115,23 +113,17 @@ CalphadAB1CD2::computeDGMixDc(const Real & c, const Real & T) const
   Real ref;
   Real ideal;
   Real c1;
-  Real p = 0.0;
   Real second(0);
-  Real third(0);
 
   if( c < _low_cutoff)
   {
-    //Taylor expansion to third ish order
     c1 = _low_cutoff;
     second = computeD2GMixDc2(c1,T)*(c-c1);
-    third = (p*0.5)*computeD3GMixDc3(c1,T)*(c-c1)*(c-c1);
   }
   else if (c > _high_cutoff)
   {
-    //Taylor expansion to third ish order
     c1 = _high_cutoff;
     second = computeD2GMixDc2(c1,T)*(c-c1);
-    third = (p*0.5)*computeD3GMixDc3(c1,T)*(c-c1)*(c-c1);
   }
   else
     c1 = c;
@@ -151,7 +143,7 @@ CalphadAB1CD2::computeDGMixDc(const Real & c, const Real & T) const
 
   xs = prefactor*polynomial;
 
-  return ref + ideal + xs + second + third;
+  return ref + ideal + xs + second;
 }
 
 Real
@@ -161,27 +153,19 @@ CalphadAB1CD2::computeD2GMixDc2(const Real & c, const Real & T) const
   Real ref;
   Real ideal;
   Real second(0);
-  Real third(0);
-  Real p = 0.0;
 
   //make this piecewise in concentration space
   if( c < _low_cutoff)
   {
-    //Taylor expansion to third ish order
     c1 = _low_cutoff;
 
     second = computeD2GMixDc2(c1,T);
-    third = p*computeD3GMixDc3(c1,T)*(c-c1);
-  }
+   }
 
   else if (c > _high_cutoff)
   {
-    //Taylor expansion to third order ish
     c1 = _high_cutoff;
     second = computeD2GMixDc2(c1,T);
-    third = p*computeD3GMixDc3(c1,T)*(c-c1);
-
-
   }
   else
     c1 = c;
@@ -195,40 +179,5 @@ CalphadAB1CD2::computeD2GMixDc2(const Real & c, const Real & T) const
     Real prefactor = 1/(2*std::pow(c1 - 1, 4));
     Real xs = prefactor*polynomial;
 
-    return ref + ideal + xs + second + third;
-}
-
-Real
-CalphadAB1CD2::computeD3GMixDc3(const Real & c, const Real & T) const
-{
-  Real c1;
-  Real ref;
-  Real ideal;
-
-  //might not want the cutoffs here since we don't ever use third order anywhere else?
-  if( c < _low_cutoff)
-  {
-    c1 = _low_cutoff;
-  }
-  else if (c > _high_cutoff)
-  {
-    //Taylor expansion to third order
-    c1 = _high_cutoff;
-  }
-  else
-    c1 = c;
-
-  ref = 0;
-  ideal = _R*T*( (4-20*c1*18*c1*c1)/( c1*c1*std::pow(3*c*c - 5*c + 2,2.0)) );
-
-  Real L0 = _L0_coeffs[0] + _L0_coeffs[1]*T;
-  Real L1 = _L1_coeffs[0] + _L1_coeffs[1]*T;
-
-  Real polynomial = 3*(L0 - L0*c1 + L1*(6*c1 - 2));
-
-  Real prefactor = 1/(2*std::pow(c - 1, 5));
-
-  Real xs = prefactor*polynomial;
-
-return ref + ideal + xs;
+    return ref + ideal + xs + second;
 }

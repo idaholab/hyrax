@@ -17,8 +17,8 @@ InputParameters validParams<CalphadAB1CD2Material>()
 
   params.addRequiredParam<std::vector<Real> >("pure_EP1_phase1_coeffs", "coeffs of pure endpoint at low composition in the first phase");
 
-  params.addParam<Real>("low_cutoff", 1e-6, "linearization cutoff, low end");
-  params.addParam<Real>("high_cutoff", 0.655, "linearization cutoff, high end");
+  params.addParam<Real>("low_cutoff", 1e-6, "Taylor expansion cutoff, low end");
+  params.addParam<Real>("high_cutoff", 0.655, "Taylor expansion cutoff, high end");
   params.addParam<Real>("precip_conc", 0.6, "concentration of precipitate");
 
   return params;
@@ -34,13 +34,15 @@ CalphadAB1CD2Material::CalphadAB1CD2Material(const InputParameters & parameters)
     _G_AB1CD2(declareProperty<Real>("G_AB1CD2")),
     _dG_dc(declareProperty<Real>("dGAB1CD2_dc")),
     _d2G_dc2(declareProperty<Real>("d2GAB1CD2_dc2")),
-    // _d3G_dc3(declareProperty<Real>("d3GAB1CD2_dc3"))
     _G_AB1CD2_precip(declareProperty<Real>("G_AB1CD2_precip")),
     _d2G_dc2_precip(declareProperty<Real>("d2GAB1CD2_dc2_precip")),
     _d2G_dc2_cutoff(declareProperty<Real>("d2GAB1CD2_dc2_cutoff"))
 {
   _energy.parameterize(_R, _low_cutoff, _high_cutoff, _pure_endpoint_low_coeffs, _pure_endpoint_high_coeffs, _mixture_coeffs,
                        _L0_coeffs, _L1_coeffs, _pure_EP1_phase1_coeffs);
+
+   if(_pure_EP1_phase1_coeffs.size() != 6)
+    mooseError("Please supply the correct # of values for the pure_EP1 Gibbs coefficients (CalphadAB1CD2Material).");
 }
 
 void

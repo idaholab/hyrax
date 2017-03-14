@@ -15,9 +15,9 @@ InputParameters validParams<CalphadEnergyMaterial>()
 {
   InputParameters params = validParams<Material>();
 
-  params.addRequiredParam<std::vector<Real> >("pure_endpoint_low_coeffs", "A, B, C, D, E Gibbs coeffs for low-concentration pure endpoint");
-  params.addRequiredParam<std::vector<Real> >("pure_endpoint_high_coeffs", "A, B, C, D, E Gibbs coeffs for high-concentration pure endpoint");
-  params.addRequiredParam<std::vector<Real> >("mixture_coeffs", "A, B, C, D, E Gibbs coeffs for mixture endpoint");
+  params.addRequiredParam<std::vector<Real> >("pure_endpoint_low_coeffs", "cte, T, T*ln(T), T^2, T^3, 1/T Gibbs coeffs for low-concentration pure endpoint");
+  params.addRequiredParam<std::vector<Real> >("pure_endpoint_high_coeffs", "cte, T, T*ln(T), T^2, T^3, 1/T Gibbs coeffs for high-concentration pure endpoint");
+  params.addRequiredParam<std::vector<Real> >("mixture_coeffs", "A, B, C Gibbs coeffs for mixture endpoint");
 
   params.addRequiredParam<std::vector<Real> >("L0_coeffs", "Rudlich-Kister L0 polynomial coefficients");
   params.addRequiredParam<std::vector<Real> >("L1_coeffs", "Rudlich-Kister L1 polynomial coefficients");
@@ -43,8 +43,8 @@ CalphadEnergyMaterial::CalphadEnergyMaterial(const InputParameters & parameters)
       _c(coupledValue("coupled_concentration"))
 {
   //Make sure everything is set up from input correctly
-  if( (_pure_endpoint_low_coeffs.size() != 5) ||
-      (_pure_endpoint_high_coeffs.size() != 5) ||
+  if( (_pure_endpoint_low_coeffs.size() != 6) ||
+      (_pure_endpoint_high_coeffs.size() != 6) ||
       (_mixture_coeffs.size() != 3) ||
       (_L0_coeffs.size() != 2) ||
       (_L1_coeffs.size() != 2) )

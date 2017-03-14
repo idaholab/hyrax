@@ -22,7 +22,8 @@ CalphadFreeEnergy::calculateFirstLatticeGminusHser(const Real & /*c*/, const Rea
     + _pure_endpoint_1_coeffs[1]*T
     + _pure_endpoint_1_coeffs[2]*T*std::log(T)
     + _pure_endpoint_1_coeffs[3]*T*T
-    + _pure_endpoint_1_coeffs[4]/T;
+    + _pure_endpoint_1_coeffs[4]*T*T*T
+    + _pure_endpoint_1_coeffs[5]/T;
 }
 
 Real

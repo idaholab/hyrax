@@ -16,8 +16,8 @@ InputParameters validParams<CalphadAB1CD1Material>()
 {
   InputParameters params = validParams<CalphadEnergyMaterial>();
 
-  params.addParam<Real>("low_cutoff", 1e-6, "linearization cutoff, low end");
-  params.addParam<Real>("high_cutoff", 0.49, "linearization cutoff, high end");
+  params.addParam<Real>("low_cutoff", 1e-6, "Taylor expansion cutoff, low end");
+  params.addParam<Real>("high_cutoff", 0.49, "Taylor expansion cutoff, high end");
   params.addParam<Real>("precip_conc", 0.6, "concentration of precipitate");
 
   return params;
@@ -32,7 +32,6 @@ CalphadAB1CD1Material::CalphadAB1CD1Material(const InputParameters & parameters)
     _G_AB1CD1(declareProperty<Real>("G_AB1CD1")),
     _dG_dc(declareProperty<Real>("dGAB1CD1_dc")),
     _d2G_dc2(declareProperty<Real>("d2GAB1CD1_dc2")),
-    //_d3G_dc3(declareProperty<Real>("d3GAB1CD1_dc3"))
     _d2G_dcdT(declareProperty<Real>("d2GAB1CD1_dcdT")),
     _G_AB1CD1_precip(declareProperty<Real>("G_AB1CD1_precip"))
 {
@@ -48,7 +47,6 @@ CalphadAB1CD1Material::computeQpProperties()
   _dG_dc[_qp] = _energy.computeDGMixDc(_c[_qp], _T[_qp]);
   _d2G_dc2[_qp] = _energy.computeD2GMixDc2(_c[_qp], _T[_qp]);
 
-  //_d3G_dc3[_qp] = computeD3GMixDc3();
   _d2G_dcdT[_qp] = _energy.computeD2GMixDcDT(_c[_qp], _T[_qp]);
 
   _G_AB1CD1_precip[_qp] = _energy.computeGMix(_precip_conc, _T[_qp]);
