@@ -86,7 +86,7 @@
   [./AuxVolumetricNucRate]
     type = AuxVolumetricNucleationRate
     variable = elem_VolumetricRate
-    rate_volume = 1 #nm^3...everything in aJ and nm and microseconds ..right?
+    rate_volume = 1 #nm^3...everything in aJ and nm and nanoseconds
     coupled_bulk_energy_change = elem_ChemElastic
     T = temperature
     X = concentration
@@ -194,13 +194,16 @@
                                  125.64905
                                  -24.1618
                                   -0.00437791
+				  0.0
                                34971.0' #HCP_Zr
 
-   pure_endpoint_high_coeffs = '8055.336
-                                 -243.791
-                                   18.3135
-                                   -0.034513
-                              -734182.8'  #H2_gas
+   pure_endpoint_high_coeffs = '-9522.97393
+   			           78.5273873
+				  -31.35707
+				    0.0027589925
+				   -7.46390667E-7
+				56582.3' #H2_gas
+
    mixture_coeffs = '-45965
                          41.6
                           0'  #FCC_ZrH
@@ -225,11 +228,14 @@
                                -24.1618
                                 -0.00437791
                              34971' #FCC_Zr
-     pure_endpoint_high_coeffs = '8055.336
-                                 -243.791
-                                   18.3135
-                                   -0.034513
-                              -734182.8'  #H2_gas
+
+  pure_endpoint_high_coeffs = '-9522.97393
+   			           78.5273873
+				  -31.35707
+				    0.0027589925
+				   -7.46390667E-7
+				56582.3' #H2_gas
+
    mixture_coeffs =  '-170490
                           208.2
                            -9.47' #FCC_ZrH2'
@@ -244,6 +250,7 @@
                                  125.64905
                                  -24.1618
                                   -0.00437791
+				0.0
                                34971.0' #HCP_Zr
   [../]
 []
