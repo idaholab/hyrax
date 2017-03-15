@@ -1,3 +1,18 @@
+----------------------------------
+The following information is for the new H2 gas CALPHAD energy formulation:
+----------------------------------
+for cutoffs: eta = 0.05 to 0.95, 1e-6/0.49 (alpha phase), 1e-6/0.665 (delta phase)
+
+kc = 0.07, kn = 0.2 (aJ/nm), 600 K: 302 mJ/m^2, width = 1.6 nm
+
+NB that each temperature should have the parameters re-calculated.
+
+
+
+----------------------------------
+The following information is for the old H2 gas CALPHAD energy formulation:
+----------------------------------
+
 kc = 0, kn = 1 aJ/nm, 600 K: 512 mJ/m^2 width=2.6 nm for eta = 0.05 to 0.95, 1e-6/0.49 and 0.5/0.665 for cutoffs.
 
 kc = 0, n1 = 0.8 aJ/nm, 600K: 394 mJ/m^2, width = 2.3 nm

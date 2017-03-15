@@ -81,7 +81,7 @@
   [./omega_calc]
     type = AuxGrandPotential
     variable = omega
-    omega_eq = -1.9093 #600K  # -1.45135 #485K
+    omega_eq = -1.9092 #600K  # -1.45135 #485K
     concentration = concentration
     OP = n
   [../]
@@ -149,7 +149,7 @@
     H_Zr_Q0 =  4.456e4   #J/mol
     H_ZrH2_Q0 = 5.885E4  #J/mol
 
-    mobility_AC = 1E-1 #nm^3/(aJ microsecond)
+    mobility_AC = 1E-2 #nm^3/(aJ microsecond)
 #    CH_mobility_scaling = 1E-23
 
     kappa_CH = 0.07 #0.18 #aJ/nm
@@ -174,13 +174,22 @@
                                  125.64905
                                  -24.1618
                                   -0.00437791
+				  0.0
                                34971.0' #HCP_Zr
 
-   pure_endpoint_high_coeffs = '8055.336
-                                 -243.791
-                                   18.3135
-                                   -0.034513
-                              -734182.8'  #H2_gas
+   pure_endpoint_high_coeffs = '-9522.97393
+   			           78.5273873
+				  -31.35707
+				    0.0027589925
+				   -7.46390667E-7
+				56582.3' #H2_gas
+
+
+				#'8055.336
+                                # -243.791
+                                #   18.3135
+                                #   -0.034513
+                              #-734182.8'  #H2_gas
    mixture_coeffs = '-45965
                          41.6
                           0'  #FCC_ZrH
@@ -204,12 +213,21 @@
                                124.74905
                                -24.1618
                                 -0.00437791
+				 0.0
                              34971' #FCC_Zr
-     pure_endpoint_high_coeffs = '8055.336
-                                 -243.791
-                                   18.3135
-                                   -0.034513
-                              -734182.8'  #H2_gas
+     pure_endpoint_high_coeffs ='-9522.97393
+   			           78.5273873
+				  -31.35707
+				    0.0027589925
+				   -7.46390667E-7
+				56582.3' #H2_gas
+
+
+				#'8055.336
+                                # -243.791
+                                #   18.3135
+                                #   -0.034513
+                              #-734182.8'  #H2_gas
    mixture_coeffs =  '-170490
                           208.2
                            -9.47' #FCC_ZrH2'
@@ -224,6 +242,7 @@
                                  125.64905
                                  -24.1618
                                   -0.00437791
+				  0.0
                                34971.0' #HCP_Zr
   [../]
 []
@@ -253,7 +272,7 @@
  [./TimeStepper]
     type = IterationAdaptiveDT
     dt = 1e0
-    cutback_factor = 0.75
+    cutback_factor = 0.95
     growth_factor = 1.05
     optimal_iterations = 5
     iteration_window = 1
@@ -319,7 +338,7 @@
 []
 
 [Outputs]
-  file_base = 1D_interfaceEnergy
+  file_base = 1D_interfaceEnergy_
 
   exodus = true
   interval = 20

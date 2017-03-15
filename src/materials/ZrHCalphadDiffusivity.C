@@ -48,7 +48,7 @@ ZrHCalphadDiffusivity::ZrHCalphadDiffusivity(const InputParameters & parameters)
       _molar_volume(getParam<Real>("molar_volume")),
 
       _M(declareProperty<Real>("M")),
-      _grad_M(declareProperty<RealGradient>("grad_M")),
+      //_grad_M(declareProperty<RealGradient>("grad_M")),
       _L(declareProperty<Real>("L")),
       _kappa_c(declareProperty<Real>("kappa_c")),
       _kappa_n(declareProperty<Real>("kappa_n")),
@@ -126,8 +126,7 @@ ZrHCalphadDiffusivity::computeQpProperties()
   if (_M[_qp] < 0)
        _M[_qp] = 0;
 
-  //this should probably be computed.  I probably need to go to the non-constant mobility stuff Daniel's worked out.
-  _grad_M[_qp] = 0.0;
+  //would be a good idea to get the dM/dX, dM/deta terms in there for the off-diagonal Jacobian.
 
   _L[_qp] = _mobility_AC;
 

@@ -43,5 +43,5 @@ AuxDeltaGStar::computeValue()
 
   kn2 = alpha*_gamma*_gamma*_gamma;
 
-  return kn2/(_coupled_energy[_qp]*_coupled_energy[_qp]*_coupled_energy[_qp]);
+  return kn2/(_coupled_energy[_qp]*_coupled_energy[_qp]);
 }
