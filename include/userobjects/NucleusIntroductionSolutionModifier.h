@@ -35,7 +35,7 @@ protected:
   const NucleationLocationUserObject & _nucleation_userobject;
   MooseMesh & _mesh;
   std::vector<MooseVariable *> _moose_variable;
-  NonlinearSystem & _nl;
+  NonlinearSystemBase & _nl;
 
 private:
 Real _radius;

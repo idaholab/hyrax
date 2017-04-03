@@ -35,7 +35,7 @@ NucleusIntroductionSolutionModifier::NucleusIntroductionSolutionModifier(const I
     GeneralUserObject(parameters),
     _nucleation_userobject(getUserObject<NucleationLocationUserObject>("nucleation_userobject")),
     _mesh(_subproblem.mesh()),
-    _nl(static_cast<FEProblem &>(_subproblem).getNonlinearSystem()),
+    _nl(_fe_problem.getNonlinearSystemBase()),
     _radius(getParam<Real>("radius")),
     _seed_value(getParam<Real>("seed_value")),
     _int_width(getParam<Real>("int_width")),
@@ -104,6 +104,6 @@ NucleusIntroductionSolutionModifier::execute()
     }
   }
   _nl.solution().close();
-  _nl.sys().update();
+  _nl.system().update();
 }
 
