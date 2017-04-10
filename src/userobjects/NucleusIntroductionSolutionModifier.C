@@ -13,6 +13,7 @@
 
 // MOOSE includes
 #include "NonlinearSystem.h"
+#include "MooseVariable.h"
 
 #include <ostream>
 
