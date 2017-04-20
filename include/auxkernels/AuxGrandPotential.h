@@ -31,6 +31,8 @@ private:
   const VariableValue & _X;
 
   const VariableGradient & _grad_X;
+  const VariableSecond & _second_X;
+
   const VariableGradient & _grad_OP;
 
   const MaterialProperty<Real> & _fbulk;

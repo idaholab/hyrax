@@ -338,7 +338,7 @@
 []
 
 [Outputs]
-  file_base = 1D_interfaceEnergy_
+  file_base = 1D_interfaceEnergy
 
   exodus = true
   interval = 20

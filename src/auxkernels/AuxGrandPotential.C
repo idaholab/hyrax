@@ -26,6 +26,7 @@ AuxGrandPotential::AuxGrandPotential(const InputParameters & parameters) :
     AuxKernel(parameters),
     _X(coupledValue("concentration")),
     _grad_X(coupledGradient("concentration")),
+    _second_X(coupledSecond("concentration")),
     _grad_OP(coupledGradient("OP")),
     _fbulk(getMaterialProperty<Real>("f_bulk")),
     _dfbulk_dc(getMaterialProperty<Real>("df_bulk_dc")),
@@ -44,7 +45,12 @@ AuxGrandPotential::computeValue()
   Real fgrad = 0.5*_kappa_X[_qp]*_grad_X[_qp].norm_sq()
     + 0.5*_kappa_OP[_qp]*_grad_OP[_qp].norm_sq();
 
+  // return (_fbulk[_qp] + fgrad - _dfbulk_dc[_qp]*_X[_qp]) - _omega_eq;
 
- return (_fbulk[_qp] + fgrad - _dfbulk_dc[_qp]*_X[_qp]) - _omega_eq;
+
+  Real deltaFdeltaX = _dfbulk_dc[_qp] + _second_X[_qp].tr();
+
+  return (_fbulk[_qp] + fgrad - deltaFdeltaX*_X[_qp]) - _omega_eq;
+
 
 }
