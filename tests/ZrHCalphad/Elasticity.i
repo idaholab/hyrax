@@ -486,7 +486,7 @@
 
  [./TimeStepper]
     type = ConstantDT
-    dt = 1e0
+    dt = 1e-2
   [../]
 
   #Preconditioned JFNK (default)

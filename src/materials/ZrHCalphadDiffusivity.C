@@ -96,6 +96,14 @@ ZrHCalphadDiffusivity::ZrHCalphadDiffusivity(const InputParameters & parameters)
 void
 ZrHCalphadDiffusivity::computeQpProperties()
 {
+  _L[_qp] = _mobility_AC;
+
+  _kappa_c[_qp] = _kappa_CH;
+  _kappa_n[_qp] = _kappa_AC;
+
+  _W[_qp] = _well_height;
+  _molar_vol[_qp] = _molar_volume;
+
   //this is here because I need to figure out how to make a material property zero
   RankTwoTensor empty; empty.zero();
   _void_tensor[_qp] = empty;
@@ -122,19 +130,15 @@ ZrHCalphadDiffusivity::computeQpProperties()
   //early hyrax approximation (interstitial solution)
   _M[_qp] = (_D_alpha[_qp]*_c[_qp])/(_R*_temperature[_qp]);
 
+  //multiply by molar volume to make the units work out
+  _M[_qp] *= _molar_volume;
 
+  //keep things from exploding
   if (_M[_qp] < 0)
-       _M[_qp] = 0;
+    _M[_qp] = 0;
 
   //would be a good idea to get the dM/dX, dM/deta terms in there for the off-diagonal Jacobian.
 
-  _L[_qp] = _mobility_AC;
-
-  _kappa_c[_qp] = _kappa_CH;
-  _kappa_n[_qp] = _kappa_AC;
-
-  _W[_qp] = _well_height;
-  _molar_vol[_qp] = _molar_volume;
 
   _fbulk[_qp] = ( (1-_h[_qp])*_Galpha[_qp] + _h[_qp]*_Gdelta[_qp] + _W[_qp]*_g[_qp] )/_molar_vol[_qp];
   _dfbulkdc[_qp] = ( (1-_h[_qp])*_dGalpha_dc[_qp] + _h[_qp]*_dGdelta_dc[_qp] )/_molar_vol[_qp];

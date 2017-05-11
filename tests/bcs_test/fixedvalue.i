@@ -272,7 +272,7 @@
 
  [./TimeStepper]
     type = IterationAdaptiveDT
-    dt = 1e0
+    dt = 1e-2
     cutback_factor = 0.25
     growth_factor = 1.05
     optimal_iterations = 5
@@ -293,7 +293,7 @@
   nl_max_its = 20
 
   start_time = 0
-  num_steps = 200
+  num_steps = 100
   #end_time = 500
   #dtmax = 1E0
   #dtmin = 1E-8

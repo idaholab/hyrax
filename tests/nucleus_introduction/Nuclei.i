@@ -10,9 +10,9 @@
   nx = 20
   ny = 20
   xmin = 0
-  xmax = 100
+  xmax = 50
   ymin = 0
-  ymax = 100
+  ymax = 50
 
 #  elem_type = QUAD4
 []
@@ -27,7 +27,7 @@
       n_seeds = 1
       int_width = 1
       invalue = 0.6
-      outvalue = 0.032
+      outvalue = 0.045
       x_positions = '50'
       y_positions = '50'
       z_positions = '0'
@@ -186,8 +186,8 @@
     mobility_AC = 1E-1 #nm^3/(aJ microsecond)
 
     #I have no idea what this needs to be
-    kappa_CH = 0 #aJ/nm
-    kappa_AC = 1 #aJ/nm
+    kappa_CH = 0.07 #aJ/nm
+    kappa_AC = 0.2  #aJ/nm
 
     #well height and molar volume remain unscaled.
     well_height = 0 #aJ/amol
@@ -272,9 +272,9 @@
 
 [Adaptivity]
   marker = combo
-  initial_steps = 4
+  initial_steps = 3
   initial_marker = EFM_1
-  max_h_level = 4
+  max_h_level = 3
   [./Markers]
     [./EFM_1]
       type = ErrorFractionMarker
@@ -339,7 +339,7 @@
 
  [./TimeStepper]
     type = IterationAdaptiveDT
-    dt = 1e0
+    dt = 5e-4
     cutback_factor = 0.25
     growth_factor = 1.05
     optimal_iterations = 5
@@ -367,7 +367,7 @@
 
   start_time = 0
 
-  num_steps = 5
+  num_steps = 14
 
 #  end_time = 50
   dtmax = 1E6
