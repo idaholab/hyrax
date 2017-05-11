@@ -17,10 +17,10 @@
 #include "MooseSyntax.h"
 
 //Module Includes
-#include "SolidMechanicsApp.h"
+//#include "SolidMechanicsApp.h"
 #include "TensorMechanicsApp.h"
 #include "PhaseFieldApp.h"
-#include "HeatConductionApp.h"
+//#include "HeatConductionApp.h"
 #include "MiscApp.h"
 
 //Kernels
@@ -99,17 +99,17 @@ HyraxApp::HyraxApp(InputParameters parameters) :
 
   // Register Modules
   PhaseFieldApp::registerObjects(_factory);
-  SolidMechanicsApp::registerObjects(_factory);
+  //SolidMechanicsApp::registerObjects(_factory);
   TensorMechanicsApp::registerObjects(_factory);
-  HeatConductionApp::registerObjects(_factory);
+  //HeatConductionApp::registerObjects(_factory);
   MiscApp::registerObjects(_factory);
 
   // Associate Syntax from SolidMechanics Module
   Moose::associateSyntax(_syntax, _action_factory);
   PhaseFieldApp::associateSyntax(_syntax, _action_factory);
-  SolidMechanicsApp::associateSyntax(_syntax, _action_factory);
+  //SolidMechanicsApp::associateSyntax(_syntax, _action_factory);
   TensorMechanicsApp::associateSyntax(_syntax, _action_factory);
-  HeatConductionApp::associateSyntax(_syntax, _action_factory);
+  //HeatConductionApp::associateSyntax(_syntax, _action_factory);
   MiscApp::associateSyntax(_syntax, _action_factory);
 
   //Associate syntax for Hyrax Actions
