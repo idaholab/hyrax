@@ -64,8 +64,3 @@ NucleiInformation::getValue()
   return (Real) _number;
   //this is going to return cucmulative number of nuclei for whichever orientation variant
 }
-
-void
-NucleiInformation::threadJoin(const UserObject & /*y*/)
-{
-}
