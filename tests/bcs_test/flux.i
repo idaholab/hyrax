@@ -115,6 +115,7 @@
     variable = n
     mob_name = L
     kappa_name = kappa_n
+  [../]
 []
 
 [Materials]

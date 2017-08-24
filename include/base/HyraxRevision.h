@@ -3,6 +3,7 @@
 #ifndef HYRAX_REVISION_H
 #define HYRAX_REVISION_H
 
-#define HYRAX_REVISION "git commit d6ecb30 on 2017-05-11"
+#define HYRAX_REVISION "git commit 85cd787 on 2017-06-28"
+#define HYRAX_VERSION "85cd787"
 
 #endif // HYRAX_REVISION_H
