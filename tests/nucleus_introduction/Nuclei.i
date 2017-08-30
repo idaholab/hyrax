@@ -309,7 +309,7 @@
 #     type = GradientJumpIndicator
 #      variable = concentration
 #    [../]
-#  [../]
+  [../]
 []
 
 [UserObjects]
