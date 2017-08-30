@@ -43,8 +43,6 @@
     order = FIRST
     family = LAGRANGE
     [./InitialCondition]
-      type = FunctionIC
-      variable = n
       type = SmoothCircleIC
       variable = concentration
       x1 = 0
