@@ -158,4 +158,4 @@ peacock_*.e
 *.cpr-*
 
 lib
-HyraxRevision.h
+include/base/HyraxRevision.h
