@@ -48,7 +48,7 @@ AuxGrandPotential::computeValue()
   // return (_fbulk[_qp] + fgrad - _dfbulk_dc[_qp]*_X[_qp]) - _omega_eq;
 
 
-  Real deltaFdeltaX = _dfbulk_dc[_qp] + _second_X[_qp].tr();
+  Real deltaFdeltaX = _dfbulk_dc[_qp] - _kappa_X[_qp] * _second_X[_qp].tr();
 
   return (_fbulk[_qp] + fgrad - deltaFdeltaX*_X[_qp]) - _omega_eq;
 

@@ -6,7 +6,7 @@
 
 [Mesh]
   type = GeneratedMesh
-  dim = 1
+  dim = 2
   nx = 50
   ny = 1
   nz = 0
@@ -22,8 +22,8 @@
 
 [Variables]
   [./concentration]
-    order = FIRST
-    family = LAGRANGE
+    order = THIRD #FIRST
+    family = HERMITE #LAGRANGE
     [./InitialCondition]
       type = SmoothCircleIC
       variable = concentration
@@ -38,18 +38,16 @@
   [../]
 
   [./mu]
-    order = FIRST
-    family = LAGRANGE
+    order = THIRD #FIRST
+    family = HERMITE #LAGRANGE
   [../]
 
   [./n]
     order = FIRST
     family = LAGRANGE
     [./InitialCondition]
-      type = FunctionIC
       variable = n
       type = SmoothCircleIC
-      variable = concentration
       x1 = 0
       y1 = 0
       z1 = 0
@@ -133,6 +131,7 @@
     variable = n
     mob_name = L
     kappa_name = kappa_n
+  [../]
 []
 
 [Materials]
@@ -303,9 +302,9 @@
 
 [Adaptivity]
   marker = combo
-  initial_steps = 5
+  initial_steps = 2#5
   initial_marker = EFM_1
-  max_h_level = 5
+  max_h_level = 4#5
   [./Markers]
     [./EFM_1]
       type = ErrorFractionMarker
