@@ -26,10 +26,7 @@ InputParameters validParams<NucleationLocationUserObject>()
 
   params.addRequiredCoupledVar("coupled_probability", "coupled nucleation probability");
   params.addRequiredParam<Real>("dwell_time", "How long nucleation event is");
-
-  MultiMooseEnum execute_options(SetupInterface::getExecuteOptions());
-  execute_options = "timestep_end";
-  params.set<MultiMooseEnum>("execute_on") = execute_options;
+  params.set<ExecFlagEnum>("execute_on") = EXEC_TIMESTEP_END;
 
   params.addParam<Real>("boundary_width", 0.0, "the distance from mesh boundary to not nucleate");
   params.addParam<int>("random_seed", 0.0, "the random number seed for Bernoulli trial");

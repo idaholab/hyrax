@@ -18,10 +18,7 @@ InputParameters validParams<NucleiInformation>()
 
   params.addRequiredParam<UserObjectName>("nucleation_userobject", "The name of the UserObject to use for nucleation event location");
   params.addRequiredParam<int>("OP_number", "the order parameter variable for which to count # nuclei (starting from 1)");
-
-  MultiMooseEnum execute_options(SetupInterface::getExecuteOptions());
-  execute_options = "timestep_end";
-  params.set<MultiMooseEnum>("execute_on") = execute_options;
+  params.set<ExecFlagEnum>("execute_on") = EXEC_TIMESTEP_END;
 
  return params;
 }
