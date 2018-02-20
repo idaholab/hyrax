@@ -51,7 +51,7 @@ NucleusIntroductionSolutionModifier::NucleusIntroductionSolutionModifier(const I
   // initialize our vector of variable pointers
   for (unsigned int i=0; i<_num_vars; ++i)
   {
-    _moose_variable[i] = &_subproblem.getVariable(0, vars[i]);
+    _moose_variable[i] = &_subproblem.getStandardVariable(0, vars[i]);
   }
 }
 
@@ -107,4 +107,3 @@ NucleusIntroductionSolutionModifier::execute()
   _nl.solution().close();
   _nl.system().update();
 }
-
