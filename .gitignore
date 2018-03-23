@@ -1,3 +1,5 @@
+build
+.failed_tests
 .libs
 *.la
 *.lo
