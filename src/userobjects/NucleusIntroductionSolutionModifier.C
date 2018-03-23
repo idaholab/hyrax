@@ -17,6 +17,8 @@
 
 #include <ostream>
 
+registerMooseObject("HyraxApp", NucleusIntroductionSolutionModifier);
+
 template<>
 InputParameters validParams<NucleusIntroductionSolutionModifier>()
 {

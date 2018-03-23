@@ -13,6 +13,8 @@
 #include "libmesh/libmesh.h"
 #include <iostream>
 
+registerMooseObject("HyraxApp", DepletionRegionIC);
+
 template<>
 InputParameters validParams<DepletionRegionIC>()
 {

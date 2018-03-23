@@ -10,6 +10,8 @@
 
 #include "AuxGradientEnergy.h"
 
+registerMooseObject("HyraxApp", AuxGradientEnergy);
+
 template<>
 InputParameters validParams<AuxGradientEnergy>()
 {

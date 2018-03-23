@@ -10,6 +10,8 @@
 
 #include "CHPrecipMatrixElasticity.h"
 
+registerMooseObject("HyraxApp", CHPrecipMatrixElasticity);
+
 template<>
 InputParameters validParams<CHPrecipMatrixElasticity>()
 {

@@ -10,6 +10,8 @@
 
 #include "AuxDFelDC.h"
 
+registerMooseObject("HyraxApp", AuxDFelDC);
+
 template<>
 InputParameters validParams<AuxDFelDC>()
 {

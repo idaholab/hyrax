@@ -20,6 +20,8 @@
 #include <sstream>
 #include <iomanip>
 
+registerMooseObject("HyraxApp", MeshSolutionModify);
+
 template<>
 InputParameters validParams<MeshSolutionModify>()
 {

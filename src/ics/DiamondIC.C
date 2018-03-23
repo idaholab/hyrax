@@ -13,6 +13,8 @@
 
 //DiamondIC is centered around ( 0, 0, 0)
 
+registerMooseObject("HyraxApp", DiamondIC);
+
 template<>
 InputParameters validParams<DiamondIC>()
 {

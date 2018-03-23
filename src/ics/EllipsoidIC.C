@@ -12,6 +12,8 @@
 
 #include "libmesh/libmesh.h"
 
+registerMooseObject("HyraxApp", EllipsoidIC);
+
 template<>
 InputParameters validParams<EllipsoidIC>()
 {

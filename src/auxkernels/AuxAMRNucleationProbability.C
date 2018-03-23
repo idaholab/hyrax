@@ -19,6 +19,8 @@
  *  through a 3D volume, with some user-specified thickness times the element area.
  */
 
+registerMooseObject("HyraxApp", AuxAMRNucleationProbability);
+
 template<>
 InputParameters validParams<AuxAMRNucleationProbability>()
 {

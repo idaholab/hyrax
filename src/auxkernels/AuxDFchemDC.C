@@ -10,6 +10,8 @@
 
 #include "AuxDFchemDC.h"
 
+registerMooseObject("HyraxApp", AuxDFchemDC);
+
 template<>
 InputParameters validParams<AuxDFchemDC>()
 {

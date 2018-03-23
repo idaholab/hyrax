@@ -11,6 +11,8 @@
 #include "ZrHCalphadDiffusivity.h"
 #include "RankTwoTensor.h"
 
+registerMooseObject("HyraxApp", ZrHCalphadDiffusivity);
+
 template<>
 InputParameters validParams<ZrHCalphadDiffusivity>()
 {

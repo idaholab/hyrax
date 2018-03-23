@@ -17,6 +17,8 @@
  * arbitrary number of order parameters.
  */
 
+registerMooseObject("HyraxApp", ACTransformElasticDF);
+
 template<>
 InputParameters validParams<ACTransformElasticDF>()
 {

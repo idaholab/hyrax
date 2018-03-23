@@ -13,6 +13,8 @@
 
 #include <cmath>
 
+registerMooseObject("HyraxApp", AuxDeltaGStar);
+
 template<>
 InputParameters validParams<AuxDeltaGStar>()
 {

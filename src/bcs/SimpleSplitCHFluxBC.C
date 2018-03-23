@@ -11,6 +11,8 @@
 
 #include "SimpleSplitCHFluxBC.h"
 
+registerMooseObject("HyraxApp", SimpleSplitCHFluxBC);
+
 template<>
 InputParameters validParams<SimpleSplitCHFluxBC>()
 {

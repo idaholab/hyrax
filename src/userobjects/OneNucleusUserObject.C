@@ -10,6 +10,8 @@
 
 #include "OneNucleusUserObject.h"
 
+registerMooseObject("HyraxApp", OneNucleusUserObject);
+
 template<>
 InputParameters validParams<OneNucleusUserObject>()
 {

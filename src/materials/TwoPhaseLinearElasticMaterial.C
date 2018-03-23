@@ -12,6 +12,8 @@
 #include "MooseMesh.h"
 #include <cmath>
 
+registerMooseObject("HyraxApp", TwoPhaseLinearElasticMaterial);
+
 template<>
 InputParameters validParams<TwoPhaseLinearElasticMaterial>()
 {

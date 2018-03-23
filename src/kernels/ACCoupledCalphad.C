@@ -10,6 +10,8 @@
 
 #include "ACCoupledCalphad.h"
 
+registerMooseObject("HyraxApp", ACCoupledCalphad);
+
 template<>
 InputParameters validParams<ACCoupledCalphad>()
 {

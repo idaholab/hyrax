@@ -12,6 +12,8 @@
 
 #include "StressBC.h"
 
+registerMooseObject("HyraxApp", StressBC);
+
 template<>
 InputParameters validParams<StressBC>()
 {
