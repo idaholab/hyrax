@@ -10,6 +10,8 @@
 
 #include "CalphadAB1CD2Material.h"
 
+registerMooseObject("HyraxApp", CalphadAB1CD2Material);
+
 template<>
 InputParameters validParams<CalphadAB1CD2Material>()
 {

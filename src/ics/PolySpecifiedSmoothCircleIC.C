@@ -18,6 +18,8 @@
  * invalue to outvalue.  (Basically reworks and extends SmoothCircleIC)
  */
 
+registerMooseObject("HyraxApp", PolySpecifiedSmoothCircleIC);
+
 template<>
 InputParameters validParams<PolySpecifiedSmoothCircleIC>()
 {

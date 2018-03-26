@@ -10,6 +10,8 @@
 
 #include "AuxElasticEnergy.h"
 
+registerMooseObject("HyraxApp", AuxElasticEnergy);
+
 template<>
 InputParameters validParams<AuxElasticEnergy>()
 {

@@ -19,6 +19,8 @@
 
 #include <ostream>
 
+registerMooseObject("HyraxApp", NucleationLocationUserObject);
+
 template<>
 InputParameters validParams<NucleationLocationUserObject>()
 {

@@ -12,6 +12,8 @@
 #include <iostream>
 
 
+registerMooseObject("HyraxApp", AuxCalphadElasticity);
+
 template<>
 InputParameters validParams<AuxCalphadElasticity>()
 {

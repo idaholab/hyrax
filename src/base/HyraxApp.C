@@ -23,66 +23,6 @@
 //#include "HeatConductionApp.h"
 #include "MiscApp.h"
 
-//Kernels
-#include "ACTransformElasticDF.h"
-#include "ACCoupledCalphad.h"
-#include "CHCoupledCalphadSplit.h"
-#include "CHPrecipMatrixElasticity.h"
-
-//Auxiliary Kernels
-#include "AuxDeltaGStar.h"
-#include "AuxBulkEnergyCalphad.h"
-#include "AuxGradientEnergy.h"
-#include "AuxElasticEnergy.h"
-#include "AuxCalphadElasticity.h"
-#include "AuxElasticInteractionEnergy.h"
-#include "AuxAMRNucleationProbability.h"
-#include "AuxVolumetricNucleationRate.h"
-#include "AuxDFchemDC.h"
-#include "AuxDFelDC.h"
-#include "AuxGrandPotential.h"
-
-//Dirac Kernels
-
-//Boundary Conditions
-#include "StressBC.h"
-#include "SimpleSplitCHFluxBC.h"
-
-//Materials
-#include "CalphadEnergyMaterial.h"
-#include "CalphadAB1CD1Material.h"
-#include "CalphadAB1CD2Material.h"
-#include "ZrHCalphadDiffusivity.h"
-#include "TwoPhaseLinearElasticMaterial.h"
-
-//Initial Conditions
-#include "PolySpecifiedSmoothCircleIC.h"
-#include "EllipsoidIC.h"
-#include "SmoothBoxIC.h"
-#include "DiamondIC.h"
-#include "DepletionRegionIC.h"
-
-//Dampers
-
-//Executioners
-#include "MeshSolutionModify.h"
-
-//Post Processors
-#include "NucleiInformation.h"
-
-//TimeSteppers
-
-//Actions
-
-//UserObjects
-#include "NucleationLocationUserObject.h"
-#include "NucleusIntroductionSolutionModifier.h"
-#include "OneNucleusUserObject.h"
-
-//Markers
-#include "NucleationMarker.h"
-
-
 template<>
 InputParameters validParams<HyraxApp>()
 {
@@ -126,63 +66,7 @@ HyraxApp::registerApps()
 void
 HyraxApp::registerObjects(Factory & factory)
 {
-  //Kernels
-  registerKernel(ACTransformElasticDF);
-  registerKernel(ACCoupledCalphad);
-  registerKernel(CHCoupledCalphadSplit);
-  registerKernel(CHPrecipMatrixElasticity);
-
-  //Auxiliary Kernels
-  registerAux(AuxDeltaGStar);
-  registerAux(AuxBulkEnergyCalphad);
-  registerAux(AuxGradientEnergy);
-  registerAux(AuxElasticEnergy);
-  registerAux(AuxCalphadElasticity);
-  registerAux(AuxElasticInteractionEnergy);
-  registerAux(AuxAMRNucleationProbability);
-  registerAux(AuxVolumetricNucleationRate);
-  registerAux(AuxDFchemDC);
-  registerAux(AuxDFelDC);
-  registerAux(AuxGrandPotential);
-
-  //Dirac Kernels
-
-  //Boundary Conditions
-  registerBoundaryCondition(StressBC);
-  registerBoundaryCondition(SimpleSplitCHFluxBC);
-
-  //Materials
-  registerMaterial(CalphadEnergyMaterial);
-  registerMaterial(CalphadAB1CD1Material);
-  registerMaterial(CalphadAB1CD2Material);
-  registerMaterial(ZrHCalphadDiffusivity);
-  registerMaterial(TwoPhaseLinearElasticMaterial);
-
-  //Initial Conditions
-  registerInitialCondition(PolySpecifiedSmoothCircleIC);
-  registerInitialCondition(EllipsoidIC);
-  registerInitialCondition(SmoothBoxIC);
-  registerInitialCondition(DiamondIC);
-  registerInitialCondition(DepletionRegionIC);
-
-  //Dampers
-
-  //Executioners
-  registerExecutioner(MeshSolutionModify);
-
-  //Postprocessors
-  registerPostprocessor(NucleiInformation);
-
-  //TimeSteppers
-
-  // UserObjects
-  registerUserObject(NucleationLocationUserObject);
-  registerUserObject(NucleusIntroductionSolutionModifier);
-  registerUserObject(OneNucleusUserObject);
-
-  // Markers
-  registerMarker(NucleationMarker);
-
+  Registry::registerObjectsTo(factory, {"HyraxApp"});
 }
 
 void

@@ -10,6 +10,8 @@
 
 #include "CalphadEnergyMaterial.h"
 
+registerMooseObject("HyraxApp", CalphadEnergyMaterial);
+
 template<>
 InputParameters validParams<CalphadEnergyMaterial>()
 {

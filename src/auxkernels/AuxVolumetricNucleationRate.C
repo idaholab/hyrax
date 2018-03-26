@@ -12,6 +12,8 @@
 #include <cmath>
 #include <iostream>
 
+registerMooseObject("HyraxApp", AuxVolumetricNucleationRate);
+
 template<>
 InputParameters validParams<AuxVolumetricNucleationRate>()
 {

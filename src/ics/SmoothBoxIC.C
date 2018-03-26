@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cmath>
 
+registerMooseObject("HyraxApp", SmoothBoxIC);
+
 template<>
 InputParameters validParams<SmoothBoxIC>()
 {

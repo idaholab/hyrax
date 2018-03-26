@@ -10,6 +10,8 @@
 
 #include "AuxBulkEnergyCalphad.h"
 
+registerMooseObject("HyraxApp", AuxBulkEnergyCalphad);
+
 template<>
 InputParameters validParams<AuxBulkEnergyCalphad>()
 {

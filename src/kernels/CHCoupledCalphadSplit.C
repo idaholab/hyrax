@@ -9,6 +9,8 @@
 
 #include "CHCoupledCalphadSplit.h"
 
+registerMooseObject("HyraxApp", CHCoupledCalphadSplit);
+
 template<>
 InputParameters validParams<CHCoupledCalphadSplit>()
 {

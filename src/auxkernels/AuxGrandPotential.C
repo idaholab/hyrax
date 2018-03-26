@@ -10,6 +10,8 @@
 
 #include "AuxGrandPotential.h"
 
+registerMooseObject("HyraxApp", AuxGrandPotential);
+
 template<>
 InputParameters validParams<AuxGrandPotential>()
 {

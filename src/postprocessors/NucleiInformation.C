@@ -11,6 +11,8 @@
 #include "NucleiInformation.h"
 #include "NucleationLocationUserObject.h"
 
+registerMooseObject("HyraxApp", NucleiInformation);
+
 template<>
 InputParameters validParams<NucleiInformation>()
 {

@@ -15,6 +15,8 @@
 #include "NucleationLocationUserObject.h"
 #include <ostream>
 
+registerMooseObject("HyraxApp", NucleationMarker);
+
 template<>
 InputParameters validParams<NucleationMarker>()
 {
