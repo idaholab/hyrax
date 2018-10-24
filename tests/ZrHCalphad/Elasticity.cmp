@@ -1,0 +1,56 @@
+
+#  *****************************************************************
+#             EXODIFF	(Version: 2.90) Modified: 2018-02-15
+#             Authors:  Richard Drake, rrdrake@sandia.gov
+#                       Greg Sjaardema, gdsjaar@sandia.gov
+#             Run on    2018/10/24   13:12:25 MDT
+#  *****************************************************************
+
+#  FILE 1: /Users/lindad/projects2/hyrax/tests/ZrHCalphad/gold/Elasticity.e
+#   Title: Elasticity.e
+#          Dim = 2, Blocks = 1, Nodes = 676, Elements = 625, Nodesets = 4, Sidesets = 4
+#          Vars: Global = 0, Nodal = 20, Element = 0, Nodeset = 0, Sideset = 0, Times = 3
+
+
+# ==============================================================
+#  NOTE: All node and element ids are reported as global ids.
+
+# NOTES:  - The min/max values are reporting the min/max in absolute value.
+#         - Time values (t) are 1-offset time step numbers.
+#         - Element block numbers are the block ids.
+#         - Node(n) and element(e) numbers are 1-offset.
+
+COORDINATES absolute 1.e-6    # min separation not calculated
+
+TIME STEPS relative 1.e-6 floor 0.0     # min:               0 @ t1 max:            0.02 @ t3
+
+
+# No GLOBAL VARIABLES
+
+NODAL VARIABLES relative 1.e-6 floor 0.0
+	concentration     # min:    0.0093422695 @ t3,n244	max:      0.62755633 @ t3,n276
+	dfeldc            floor 1e-10 # min:               0 @ t1,n1	max:      0.17036556 @ t3,n246
+	disp_x            # min:               0 @ t1,n1	max:      0.12979842 @ t3,n347
+	disp_y            # min:               0 @ t1,n1	max:      0.30173617 @ t3,n456
+	e11_aux           relative 2e-6 # min:               0 @ t1,n1	max:     0.021719405 @ t2,n455
+	e12_aux           # min:               0 @ t1,n1	max:     0.023647805 @ t2,n433
+	e13_aux           # min:               0 @ t1,n1	max:               0 @ t1,n1
+	e22_aux           # min:               0 @ t1,n1	max:     0.020414256 @ t2,n330
+	e23_aux           # min:               0 @ t1,n1	max:               0 @ t1,n1
+	e33_aux           # min:               0 @ t1,n1	max:     0.027174845 @ t2,n272
+	elem_ChemElastic  # min:               0 @ t1,n1	max:       1.5369487 @ t3,n405
+	mu                # min:               0 @ t1,n1	max:       3.6762193 @ t2,n351
+	n                 # min:               0 @ t1,n1	max:       1.0002663 @ t3,n324
+	s11_aux           floor 5e-5 # min:               0 @ t1,n1	max:         3.18637 @ t2,n322
+	s12_aux           # min:               0 @ t1,n1	max:       1.3470319 @ t2,n433
+	s13_aux           # min:               0 @ t1,n1	max:               0 @ t1,n1
+	s22_aux           # min:               0 @ t1,n1	max:       3.9208242 @ t2,n247
+	s23_aux           # min:               0 @ t1,n1	max:               0 @ t1,n1
+	s33_aux           # min:               0 @ t1,n1	max:       4.6980274 @ t2,n247
+	temperature       # min:             600 @ t1,n15	max:             600 @ t1,n161
+
+# No ELEMENT VARIABLES
+
+# No NODESET VARIABLES
+
+# No SIDESET VARIABLES

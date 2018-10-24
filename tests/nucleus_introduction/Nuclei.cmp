@@ -1,0 +1,47 @@
+
+#  *****************************************************************
+#             EXODIFF	(Version: 2.90) Modified: 2018-02-15
+#             Authors:  Richard Drake, rrdrake@sandia.gov
+#                       Greg Sjaardema, gdsjaar@sandia.gov
+#             Run on    2018/10/24   13:20:24 MDT
+#  *****************************************************************
+
+#  FILE 1: /Users/lindad/projects2/hyrax/tests/nucleus_introduction/gold/Nuclei.e-s004
+#   Title: Nuclei.e-s004
+#          Dim = 2, Blocks = 1, Nodes = 944, Elements = 844, Nodesets = 4, Sidesets = 4
+#          Vars: Global = 0, Nodal = 3, Element = 8, Nodeset = 0, Sideset = 0, Times = 1
+
+
+# ==============================================================
+#  NOTE: All node and element ids are reported as global ids.
+
+# NOTES:  - The min/max values are reporting the min/max in absolute value.
+#         - Time values (t) are 1-offset time step numbers.
+#         - Element block numbers are the block ids.
+#         - Node(n) and element(e) numbers are 1-offset.
+
+COORDINATES absolute 1.e-6    # min separation not calculated
+
+TIME STEPS relative 1.e-6 floor 0.0     # min:    0.0089585633 @ t1 max:    0.0089585633 @ t1
+
+
+# No GLOBAL VARIABLES
+
+NODAL VARIABLES relative 1.e-6 floor 0.0
+	concentration  # min:   0.00052063954 @ t1,n796	max:      0.59953289 @ t1,n628
+	mu             # min:        3.186805 @ t1,n105	max:       8.8770341 @ t1,n83
+	n              # min:   1.3883815e-17 @ t1,n296	max:       1.0000932 @ t1,n718
+
+ELEMENT VARIABLES relative 1.e-6 floor 0.0
+	EFM_1                # min:               0 @ t1,b0,e1	max:               2 @ t1,b0,e877
+	NM                   # min:               1 @ t1,b0,e1	max:               2 @ t1,b0,e864
+	combo                # min:               0 @ t1,b0,e1	max:               2 @ t1,b0,e864
+	GJI_1                relative 2e-6 floor 5e-5 # min:   3.6574178e-16 @ t1,b0,e281	max:       2.2459478 @ t1,b0,e901
+	temperature          # min:             600 @ t1,b0,e1	max:             600 @ t1,b0,e1
+	elem_ChemElastic     # min:      0.26814904 @ t1,b0,e703	max:       1.7056577 @ t1,b0,e673
+	elem_VolumetricRate  # min:   1.0321429e-09 @ t1,b0,e749	max:       133103.51 @ t1,b0,e673
+	elem_AMRProbability  # min:   1.5736704e-06 @ t1,b0,e566	max:               1 @ t1,b0,e400
+
+# No NODESET VARIABLES
+
+# No SIDESET VARIABLES
