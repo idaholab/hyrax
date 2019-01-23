@@ -1,3 +1,6 @@
+# Attention: This repository is no longer being actively maintained! 
+## Contact the moose-users mailing list for more information.
+
 # hyrax
 
 Hyrax is a quantitative phase model to study hydrogen (as hydrogen in solution, and delta-hydrides) in alpha-zirconium.
