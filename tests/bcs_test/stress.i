@@ -368,6 +368,7 @@
 
   #Preconditioned JFNK (default)
   solve_type = 'PJFNK'
+  line_search = 'bt'
   petsc_options_iname = '-pc_type -sub_pc_type'
   petsc_options_value = ' ksp      lu'
 

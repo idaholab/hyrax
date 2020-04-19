@@ -11,5 +11,6 @@
     input = 'Elasticity.i'
     exodiff = 'Elasticity.e'
     method = 'OPT OPROF'  # Too slow for debug
+    custom_cmp = 'Elasticity.cmp'
   [../]
 []
